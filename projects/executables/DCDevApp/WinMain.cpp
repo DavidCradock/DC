@@ -10,26 +10,19 @@ using namespace DC;
 
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
-	try
-	{
-		String stringA("stringA");
-		String stringB("stringB");
-		String stringC;
-		stringC += stringA;
-		stringC += "_";
-		stringC += stringB;
-		stringC = stringA;
-		stringA = "A";
-		stringB = "A";
-		stringA = "Line1\nLine2\nLine3";
-		std::vector<String> vLines = stringA.splitString();
-		ErrorIfFalse(0, "false!");
-		int dfh = 4;
-	}
-	catch (Exception &ex)
-	{
-		String strTemp = ex.description;
-		int i = 3;
-	}
+	String stringA(L"stringA");
+	String stringB(L"stringB");
+	String stringC;
+	stringC += stringA;
+	stringC += L"_";
+	stringC += stringB;
+	stringC = stringA;
+	stringA = L"A";
+	stringB = L"A";
+	stringA = L"Line1\nLine2\nLine3";
+	std::vector<String> vLines = stringA.splitString();
+	wchar_t wpi[] = L"\u03c0";
+	int dfh = 4;
+
 	return 0;
 }

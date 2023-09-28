@@ -12,10 +12,10 @@ namespace DC
 		String();
 
 		// Constructor accepting a pointer to chars
-		String(const char* str);
+		String(const wchar_t* str);
 
-		// Constructor accepting std::string
-		String(const std::string& str);
+		// Constructor accepting std::wstring
+		String(const std::wstring& str);
 
 		// += operator overload to append strings
 		void operator+=(const String& str);
@@ -24,13 +24,13 @@ namespace DC
 		bool operator==(const String& str) const;
 
 		// + operator overload for appending a string
-		String operator+(const String& str) const;
+//		const wchar_t* lh operator+(const String& str) const;
 
 		// Append the given string to the end of this one
 		void append(const String& other);
 
 		// Append the given string to the end of this one
-		void append(const char* str);
+		void append(const wchar_t* str);
 
 		// Append a double to the end of this string with the given number of digits after the decimal point.
 		// uiNumDecimalPoints can be from 0 to 9, if outside this range, then 2 is used.
@@ -46,7 +46,7 @@ namespace DC
 		// Append an unsigned integer to the end of this string
 		void appendUnsignedInt(unsigned int uiInt);
 
-		const char* c_str(void) const;
+		const wchar_t* c_str(void) const;
 
 		// Clear the string
 		void clear(void);
@@ -66,15 +66,15 @@ namespace DC
 		// represent the end of the line of text.
 		// For example, if the string is "Line1\nLine2\nLine3" and the strSplitChars is "\n"
 		// then the returned vector would have 3 entries, "Line1" "Line2" and "Line3"
-		std::vector<String> splitString(const String& strSplitChars = "\n") const;
+		std::vector<String> splitString(const String& strSplitChars = L"\n") const;
 
-		// Returns this string as a wide string
-		std::wstring wideGet() const;
+		// Returns this string as a narrow/multibyte string
+		std::string wideCharToMultiByte() const;
 
-		// Sets this string from a wide string
-		void wideSet(const std::wstring& wstring);
+		// Sets this string from a narrow/multibyte string
+		void multiByteToWideChar(const std::string& multibyteString);
 
 	private:
-		std::string string;
+		std::wstring wideString;
 	};
 }
