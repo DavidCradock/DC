@@ -1,5 +1,8 @@
 #pragma once
-#include "DCString.h"
+#include "string.h"
+#include "error.h"
 
+namespace DC
+{
 
-void test(void);
+}

@@ -8,10 +8,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DCCommon.h" />
-    <ClInclude Include="DCString.h" />
+    <ClInclude Include="string.h" />
+    <ClInclude Include="error.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DCCommon.cpp" />
-    <ClCompile Include="DCString.cpp" />
+    <ClCompile Include="string.cpp" />
+    <ClCompile Include="error.cpp" />
   </ItemGroup>
 </Project>

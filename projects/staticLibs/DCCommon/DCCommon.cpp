@@ -1,6 +1,6 @@
 #include "DCCommon.h"
 
-void test(void)
+namespace DC
 {
 
 }
