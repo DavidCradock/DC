@@ -6,7 +6,6 @@
 - Download the source as a zip and extract somewhere.
 - Download and install Visual studio
 - Load the X.sln file into Visual studio, hit compile, done.
-- 
 
 Notes...
 
