@@ -9,6 +9,7 @@
 - 
 
 Notes...
+
 No logging because it's not needed overhead and I usually implement logging, then never use it. The debugger is well suited for, surprise, debugging. The logs never help me.
 
 Changes to coding style
