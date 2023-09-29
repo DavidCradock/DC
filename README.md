@@ -41,7 +41,7 @@ Use globals instead, or pass pointers/references to objects.
 
 Strings.
 
-Use wide strings as it's the default setting, they are recommeded for many positive reasons (IE some user with a weird character is now supported) and it's easier to work with than multibyte.
+Use wide strings as it's the default setting, they are recommended for many positive reasons (IE some user with a weird character is now supported) and it's easier to work with than multibyte.
 
 Sure, the L"bloody L!" is kinda annoying having to add Ls everywhere, but calm down, it's only a single character to add. Relax! :D
 
