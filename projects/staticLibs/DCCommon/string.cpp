@@ -2,6 +2,7 @@
 #include <format>
 #include <Windows.h>
 #include <algorithm>
+#include "error.h"
 
 namespace DC
 {
@@ -9,6 +10,17 @@ namespace DC
 	String::String(void)
 	{
 		
+	}
+
+	String::String(const String& str)
+	{
+		wideString = str.wideString;
+	}
+
+	String::String(const char* str)
+	{
+		std::string nstr = str;
+		multiByteToWideChar(nstr);
 	}
 
 	String::String(const wchar_t* str)
@@ -31,22 +43,55 @@ namespace DC
 		return wideString == str.wideString;
 	}
 
-/*	const wchar_t* String::operator+(const String& str) const;
+	String String::operator +(const String& str) const
 	{
 		String result;
 		result.append(wideString);
 		result.append(str);
 		return result;
 	}
-	*/
+
+	void String::addFilenameExtension(const String& filenameExtension)
+	{
+		ErrorIfTrue(0 == filenameExtension.size(), String("String::addFilenameExtension() failed. Given extension name of zero length."));
+
+		// Append "." to extension if needed
+		String strExt = filenameExtension;
+		if (strExt.c_str()[0] != '.')
+		{
+			std::wstring::iterator itBegin = strExt.wideString.begin();
+			strExt.wideString.insert(itBegin, '.');
+		}
+
+		// Find last position of "." and remove everything after it
+		auto const pos = wideString.find_last_of('.');
+		if (pos != std::wstring::npos)
+		{
+			wideString.erase(pos, wideString.length() - pos);
+		}
+
+		wideString.append(strExt.wideString);
+	}
+
 	void String::append(const String& other)
 	{
 		wideString.append(other.wideString);
 	}
 
+	void String::append(const char* str)
+	{
+		std::string nstr = str;
+		multiByteToWideChar(nstr);
+	}
+
 	void String::append(const wchar_t* str)
 	{
 		wideString.append(str);
+	}
+
+	void String::append(const std::wstring& str)
+	{
+		wideString = str;
 	}
 
 	void String::appendDouble(double dValue, unsigned int uiNumDecimalPoints)
@@ -149,7 +194,9 @@ namespace DC
 
 	void String::lowercase(void)
 	{
-		std::transform(wideString.begin(), wideString.end(), wideString.begin(), [](unsigned char c) { return std::tolower(c); });
+		std::string str = wideCharToMultiByte();
+		std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::tolower(c); });
+		multiByteToWideChar(str);
 	}
 
 	bool String::representsNumber(void) const

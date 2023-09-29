@@ -10,19 +10,13 @@ using namespace DC;
 
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
-	String stringA(L"stringA");
-	String stringB(L"stringB");
-	String stringC;
-	stringC += stringA;
-	stringC += L"_";
-	stringC += stringB;
-	stringC = stringA;
-	stringA = L"A";
-	stringB = L"A";
-	stringA = L"Line1\nLine2\nLine3";
-	std::vector<String> vLines = stringA.splitString();
-	wchar_t wpi[] = L"\u03c0";
-	int dfh = 4;
+	String err(L"Error");
+	std::wstring widestring = L"Hello";
+	String s2(widestring);
+	String s3(L"Hello");
+	String s4(s3);
 
+	String sfilename("image.ext");
+	sfilename.addFilenameExtension(String(L"png"));
 	return 0;
 }

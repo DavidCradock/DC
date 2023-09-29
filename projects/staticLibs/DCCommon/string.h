@@ -11,7 +11,13 @@ namespace DC
 		// Default constructor
 		String();
 
+		// Constructor accepting other String
+		String(const String& str);
+
 		// Constructor accepting a pointer to chars
+		String(const char* str);
+
+		// Constructor accepting a pointer to wchars
 		String(const wchar_t* str);
 
 		// Constructor accepting std::wstring
@@ -24,13 +30,25 @@ namespace DC
 		bool operator==(const String& str) const;
 
 		// + operator overload for appending a string
-//		const wchar_t* lh operator+(const String& str) const;
+		String operator +(const String& str) const;
+
+		// Assumes that this string already contains a filename and then appends the given filename extension to the end of this string.
+		// If this string already has an extension, it is removed and replaced with the new one.
+		// The filename extension may or may not have the "." at the beginning. If it doesn't exist, it is added.
+		// If the filename extension is of zero length, an exception occurs.
+		void addFilenameExtension(const String& filenameExtension);
 
 		// Append the given string to the end of this one
 		void append(const String& other);
 
 		// Append the given string to the end of this one
+		void append(const char* str);
+
+		// Append the given string to the end of this one
 		void append(const wchar_t* str);
+
+		// Append the given string to the end of this one
+		void append(const std::wstring& str);
 
 		// Append a double to the end of this string with the given number of digits after the decimal point.
 		// uiNumDecimalPoints can be from 0 to 9, if outside this range, then 2 is used.
@@ -46,6 +64,7 @@ namespace DC
 		// Append an unsigned integer to the end of this string
 		void appendUnsignedInt(unsigned int uiInt);
 
+		// Returns const pointer of wchars
 		const wchar_t* c_str(void) const;
 
 		// Clear the string
@@ -73,7 +92,6 @@ namespace DC
 
 		// Sets this string from a narrow/multibyte string
 		void multiByteToWideChar(const std::string& multibyteString);
-
 	private:
 		std::wstring wideString;
 	};
