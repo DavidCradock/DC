@@ -2,6 +2,7 @@
 # My current personal project.
 ## Written in C++ for Windows 11, using OpenGL/Vulkan for rendering.
 ### This project is intended to become a bunch of code which I can use to develop a game with.
+#### Not only a game, but also applications too. I wish to implement an image editor to replace my aging Adobe Photoshop as it's user interface does not scale on high DPI displays making the interface incredibly difficult to use and I find the way which open source alternatives deal with the alpha channel awkward. I also refuse to pay a monthly fee for software to obtain access to the latest version of Photoshop.
 ** Build help **
 - Download the source as a zip and extract somewhere.
 - Download and install Visual studio
