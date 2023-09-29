@@ -14,10 +14,15 @@ No logging because it's not needed overhead and I usually implement logging, the
 Changes to coding style
 
 Do not use _m for members as it's bloody obvious that the member is a member.
-Dp not use prepended type (for example fSomeFloat) as the IDE shows the type of a member/variable)
+
+Do not use pre-pended type (for example fSomeFloat) as the IDE shows the type of a member/variable)
+
 Do not use _ underscore for private members as the IDE shows that a member is private.
+
 Use a descriptive, non abbreviated name for a variable/member. Abbreviation makes things less clear and autocomplete makes adding names easy with less typing.
+
 Do not add "C" to beginning of class declarations, it's a class, it's obvious.
+
 
 Error handling
 
@@ -26,18 +31,23 @@ Do not use exceptions, there's some overhead and using macros for critical error
 Singleton pattern.
 
 Do not use unless appropriate.
+
 Singletons are great for allowing quick access to a "global" object, but as their name implies, prevents creation of multiple instances.
+
 Their initialisation order can be really messy.
+
 Use globals instead, or pass pointers/references to objects.
 
 Strings.
 
 Use wide strings as it's the default setting, they are recommeded for many positive reasons (IE some user with a weird character is now supported) and it's easier to work with than multibyte.
+
 Sure, the L"bloody L!" is kinda annoying having to add Ls everywhere, but calm down, it's only a single character to add. Relax! :D
 
 Source code filenaming.
 
 Prepend "DC" for the library's main include header (and possible .cpp), but for the rest of the files, do not add the "DC"
-camel style casing, someFileWhichDoesSomething. It's easy to read and quite sparse.
+
+Camel style casing, someFileWhichDoesSomething. It's easy to read and quite sparse.
 
 
