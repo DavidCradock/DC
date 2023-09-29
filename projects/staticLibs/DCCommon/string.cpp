@@ -17,7 +17,7 @@ namespace DC
 			std::wstring::iterator itBegin = strExt.begin();
 			strExt.insert(itBegin, '.');
 		}
-
+		
 		// Find last position of "." and remove everything after it
 		auto const pos = this->find_last_of('.');
 		if (pos != std::wstring::npos)

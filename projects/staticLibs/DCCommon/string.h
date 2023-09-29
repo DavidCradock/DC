@@ -4,7 +4,6 @@
 
 namespace DC
 {
-
 	class String : public std::wstring
 	{
 	public:
@@ -47,5 +46,6 @@ namespace DC
 
 		// Sets this string from a narrow/multibyte string
 		void multiByteToWideChar(const std::string& multibyteString);
+
 	};
 }
