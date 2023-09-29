@@ -8,8 +8,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DCAI.h" />
+    <ClInclude Include="finiteStateMachine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DCAI.cpp" />
+    <ClCompile Include="finiteStateMachine.cpp" />
   </ItemGroup>
 </Project>

@@ -6,92 +6,26 @@
 
 namespace DC
 {
-
-	String::String(void)
-	{
-		
-	}
-
-	String::String(const String& str)
-	{
-		wideString = str.wideString;
-	}
-
-	String::String(const char* str)
-	{
-		std::string nstr = str;
-		multiByteToWideChar(nstr);
-	}
-
-	String::String(const wchar_t* str)
-	{
-		wideString = str;
-	}
-
-	String::String(const std::wstring& str)
-	{
-		wideString = str;
-	}
-
-	void String::operator+=(const String& str)
-	{
-		wideString += str.wideString;
-	}
-
-	bool String::operator==(const String& str) const
-	{
-		return wideString == str.wideString;
-	}
-
-	String String::operator +(const String& str) const
-	{
-		String result;
-		result.append(wideString);
-		result.append(str);
-		return result;
-	}
-
 	void String::addFilenameExtension(const String& filenameExtension)
 	{
-		ErrorIfTrue(0 == filenameExtension.size(), String("String::addFilenameExtension() failed. Given extension name of zero length."));
+		ErrorIfTrue(0 == filenameExtension.size(), L"String::addFilenameExtension() failed. Given extension name of zero length.");
 
 		// Append "." to extension if needed
 		String strExt = filenameExtension;
 		if (strExt.c_str()[0] != '.')
 		{
-			std::wstring::iterator itBegin = strExt.wideString.begin();
-			strExt.wideString.insert(itBegin, '.');
+			std::wstring::iterator itBegin = strExt.begin();
+			strExt.insert(itBegin, '.');
 		}
 
 		// Find last position of "." and remove everything after it
-		auto const pos = wideString.find_last_of('.');
+		auto const pos = this->find_last_of('.');
 		if (pos != std::wstring::npos)
 		{
-			wideString.erase(pos, wideString.length() - pos);
+			erase(pos, size() - pos);
 		}
 
-		wideString.append(strExt.wideString);
-	}
-
-	void String::append(const String& other)
-	{
-		wideString.append(other.wideString);
-	}
-
-	void String::append(const char* str)
-	{
-		std::string nstr = str;
-		multiByteToWideChar(nstr);
-	}
-
-	void String::append(const wchar_t* str)
-	{
-		wideString.append(str);
-	}
-
-	void String::append(const std::wstring& str)
-	{
-		wideString = str;
+		append(strExt);
 	}
 
 	void String::appendDouble(double dValue, unsigned int uiNumDecimalPoints)
@@ -99,37 +33,37 @@ namespace DC
 		switch (uiNumDecimalPoints)
 		{
 		case 0:
-			wideString += std::format(L"{:.0f}", dValue);
+			*this += std::format(L"{:.0f}", dValue);
 			break;
 		case 1:
-			wideString += std::format(L"{:.1f}", dValue);
+			*this += std::format(L"{:.1f}", dValue);
 			break;
 		case 2:
-			wideString += std::format(L"{:.2f}", dValue);
+			*this += std::format(L"{:.2f}", dValue);
 			break;
 		case 3:
-			wideString += std::format(L"{:.3f}", dValue);
+			*this += std::format(L"{:.3f}", dValue);
 			break;
 		case 4:
-			wideString += std::format(L"{:.4f}", dValue);
+			*this += std::format(L"{:.4f}", dValue);
 			break;
 		case 5:
-			wideString += std::format(L"{:.5f}", dValue);
+			*this += std::format(L"{:.5f}", dValue);
 			break;
 		case 6:
-			wideString += std::format(L"{:.6f}", dValue);
+			*this += std::format(L"{:.6f}", dValue);
 			break;
 		case 7:
-			wideString += std::format(L"{:.7f}", dValue);
+			*this += std::format(L"{:.7f}", dValue);
 			break;
 		case 8:
-			wideString += std::format(L"{:.8f}", dValue);
+			*this += std::format(L"{:.8f}", dValue);
 			break;
 		case 9:
-			wideString += std::format(L"{:.9f}", dValue);
+			*this += std::format(L"{:.9f}", dValue);
 			break;
 		default:
-			wideString += std::format(L"{:.2f}", dValue);
+			*this += std::format(L"{:.2f}", dValue);
 		}
 	}
 
@@ -138,58 +72,48 @@ namespace DC
 		switch (uiNumDecimalPoints)
 		{
 		case 0:
-			wideString += std::format(L"{:.0f}", fValue);
+			*this += std::format(L"{:.0f}", fValue);
 			break;
 		case 1:
-			wideString += std::format(L"{:.1f}", fValue);
+			*this += std::format(L"{:.1f}", fValue);
 			break;
 		case 2:
-			wideString += std::format(L"{:.2f}", fValue);
+			*this += std::format(L"{:.2f}", fValue);
 			break;
 		case 3:
-			wideString += std::format(L"{:.3f}", fValue);
+			*this += std::format(L"{:.3f}", fValue);
 			break;
 		case 4:
-			wideString += std::format(L"{:.4f}", fValue);
+			*this += std::format(L"{:.4f}", fValue);
 			break;
 		case 5:
-			wideString += std::format(L"{:.5f}", fValue);
+			*this += std::format(L"{:.5f}", fValue);
 			break;
 		case 6:
-			wideString += std::format(L"{:.6f}", fValue);
+			*this += std::format(L"{:.6f}", fValue);
 			break;
 		case 7:
-			wideString += std::format(L"{:.7f}", fValue);
+			*this += std::format(L"{:.7f}", fValue);
 			break;
 		case 8:
-			wideString += std::format(L"{:.8f}", fValue);
+			*this += std::format(L"{:.8f}", fValue);
 			break;
 		case 9:
-			wideString += std::format(L"{:.9f}", fValue);
+			*this += std::format(L"{:.9f}", fValue);
 			break;
 		default:
-			wideString += std::format(L"{:.2f}", fValue);
+			*this += std::format(L"{:.2f}", fValue);
 		}
 	}
 
 	void String::appendInt(int iInt)
 	{
-		wideString += std::to_wstring(iInt);
+		*this += std::to_wstring(iInt);
 	}
 
 	void String::appendUnsignedInt(unsigned int uiInt)
 	{
-		wideString += std::to_wstring(uiInt);
-	}
-
-	const wchar_t* String::c_str(void) const
-	{
-		return wideString.c_str();
-	}
-
-	void String::clear(void)
-	{
-		wideString.clear();
+		*this += std::to_wstring(uiInt);
 	}
 
 	void String::lowercase(void)
@@ -201,20 +125,15 @@ namespace DC
 
 	bool String::representsNumber(void) const
 	{
-		return (std::all_of(wideString.begin(), wideString.end(), ::isdigit));
+		return (std::all_of(begin(), end(), ::isdigit));
 	}
 
-	size_t String::size(void) const
-	{
-		return wideString.size();
-	}
-
-	std::vector<String> String::splitString(const String& strSplitChars) const
+	std::vector<String> String::splitString(const std::wstring& strSplitChars) const
 	{
 		std::vector<String> out;
 
 		// If no strSplitChars found, simply add the entire string and return the result
-		size_t pos = wideString.find(strSplitChars.wideString, 0);
+		size_t pos = find(strSplitChars, 0);
 		if (std::string::npos == pos)
 		{
 			out.push_back(*this);
@@ -222,15 +141,15 @@ namespace DC
 		}
 
 		// If we get here, strSplitChars has been found in the string
-		std::wstring strLine;
-		std::wstring strAll = wideString;
+		String strLine;
+		String strAll = *this;
 		while (std::string::npos != pos)
 		{
 			// Copy character upto the position of the found strSplitChars into strLine
 			strLine.assign(strAll, 0, pos);
 
 			// Add the line to the output
-			out.push_back(String(strLine));
+			out.push_back(strLine);
 
 			// Reset strLine
 			strLine.clear();
@@ -239,7 +158,7 @@ namespace DC
 			strAll.erase(0, pos + strSplitChars.size());
 
 			// Find next position of strSplitChars in strAll
-			pos = strAll.find(strSplitChars.wideString, 0);
+			pos = strAll.find(strSplitChars, 0);
 		}
 
 		// If strAll still contains characters, add them to the vector
@@ -252,22 +171,23 @@ namespace DC
 
 	std::string String::wideCharToMultiByte() const
 	{
-		if (wideString.empty())
+		if (empty())
 			return std::string();
-		int iSize = WideCharToMultiByte(CP_UTF8, 0, &wideString[0], (int)wideString.size(), NULL, 0, NULL, NULL);
+		int iSize = WideCharToMultiByte(CP_UTF8, 0, &(*this)[0], (int)size(), NULL, 0, NULL, NULL);
 		std::string strOut(iSize, 0);
-		WideCharToMultiByte(CP_UTF8, 0, &wideString[0], (int)wideString.size(), &strOut[0], iSize, NULL, NULL);
+		WideCharToMultiByte(CP_UTF8, 0, &(*this)[0], (int)size(), &strOut[0], iSize, NULL, NULL);
 		return strOut;
 	}
 
 	void String::multiByteToWideChar(const std::string& multibyteString)
 	{
-		wideString.clear();
+		clear();
 		if (multibyteString.empty())
 			return;
 		int iSize = MultiByteToWideChar(CP_UTF8, 0, &multibyteString[0], (int)multibyteString.size(), NULL, 0);
-		std::wstring wstrResult(iSize, 0);
+		String wstrResult;
+		wstrResult.reserve(iSize);
 		MultiByteToWideChar(CP_UTF8, 0, &multibyteString[0], (int)multibyteString.size(), &wstrResult[0], iSize);
-		wideString = wstrResult;
+		*this = wstrResult;
 	}
 }

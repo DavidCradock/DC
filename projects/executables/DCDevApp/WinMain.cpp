@@ -10,13 +10,7 @@ using namespace DC;
 
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
-	String err(L"Error");
-	std::wstring widestring = L"Hello";
-	String s2(widestring);
-	String s3(L"Hello");
-	String s4(s3);
-
-	String sfilename("image.ext");
+	String sfilename(L"filename");
 	sfilename.addFilenameExtension(String(L"png"));
 	return 0;
 }

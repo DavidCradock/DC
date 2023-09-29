@@ -3,7 +3,7 @@ When creating a new project, follow the following steps:
 Open the DC.sln file into Visual Studio.
 Open the Solution Explorer and right click on the solution and select "Add" and then "New Project"
 Select double click on "Empty Project" or click "Next"
-Set directory location to "X:/c++/2023/DC/DC/Projects" or equivelent.
+Set directory location to "X:/c++/2023/DC/DC/Projects" or equivalent.
 Type the name of the project, prepended with DC and click "Create"
 
 The following steps depend upon whether we're creating a static library or executable.
