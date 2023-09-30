@@ -29,10 +29,9 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 	str.appendUnsignedInt(3);
 	str.clear();
 
-	str.lowercase();
 	str += L"Hello";
 	str.lowercase();
-	str.clear();
+
 
 	str.append(L"3.14");
 	bool bIsNum = str.representsNumber();

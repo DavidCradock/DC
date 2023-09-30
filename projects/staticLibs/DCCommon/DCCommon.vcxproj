@@ -79,11 +79,15 @@
     <ClInclude Include="DCCommon.h" />
     <ClInclude Include="string.h" />
     <ClInclude Include="error.h" />
+    <ClInclude Include="timer.h" />
+    <ClInclude Include="timerMinimal.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DCCommon.cpp" />
     <ClCompile Include="string.cpp" />
     <ClCompile Include="error.cpp" />
+    <ClCompile Include="timer.cpp" />
+    <ClCompile Include="timer_minimal.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -24,7 +24,6 @@ namespace DC
 		{
 			erase(pos, size() - pos);
 		}
-
 		append(strExt);
 	}
 
@@ -185,9 +184,8 @@ namespace DC
 		if (multibyteString.empty())
 			return;
 		int iSize = MultiByteToWideChar(CP_UTF8, 0, &multibyteString[0], (int)multibyteString.size(), NULL, 0);
-		String wstrResult;
-		wstrResult.reserve(iSize);
+		std::wstring wstrResult(iSize, 0);
 		MultiByteToWideChar(CP_UTF8, 0, &multibyteString[0], (int)multibyteString.size(), &wstrResult[0], iSize);
-		*this = wstrResult;
+		append(wstrResult.c_str());
 	}
 }
