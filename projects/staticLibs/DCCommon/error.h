@@ -13,8 +13,7 @@ namespace DC
 	#ifndef ErrorIfFalse
 	#define ErrorIfFalse(x, strErrorDescription)\
 		{\
-		if(x){\
-		__debugbreak();\
+		if(!x){\
 		std::string strFilename = __FILE__;\
 		String strFilenameWide;\
 		strFilenameWide.multiByteToWideChar(strFilename);\
@@ -43,9 +42,12 @@ namespace DC
 	#define ErrorIfMemoryNotAllocated(x)\
 		{\
 		if(!x){\
+		std::string strFilename = __FILE__;\
+		String strFilenameWide;\
+		strFilenameWide.multiByteToWideChar(strFilename);\
 		String strLineNumber;\
 		strLineNumber.appendInt(__LINE__);\
-		errorFunc(String("Memory allocation error."), String(__FILE__), strLineNumber);}\
+		errorFunc(L"Memory allocation error.", strFilenameWide, strLineNumber);}\
 		}
 	#endif
 
@@ -54,7 +56,7 @@ namespace DC
 	#ifndef ErrorIfFalse
 	#define ErrorIfFalse(x, strErrorDescription)\
 		{\
-		if(x){\
+		if(!x){\
 		__debugbreak();\
 		std::string strFilename = __FILE__;\
 		String strFilenameWide;\
@@ -86,9 +88,12 @@ namespace DC
 		{\
 		if(!x){\
 		__debugbreak();\
+		std::string strFilename = __FILE__;\
+		String strFilenameWide;\
+		strFilenameWide.multiByteToWideChar(strFilename);\
 		String strLineNumber;\
 		strLineNumber.appendInt(__LINE__);\
-		errorFunc(String("Memory allocation error."), String(__FILE__), strLineNumber);}\
+		errorFunc(L"Memory allocation error.", strFilenameWide, strLineNumber);}\
 		}
 	#endif
 #endif
