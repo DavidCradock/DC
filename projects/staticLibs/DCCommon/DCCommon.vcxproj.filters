@@ -12,6 +12,7 @@
     <ClInclude Include="error.h" />
     <ClInclude Include="timerMinimal.h" />
     <ClInclude Include="timer.h" />
+    <ClInclude Include="profiler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DCCommon.cpp" />
@@ -19,5 +20,6 @@
     <ClCompile Include="error.cpp" />
     <ClCompile Include="timer_minimal.cpp" />
     <ClCompile Include="timer.cpp" />
+    <ClCompile Include="profiler.cpp" />
   </ItemGroup>
 </Project>

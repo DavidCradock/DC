@@ -36,7 +36,7 @@ namespace DC
 		// Returns the number of seconds until the next time the value returned by getFPSAveraged() is updated.
 		double getFPSAveragedTimeUntilNextUpdate(void) const;
 
-		// Resets all values to sane values, including the member set by setAveragedFPSSecondsBetweenUpdates()
+		// Resets all values to sane values.
 		void reset(void);
 
 		// Returns amount of seconds that we've been calling update()

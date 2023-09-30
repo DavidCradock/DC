@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DCCommon.h" />
+    <ClInclude Include="profiler.h" />
     <ClInclude Include="string.h" />
     <ClInclude Include="error.h" />
     <ClInclude Include="timer.h" />
@@ -84,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DCCommon.cpp" />
+    <ClCompile Include="profiler.cpp" />
     <ClCompile Include="string.cpp" />
     <ClCompile Include="error.cpp" />
     <ClCompile Include="timer.cpp" />

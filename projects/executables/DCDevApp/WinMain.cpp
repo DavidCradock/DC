@@ -10,46 +10,41 @@ using namespace DC;
 
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
-	String str(L"filename");
-	str.addFilenameExtension(String(L"png"));
-	str.clear();
+	DC::Profiler profiler;
+	String sectionMain(L"main");
+	String sectionMapInit(L"mapInit");
+	String sectionMapFind(L"mapFind");
+	profiler.begin(sectionMain);
+	
+	profiler.begin(sectionMapInit);
 
-	str.append(L"_Hello");
-	str.clear();
+	std::map<String, int> mapTest;
+	for (size_t i = 0; i < 10000; i++)
+	{
+		String name;
+		name.append(L"SomeLongText");
+		name.appendInt(i);
+		mapTest[name] = i;
+	}
+	profiler.end(sectionMapInit);
 
-	str.appendDouble(3.14, 2);
-	str.clear();
+	
+	for (size_t i = 0; i < 10000; i++)
+	{
+		String name;
+		name.append(L"SomeLongText");
+		name.appendInt(i);
+		profiler.begin(sectionMapFind);
+		auto it = mapTest.find(name);
+		profiler.end(sectionMapFind);
+	}
 
-	str.appendFloat(3.14f, 2);
-	str.clear();
+	
+	
+	profiler.end(sectionMain);
 
-	str.appendInt(3);
-	str.clear();
+	std::vector<ProfilerResults> results = profiler.getResults(false);
 
-	str.appendUnsignedInt(3);
-	str.clear();
-
-	str += L"Hello";
-	str.lowercase();
-
-
-	str.append(L"3.14");
-	bool bIsNum = str.representsNumber();
-	str.clear();
-
-	str.append(L"Hello");
-	str += L"SPLITCHARS";
-	str += L"world";
-	std::vector<String> vstr = str.splitString(L"SPLITCHARS");
-	str.clear();
-
-	str += L"Hello again!";
-	std::string strNarrow = str.wideCharToMultiByte();
-	str.clear();
-
-	strNarrow.clear();
-	strNarrow += "Hello! I'm a narrow string.";
-	str.multiByteToWideChar(strNarrow);
-
+	int bb;
 	return 0;
 }
