@@ -13,6 +13,8 @@
     <ClInclude Include="timerMinimal.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="profiler.h" />
+    <ClInclude Include="colour.h" />
+    <ClInclude Include="utilities.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DCCommon.cpp" />
@@ -21,5 +23,7 @@
     <ClCompile Include="timer_minimal.cpp" />
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="profiler.cpp" />
+    <ClCompile Include="colour.cpp" />
+    <ClCompile Include="utilities.cpp" />
   </ItemGroup>
 </Project>

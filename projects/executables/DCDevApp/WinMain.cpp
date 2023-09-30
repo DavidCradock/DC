@@ -10,7 +10,7 @@ using namespace DC;
 
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
-	DC::Profiler profiler;
+	Profiler profiler;
 	String sectionMain(L"main");
 	String sectionMapInit(L"mapInit");
 	String sectionMapFind(L"mapFind");

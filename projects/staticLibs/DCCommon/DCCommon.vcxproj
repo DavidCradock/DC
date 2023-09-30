@@ -76,20 +76,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="colour.h" />
     <ClInclude Include="DCCommon.h" />
     <ClInclude Include="profiler.h" />
     <ClInclude Include="string.h" />
     <ClInclude Include="error.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="timerMinimal.h" />
+    <ClInclude Include="utilities.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="colour.cpp" />
     <ClCompile Include="DCCommon.cpp" />
     <ClCompile Include="profiler.cpp" />
     <ClCompile Include="string.cpp" />
     <ClCompile Include="error.cpp" />
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="timer_minimal.cpp" />
+    <ClCompile Include="utilities.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
