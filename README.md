@@ -51,4 +51,4 @@ Prepend "DC" for the library's main include header (and possible .cpp), but for 
 
 Camel style casing, someFileWhichDoesSomething. It's easy to read and quite sparse.
 
-
+For parameter to methods/functions follow the above naming (IE no f/i/str etc) make first letter uppercase if needed (For example when needing to differenciate between object members)

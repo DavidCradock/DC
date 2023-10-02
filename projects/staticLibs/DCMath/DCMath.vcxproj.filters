@@ -8,8 +8,28 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DCMath.cpp" />
+    <ClCompile Include="vector3f.cpp" />
+    <ClCompile Include="vector2f.cpp" />
+    <ClCompile Include="rect.cpp" />
+    <ClCompile Include="AABB.cpp" />
+    <ClCompile Include="frustum.cpp" />
+    <ClCompile Include="matrix.cpp" />
+    <ClCompile Include="plane.cpp" />
+    <ClCompile Include="quaternion.cpp" />
+    <ClCompile Include="vector4f.cpp" />
+    <ClCompile Include="utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DCMath.h" />
+    <ClInclude Include="vector3f.h" />
+    <ClInclude Include="vector2f.h" />
+    <ClInclude Include="rect.h" />
+    <ClInclude Include="AABB.h" />
+    <ClInclude Include="frustum.h" />
+    <ClInclude Include="matrix.h" />
+    <ClInclude Include="plane.h" />
+    <ClInclude Include="quaternion.h" />
+    <ClInclude Include="vector4f.h" />
+    <ClInclude Include="utilities.h" />
   </ItemGroup>
 </Project>

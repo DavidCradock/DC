@@ -19,7 +19,7 @@ namespace DC
 
 		// Suspends execution of the calling thread for the given number of milliseconds.
 		// The sleep may be lengthened slightly by any system activity or by the time spent processing the call or by the granularity of system timers. 
-		void sleep(unsigned int uiMilliseconds) const;
+		void sleep(unsigned int milliseconds) const;
 
 		// Sets the delay in seconds at which the getFPSAveraged() method's return value will be updated.
 		void setAveragedFPSSecondsBetweenUpdates(double secondsBetweenUpdates);

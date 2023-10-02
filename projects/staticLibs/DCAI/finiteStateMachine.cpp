@@ -86,12 +86,12 @@ namespace DC
 		return states.size();
 	}
 
-	FiniteStateBase* FiniteStateMachine::getState(unsigned int uiIndex)
+	FiniteStateBase* FiniteStateMachine::getState(unsigned int index)
 	{
-		ErrorIfTrue(uiIndex >= (unsigned int)states.size(), L"FiniteStateMachine::getState() failed. Given invalid index.");
+		ErrorIfTrue(index >= (unsigned int)states.size(), L"FiniteStateMachine::getState() failed. Given invalid index.");
 		auto it = states.begin();
 		unsigned int uiCount = 0;
-		while (uiCount < uiIndex)
+		while (uiCount < index)
 		{
 			uiCount++;
 			it++;

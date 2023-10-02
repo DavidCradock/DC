@@ -102,7 +102,7 @@ namespace DC
 
 		// Returns pointer to the state at the given index.
 		// If an invalid index is given, an exception occurs
-		FiniteStateBase* getState(unsigned int uiIndex);
+		FiniteStateBase* getState(unsigned int index);
 
 		// Returns pointer to the named state.
 		// If the named state couldn't be found, an exception occurs.

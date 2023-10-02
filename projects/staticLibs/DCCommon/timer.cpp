@@ -41,9 +41,9 @@ namespace DC
 		runtimeInSeconds += deltaTimeInSeconds;
 	}
 
-	void Timer::sleep(unsigned int uiMilliseconds) const
+	void Timer::sleep(unsigned int milliseconds) const
 	{
-		Sleep(uiMilliseconds);
+		Sleep(milliseconds);
 	}
 
 	void Timer::setAveragedFPSSecondsBetweenUpdates(double secondsBetweenUpdates)
