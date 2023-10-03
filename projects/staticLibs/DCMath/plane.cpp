@@ -8,6 +8,11 @@ namespace DC
 		distanceToOrigin = 0.0f;
 	}
 
+	Plane::~Plane()
+	{
+
+	}
+
 	Plane::Plane(const Vector3f& Normal, float DistanceToOrigin)
 	{
 		normal = Normal;

@@ -11,6 +11,8 @@ namespace DC
 	{
 	public:
 		Plane();
+		~Plane();
+
 		Plane(const Vector3f& Normal, float DistanceToOrigin);
 
 		// Sets plane to given values

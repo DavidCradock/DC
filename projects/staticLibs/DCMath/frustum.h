@@ -22,11 +22,11 @@ namespace DC
 		// Returns true if the given Axis Aligned Bounding Box is intersecting this frustum, else false.
 		bool isAABBIntersecting(const AABB& aabb) const;
 
-		Plane near;
-		Plane far;
-		Plane left;
-		Plane right;
-		Plane top;
-		Plane bottom;
+		Plane planeNear;
+		Plane planeFar;
+		Plane planeLeft;
+		Plane planeRight;
+		Plane planeTop;
+		Plane planeBottom;
 	};
 }

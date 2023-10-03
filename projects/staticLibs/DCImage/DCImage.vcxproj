@@ -77,9 +77,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DCImage.cpp" />
+    <ClCompile Include="image.cpp" />
+    <ClCompile Include="imageAtlas.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DCImage.h" />
+    <ClInclude Include="image.h" />
+    <ClInclude Include="imageAtlas.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="stb_image_write.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

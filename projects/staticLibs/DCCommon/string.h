@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <fstream>
 
 namespace DC
 {
@@ -27,6 +28,9 @@ namespace DC
 		// Append an unsigned integer to the end of this string
 		void appendUnsignedInt(unsigned int uiInt);
 
+		// Return a pointer to a narror c_string
+		const char* c_str(void) const;
+
 		// Converts this string to lowercase
 		void lowercase(void);
 
@@ -47,5 +51,14 @@ namespace DC
 		// Sets this string from a narrow/multibyte string
 		void multiByteToWideChar(const std::string& multibyteString);
 
+		// Writes out this string to an already opened ofstream.
+		// The writes out the size of the string and then the string itself.
+		// If the file is not open, an exception occurs
+		void ofstreamWrite(std::ofstream& file);
+
+		// Reads in a string from an already opened ifstream.
+		// This reads in the size of the string, resizes it to make room and then loads it in
+		// If the file is not open or there was an error during reading, an exception occurs.
+		void ifstreamRead(std::ifstream& file);
 	};
 }

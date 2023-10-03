@@ -8,8 +8,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DCInput.cpp" />
+    <ClCompile Include="inputManager.cpp" />
+    <ClCompile Include="inputJoystick.cpp" />
+    <ClCompile Include="inputKeyboard.cpp" />
+    <ClCompile Include="inputMouse.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DCInput.h" />
+    <ClInclude Include="inputManager.h" />
+    <ClInclude Include="inputJoystick.h" />
+    <ClInclude Include="inputKeyboard.h" />
+    <ClInclude Include="inputMouse.h" />
   </ItemGroup>
 </Project>

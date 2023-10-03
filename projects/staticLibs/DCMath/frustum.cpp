@@ -13,7 +13,7 @@ namespace DC
 		/* Taken from Bard
 		// Get the view and projection matrices.
 		glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
-		glm::mat4 projectionMatrix = glm::perspective(fov, aspect, near, far);
+		glm::mat4 projectionMatrix = glm::perspective(fov, aspect, planeNear, far);
 
 		// Compute the frustum planes.
 		std::vector<glm::Plane> frustumPlanes;
@@ -42,37 +42,37 @@ namespace DC
 		v = matrixViewProj.multiply(v);
 		fMag = v.getMagnitude();
 		v.normalise();
-		right.set(v, -fMag);
+		planeRight.set(v, -fMag);
 
 		v.set(-1.0f,  0.0f,  0.0f);
 		v = matrixViewProj.multiply(v);
 		fMag = v.getMagnitude();
 		v.normalise();
-		left.set(v, fMag);
+		planeLeft.set(v, fMag);
 
 		v.set( 0.0f,  1.0f,  0.0f);
 		v = matrixViewProj.multiply(v);
 		fMag = v.getMagnitude();
 		v.normalise();
-		top.set(v, -fMag);
+		planeTop.set(v, -fMag);
 
 		v.set( 0.0f, -1.0f,  0.0f);
 		v = matrixViewProj.multiply(v);
 		fMag = v.getMagnitude();
 		v.normalise();
-		bottom.set(v, fMag);
+		planeBottom.set(v, fMag);
 
 		v.set( 0.0f,  0.0f,  1.0f);
 		v = matrixViewProj.multiply(v);
 		fMag = v.getMagnitude();
 		v.normalise();
-		near.set(v, -fMag);
+		planeNear.set(v, -fMag);
 
 		v.set( 0.0f,  0.0f, -1.0f);
 		v = matrixViewProj.multiply(v);
 		fMag = v.getMagnitude();
 		v.normalise();
-		far.set(v, fMag);
+		planeFar.set(v, fMag);
 	}
 
 	bool Frustum::isPointInside(const Vector3f& position) const
@@ -105,22 +105,22 @@ namespace DC
 		// < 0		vectors are pointing in opposite directions (+90 degrees to 180 degrees)
 
 		Vector3f v;
-		v = near.getNormal() * abs(near.getDistanceToOrigin());
+		v = planeNear.getNormal() * abs(planeNear.getDistanceToOrigin());
 		if (v.getDot(position) < 0)
 			return false;
-		v = far.getNormal() * abs(far.getDistanceToOrigin());
+		v = planeFar.getNormal() * abs(planeFar.getDistanceToOrigin());
 		if (v.getDot(position) < 0)
 			return false;
-		v = left.getNormal() * abs(left.getDistanceToOrigin());
+		v = planeLeft.getNormal() * abs(planeLeft.getDistanceToOrigin());
 		if (v.getDot(position) < 0)
 			return false;
-		v = right.getNormal() * abs(right.getDistanceToOrigin());
+		v = planeRight.getNormal() * abs(planeRight.getDistanceToOrigin());
 		if (v.getDot(position) < 0)
 			return false;
-		v = top.getNormal() * abs(top.getDistanceToOrigin());
+		v = planeTop.getNormal() * abs(planeTop.getDistanceToOrigin());
 		if (v.getDot(position) < 0)
 			return false;
-		v = bottom.getNormal() * abs(bottom.getDistanceToOrigin());
+		v = planeBottom.getNormal() * abs(planeBottom.getDistanceToOrigin());
 		if (v.getDot(position) < 0)
 			return false;
 		return true;
@@ -154,22 +154,22 @@ namespace DC
 		Vector3f vMin = aabb.getMin();
 		Vector3f vMax = aabb.getMax();
 
-		v = near.getNormal() * abs(near.getDistanceToOrigin());
+		v = planeNear.getNormal() * abs(planeNear.getDistanceToOrigin());
 		if (v.getDot(vMin) < 0 || v.getDot(vMax) > 0)
 			return false;
-		v = far.getNormal() * abs(far.getDistanceToOrigin());
+		v = planeFar.getNormal() * abs(planeFar.getDistanceToOrigin());
 		if (v.getDot(vMin) < 0 || v.getDot(vMax) > 0)
 			return false;
-		v = left.getNormal() * abs(left.getDistanceToOrigin());
+		v = planeLeft.getNormal() * abs(planeLeft.getDistanceToOrigin());
 		if (v.getDot(vMin) < 0 || v.getDot(vMax) > 0)
 			return false;
-		v = right.getNormal() * abs(right.getDistanceToOrigin());
+		v = planeRight.getNormal() * abs(planeRight.getDistanceToOrigin());
 		if (v.getDot(vMin) < 0 || v.getDot(vMax) > 0)
 			return false;
-		v = top.getNormal() * abs(top.getDistanceToOrigin());
+		v = planeTop.getNormal() * abs(planeTop.getDistanceToOrigin());
 		if (v.getDot(vMin) < 0 || v.getDot(vMax) > 0)
 			return false;
-		v = bottom.getNormal() * abs(bottom.getDistanceToOrigin());
+		v = planeBottom.getNormal() * abs(planeBottom.getDistanceToOrigin());
 		if (v.getDot(vMin) < 0 || v.getDot(vMax) > 0)
 			return false;
 		return true;

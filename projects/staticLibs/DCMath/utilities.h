@@ -164,28 +164,6 @@ namespace DC
 		outCos = cos(scalar);
 	}
 
-	// Clamps a value within given range
-	template <class type>
-	inline void clamp(type& valueToClamp, type valueA, type valueB)
-	{
-		type min;
-		type max;
-		if (valueA < valueB)
-		{
-			min = valueA;
-			max = valueB;
-		}
-		else
-		{
-			min = valueB;
-			max = valueA;
-		}
-		if (valueToClamp < min)
-			valueToClamp = min;
-		else if (valueToClamp > max)
-			valueToClamp = max;
-	}
-
 	// Sets given variable to absolute value
 	template <class type>
 	inline void absolute(type& value)

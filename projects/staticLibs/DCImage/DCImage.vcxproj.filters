@@ -8,8 +8,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DCImage.h" />
+    <ClInclude Include="image.h" />
+    <ClInclude Include="imageAtlas.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="stb_image_write.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DCImage.cpp" />
+    <ClCompile Include="image.cpp" />
+    <ClCompile Include="imageAtlas.cpp" />
   </ItemGroup>
 </Project>

@@ -47,8 +47,8 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 	{
 		String name;
 		name.append(L"SomeLongText");
-		name.appendInt(i);
-		mapTest[name] = i;
+		name.appendInt((int)i);
+		mapTest[name] = (int)i;
 	}
 	profiler.end(sectionMapInit);
 
@@ -57,7 +57,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 	{
 		String name;
 		name.append(L"SomeLongText");
-		name.appendInt(i);
+		name.appendInt((int)i);
 		profiler.begin(sectionMapFind);
 		auto it = mapTest.find(name);
 		profiler.end(sectionMapFind);
@@ -69,6 +69,5 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 
 	std::vector<ProfilerResults> results = profiler.getResults(false);
 
-	int bb;
 	return 0;
 }

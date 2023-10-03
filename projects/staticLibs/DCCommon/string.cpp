@@ -115,6 +115,11 @@ namespace DC
 		*this += std::to_wstring(uiInt);
 	}
 
+	const char* String::c_str(void) const
+	{
+		return wideCharToMultiByte().c_str();
+	}
+
 	void String::lowercase(void)
 	{
 		std::string str = wideCharToMultiByte();
@@ -187,5 +192,26 @@ namespace DC
 		std::wstring wstrResult(iSize, 0);
 		MultiByteToWideChar(CP_UTF8, 0, &multibyteString[0], (int)multibyteString.size(), &wstrResult[0], iSize);
 		append(wstrResult.c_str());
+	}
+
+	void String::ofstreamWrite(std::ofstream& file)
+	{
+		ErrorIfFalse(file.is_open(), L"String::ofstreamWrite() failed. The given ofstream is not open.");
+		size_t size = this->size();
+		file.write((char*)&size, sizeof(size));
+		file.write(c_str(), size);
+		ErrorIfFalse(file.good(), L"String::ofstreamWrite() failed. The ofstream is not good.");
+	}
+
+	void String::ifstreamRead(std::ifstream& file)
+	{
+		ErrorIfFalse(file.is_open(), L"String::ifstreamRead() failed. The given ifstream is not open.");
+		clear();
+		size_t size;
+		file.read((char*)&size, sizeof(size));
+		resize(size);
+		//file.read(&strString[0], size);
+		file.read((char*)c_str(), size);
+		ErrorIfFalse(file.good(), L"String::ifstreamRead() failed. The ifstream is not good.");
 	}
 }
