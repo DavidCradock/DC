@@ -34,7 +34,10 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 		profiler.end(sectionMapFind);
 	}
 
-	
+	String test;
+	test += L"\u2211";
+
+
 	
 	profiler.end(sectionMain);
 

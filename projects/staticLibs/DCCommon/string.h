@@ -5,6 +5,19 @@
 
 namespace DC
 {
+	// Wide string unicode object to store and manipulate strings.
+	// I've chosen wide strings because multibyte are difficult to work with and these wide strings support characters for many languages and
+	// if a user has special non latin ASCII characters in either their name, keyboard input, filesystems etc, they will not be able to use my
+	// programs properly, if at all.
+	// Only around 36% of the world's population use (to me) standard latin character set.
+	// 18% use Chinese, 14% Dewanagari, another 14% Arabic, 4% Cyrillic and another 4% Dravidian.
+	// When adding strings, we have to pre-pend the quotation marks with a capital l, L.
+	// This is the only downside that I can think of, to using wide strings.
+	// To insert Unicode characters we have to escape the 4-hexadecimal-character representation with an \u.
+	// We can find these on, for example, Wikipedia over at https://en.wikipedia.org/wiki/List_of_Unicode_characters
+	// For example...
+	// String str;
+	// str += L"\u2211" would add the mathematical symbol for Sigma.
 	class String : public std::wstring
 	{
 	public:
