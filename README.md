@@ -9,11 +9,11 @@
 - Load the X.sln file into Visual studio, hit compile, done.
 
 TODO
-Convert all of String to use functions in DCCommon string
+Refactor imageAtlas.h/.cpp
 
 Notes...
 
-No logging because it's not needed overhead and I usually implement logging, then never use it. The debugger is well suited for, surprise, debugging. The logs never help me.
+No logging because it's un-needed overhead and I usually implement logging, then never use it. The debugger is well suited for, surprise, debugging. The logs never help me.
 
 Changes to coding style
 

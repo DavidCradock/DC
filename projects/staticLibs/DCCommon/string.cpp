@@ -27,92 +27,92 @@ namespace DC
 		append(strExt);
 	}
 
-	void String::appendDouble(double dValue, unsigned int uiNumDecimalPoints)
+	void String::appendDouble(double value, unsigned int numDecimalPoints)
 	{
-		switch (uiNumDecimalPoints)
+		switch (numDecimalPoints)
 		{
 		case 0:
-			*this += std::format(L"{:.0f}", dValue);
+			*this += std::format(L"{:.0f}", value);
 			break;
 		case 1:
-			*this += std::format(L"{:.1f}", dValue);
+			*this += std::format(L"{:.1f}", value);
 			break;
 		case 2:
-			*this += std::format(L"{:.2f}", dValue);
+			*this += std::format(L"{:.2f}", value);
 			break;
 		case 3:
-			*this += std::format(L"{:.3f}", dValue);
+			*this += std::format(L"{:.3f}", value);
 			break;
 		case 4:
-			*this += std::format(L"{:.4f}", dValue);
+			*this += std::format(L"{:.4f}", value);
 			break;
 		case 5:
-			*this += std::format(L"{:.5f}", dValue);
+			*this += std::format(L"{:.5f}", value);
 			break;
 		case 6:
-			*this += std::format(L"{:.6f}", dValue);
+			*this += std::format(L"{:.6f}", value);
 			break;
 		case 7:
-			*this += std::format(L"{:.7f}", dValue);
+			*this += std::format(L"{:.7f}", value);
 			break;
 		case 8:
-			*this += std::format(L"{:.8f}", dValue);
+			*this += std::format(L"{:.8f}", value);
 			break;
 		case 9:
-			*this += std::format(L"{:.9f}", dValue);
+			*this += std::format(L"{:.9f}", value);
 			break;
 		default:
-			*this += std::format(L"{:.2f}", dValue);
+			*this += std::format(L"{:.2f}", value);
 		}
 	}
 
-	void String::appendFloat(float fValue, unsigned int uiNumDecimalPoints)
+	void String::appendFloat(float value, unsigned int numDecimalPoints)
 	{
-		switch (uiNumDecimalPoints)
+		switch (numDecimalPoints)
 		{
 		case 0:
-			*this += std::format(L"{:.0f}", fValue);
+			*this += std::format(L"{:.0f}", value);
 			break;
 		case 1:
-			*this += std::format(L"{:.1f}", fValue);
+			*this += std::format(L"{:.1f}", value);
 			break;
 		case 2:
-			*this += std::format(L"{:.2f}", fValue);
+			*this += std::format(L"{:.2f}", value);
 			break;
 		case 3:
-			*this += std::format(L"{:.3f}", fValue);
+			*this += std::format(L"{:.3f}", value);
 			break;
 		case 4:
-			*this += std::format(L"{:.4f}", fValue);
+			*this += std::format(L"{:.4f}", value);
 			break;
 		case 5:
-			*this += std::format(L"{:.5f}", fValue);
+			*this += std::format(L"{:.5f}", value);
 			break;
 		case 6:
-			*this += std::format(L"{:.6f}", fValue);
+			*this += std::format(L"{:.6f}", value);
 			break;
 		case 7:
-			*this += std::format(L"{:.7f}", fValue);
+			*this += std::format(L"{:.7f}", value);
 			break;
 		case 8:
-			*this += std::format(L"{:.8f}", fValue);
+			*this += std::format(L"{:.8f}", value);
 			break;
 		case 9:
-			*this += std::format(L"{:.9f}", fValue);
+			*this += std::format(L"{:.9f}", value);
 			break;
 		default:
-			*this += std::format(L"{:.2f}", fValue);
+			*this += std::format(L"{:.2f}", value);
 		}
 	}
 
-	void String::appendInt(int iInt)
+	void String::appendInt(int value)
 	{
-		*this += std::to_wstring(iInt);
+		*this += std::to_wstring(value);
 	}
 
-	void String::appendUnsignedInt(unsigned int uiInt)
+	void String::appendUnsignedInt(unsigned int value)
 	{
-		*this += std::to_wstring(uiInt);
+		*this += std::to_wstring(value);
 	}
 
 	const char* String::c_str(void) const
@@ -132,24 +132,24 @@ namespace DC
 		return (std::all_of(begin(), end(), ::isdigit));
 	}
 
-	std::vector<String> String::splitString(const std::wstring& strSplitChars) const
+	std::vector<String> String::splitString(const std::wstring& splitChars) const
 	{
 		std::vector<String> out;
 
-		// If no strSplitChars found, simply add the entire string and return the result
-		size_t pos = find(strSplitChars, 0);
+		// If no splitChars found, simply add the entire string and return the result
+		size_t pos = find(splitChars, 0);
 		if (std::string::npos == pos)
 		{
 			out.push_back(*this);
 			return out;
 		}
 
-		// If we get here, strSplitChars has been found in the string
+		// If we get here, splitChars has been found in the string
 		String strLine;
 		String strAll = *this;
 		while (std::string::npos != pos)
 		{
-			// Copy character upto the position of the found strSplitChars into strLine
+			// Copy character upto the position of the found splitChars into strLine
 			strLine.assign(strAll, 0, pos);
 
 			// Add the line to the output
@@ -158,11 +158,11 @@ namespace DC
 			// Reset strLine
 			strLine.clear();
 
-			// Remove all characters including the strSplitChars from strAll
-			strAll.erase(0, pos + strSplitChars.size());
+			// Remove all characters including the splitChars from strAll
+			strAll.erase(0, pos + splitChars.size());
 
-			// Find next position of strSplitChars in strAll
-			pos = strAll.find(strSplitChars, 0);
+			// Find next position of splitChars in strAll
+			pos = strAll.find(splitChars, 0);
 		}
 
 		// If strAll still contains characters, add them to the vector

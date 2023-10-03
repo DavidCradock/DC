@@ -9,4 +9,7 @@
   <ItemGroup>
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DCIncludes.h" />
+  </ItemGroup>
 </Project>

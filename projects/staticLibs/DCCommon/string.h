@@ -15,18 +15,18 @@ namespace DC
 		void addFilenameExtension(const String& filenameExtension);
 
 		// Append a double to the end of this string with the given number of digits after the decimal point.
-		// uiNumDecimalPoints can be from 0 to 9, if outside this range, then 2 is used.
-		void appendDouble(double dValue, unsigned int uiNumDecimalPoints = 2);
+		// numDecimalPoints can be from 0 to 9, if outside this range, then 2 is used.
+		void appendDouble(double value, unsigned int numDecimalPoints = 2);
 
 		// Append a float to the end of this string with the given number of digits after the decimal point.
-		// uiNumDecimalPoints can be from 0 to 9, if outside this range, then 2 is used.
-		void appendFloat(float fValue, unsigned int uiNumDecimalPoints = 2);
+		// numDecimalPoints can be from 0 to 9, if outside this range, then 2 is used.
+		void appendFloat(float value, unsigned int numDecimalPoints = 2);
 
 		// Append an integer to the end of this string
-		void appendInt(int iInt);
+		void appendInt(int value);
 
 		// Append an unsigned integer to the end of this string
-		void appendUnsignedInt(unsigned int uiInt);
+		void appendUnsignedInt(unsigned int value);
 
 		// Return a pointer to a narror c_string
 		const char* c_str(void) const;
@@ -43,7 +43,7 @@ namespace DC
 		// represent the end of the line of text.
 		// For example, if the string is "Line1\nLine2\nLine3" and the strSplitChars is "\n"
 		// then the returned vector would have 3 entries, "Line1" "Line2" and "Line3"
-		std::vector<String> splitString(const std::wstring& strSplitChars = L"\n") const;
+		std::vector<String> splitString(const std::wstring& splitChars = L"\n") const;
 
 		// Returns this string as a narrow/multibyte string
 		std::string wideCharToMultiByte() const;
