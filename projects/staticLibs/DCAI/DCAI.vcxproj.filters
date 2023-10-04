@@ -9,9 +9,21 @@
   <ItemGroup>
     <ClInclude Include="DCAI.h" />
     <ClInclude Include="finiteStateMachine.h" />
+    <ClInclude Include="aStarPathfinding.h" />
+    <ClInclude Include="geneticTraining.h" />
+    <ClInclude Include="neuralNetFeedForward.h" />
+    <ClInclude Include="neuron.h" />
+    <ClInclude Include="neuronLayer.h" />
+    <ClInclude Include="genome.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DCAI.cpp" />
     <ClCompile Include="finiteStateMachine.cpp" />
+    <ClCompile Include="aStarPathfinding.cpp" />
+    <ClCompile Include="geneticTraining.cpp" />
+    <ClCompile Include="neuralNetFeedForward.cpp" />
+    <ClCompile Include="neuron.cpp" />
+    <ClCompile Include="neuronLayer.cpp" />
+    <ClCompile Include="genome.cpp" />
   </ItemGroup>
 </Project>

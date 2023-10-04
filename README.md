@@ -10,6 +10,7 @@
 
 TODO
 
+
 Notes...
 
 No logging because it's un-needed overhead and I usually implement logging, then never use it. The debugger is well suited for, surprise, debugging. The logs never help me.
