@@ -9,7 +9,6 @@
 - Load the X.sln file into Visual studio, hit compile, done.
 
 TODO
-Refactor imageAtlas.h/.cpp
 
 Notes...
 
