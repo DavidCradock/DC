@@ -71,7 +71,7 @@ namespace DC
 //			bool bNotSameDims = images[ui]->getWidth() != images[0]->getWidth() || images[ui]->getHeight() != images[0]->getHeight();
 //			if (bNotSameDims)
 //			{
-//				std::string strTxt = "ImageAtlasPacker::createAtlasImages() failed. All images added to an atlas must have the same dimensions.";
+//				std::wstring strTxt = "ImageAtlasPacker::createAtlasImages() failed. All images added to an atlas must have the same dimensions.";
 //				strTxt += "The first image dims: " + std::to_string(images[0]->getWidth()) + "x" + std::to_string(images[0]->getHeight());
 //				strTxt += " The current image dims: " + std::to_string(images[ui]->getWidth()) + "x" + std::to_string(images[ui]->getHeight());
 //				strTxt += ".";
@@ -143,7 +143,7 @@ namespace DC
 
 		// Bubble sort temp vectors by their image's width
 		// vectors which we have to sort...
-		// std::vector<std::string> imageFilenames;			// Holds each individual image's filename 
+		// std::vector<std::wstring> imageFilenames;			// Holds each individual image's filename 
 		// std::vector<CImage*> images;						// Holds each individual image's image data
 		// std::vector<CImageAtlasDetails> imageDetails;	// Holds each individual image's details
 		String strFilenameTemp;
@@ -200,7 +200,7 @@ namespace DC
 		// Now, imageFilenames, images and imageDetails contain the filename and images sorted by greatest width, then height first
 
 		// Now we have to following arrays filled...
-		// std::vector<std::string> imageFilenames;			// Holds each individual image's filename 
+		// std::vector<std::wstring> imageFilenames;			// Holds each individual image's filename 
 		// std::vector<Image*> images;						// Holds each individual image's image data
 		// std::vector<ImageAtlasDetails> imageDetails;		// Holds each individual image's details
 		// imageDetails[X].texCoords is not computed yet, we'll temporarily use this to hold position of each individual image inside of texture atlas

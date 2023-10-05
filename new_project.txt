@@ -31,3 +31,9 @@ Manifest Tool / Input and Output / DPI Awareness = High DPI Aware
 Click on Build menu, Configuration Manager, Active Solution Platform, click edit.
 Select "x86" platform, hilight the "Remove deleted platforms" check box and click delete
 Click on the project's platform dropdown and "edit" and remove the Win32 platform.
+
+If adding a static lib, include it in any executable project's build dependencies by
+right clicking on the project in solution explorer, selecting "Build dependencies/Project dependencies".
+
+Also add the header files and static libs to each project's DCIncludes.h
+

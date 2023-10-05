@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "projects", "projects", "{528A6620-C4F1-4027-8A8B-1A7F4BE6974A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "staticLibs", "staticLibs", "{1904F7A8-0A3C-48C1-9D30-A706A9F8B7EC}"
+	ProjectSection(SolutionItems) = preProject
+		projects\DCIncludes.h = projects\DCIncludes.h
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "executables", "executables", "{CCCA168C-4AE0-4C51-9DD8-61ED9054CE58}"
 EndProject
@@ -33,6 +36,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DCDevApp", "projects\execut
 		{903B2D4D-6A6D-4BA4-8A89-BF6853BC6D3E} = {903B2D4D-6A6D-4BA4-8A89-BF6853BC6D3E}
 		{A1F66E6E-1BDA-4DBB-A1BE-BA4E8A682B20} = {A1F66E6E-1BDA-4DBB-A1BE-BA4E8A682B20}
 		{B82E10B6-633A-4565-AFC4-F6F220D25290} = {B82E10B6-633A-4565-AFC4-F6F220D25290}
+		{DA127102-FBA2-4869-8316-39532328F009} = {DA127102-FBA2-4869-8316-39532328F009}
 		{F4F82694-457F-4897-A9FC-EE7D756260D4} = {F4F82694-457F-4897-A9FC-EE7D756260D4}
 	EndProjectSection
 EndProject
@@ -45,6 +49,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		new_project.txt = new_project.txt
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DCSpatialPartitioning", "projects\staticLibs\DCSpatialPartitioning\DCSpatialPartitioning.vcxproj", "{DA127102-FBA2-4869-8316-39532328F009}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,6 +98,10 @@ Global
 		{0DB78F44-A87A-4614-9B1E-F5B391852B5B}.Debug|x64.Build.0 = Debug|x64
 		{0DB78F44-A87A-4614-9B1E-F5B391852B5B}.Release|x64.ActiveCfg = Release|x64
 		{0DB78F44-A87A-4614-9B1E-F5B391852B5B}.Release|x64.Build.0 = Release|x64
+		{DA127102-FBA2-4869-8316-39532328F009}.Debug|x64.ActiveCfg = Debug|x64
+		{DA127102-FBA2-4869-8316-39532328F009}.Debug|x64.Build.0 = Debug|x64
+		{DA127102-FBA2-4869-8316-39532328F009}.Release|x64.ActiveCfg = Release|x64
+		{DA127102-FBA2-4869-8316-39532328F009}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +119,7 @@ Global
 		{434E6CFE-4574-45FF-B891-117D8548C9B9} = {CCCA168C-4AE0-4C51-9DD8-61ED9054CE58}
 		{45A603D3-7E2F-4DEF-9145-5EC75AB54916} = {1904F7A8-0A3C-48C1-9D30-A706A9F8B7EC}
 		{0DB78F44-A87A-4614-9B1E-F5B391852B5B} = {1904F7A8-0A3C-48C1-9D30-A706A9F8B7EC}
+		{DA127102-FBA2-4869-8316-39532328F009} = {1904F7A8-0A3C-48C1-9D30-A706A9F8B7EC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {79766D19-E146-49E6-8CAE-DE42935A463C}
