@@ -3,24 +3,24 @@
 
 namespace DC
 {
-	CQuadTreeEntity::CQuadTreeEntity(const std::wstring& strName, int iPosX, int iPosY, CQuadTreeNode* pNodeOwner, int iUserData, void* pUserData)
+	QuadTreeEntity::QuadTreeEntity(const std::wstring& namePARAM, int positionXPARAM, int positionYPARAM, QuadTreeNode* nodeOwnerPARAM, int userDataPARAM, void* pUserDataPARAM)
 	{
-		_mstrName = strName;
-		_miPosX = iPosX;
-		_miPosY = iPosY;
-		_mpNodeOwner = pNodeOwner;
+		_mstrName = namePARAM;
+		_miPosX = positionXPARAM;
+		_miPosY = positionYPARAM;
+		_mpNodeOwner = nodeOwnerPARAM;
 
 		// Store user data
-		miUserData = iUserData;
-		mpUserData = pUserData;
+		miUserData = userDataPARAM;
+		mpUserData = pUserDataPARAM;
 	}
 
-	void CQuadTreeEntity::debugSetColour(Colour& colour)
+	void QuadTreeEntity::debugSetColour(Colour& colourPARAM)
 	{
-		_mColDebug = colour;
+		_mColDebug = colourPARAM;
 	}
 
-	Vector2f CQuadTreeEntity::getPosition(void)
+	Vector2f QuadTreeEntity::getPosition(void)
 	{
 		Vector2f v;
 		v.x = float(_miPosX);
@@ -28,7 +28,7 @@ namespace DC
 		return v;
 	}
 
-	std::wstring CQuadTreeEntity::getName(void)
+	std::wstring QuadTreeEntity::getName(void)
 	{
 		return _mstrName;
 	}

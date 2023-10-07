@@ -3,30 +3,30 @@
 
 namespace DC
 {
-	CQuadTree::CQuadTree(int iMaxEntitiesPerNode, int iRectSizeIncreaseMultiplier)
+	QuadTree::QuadTree(int maxEntitiesPerNodePARAM, int rectSizeIncreaseMultiplierPARAM)
 	{
 		_mpRootNode = 0;
 
-		init(iMaxEntitiesPerNode, iRectSizeIncreaseMultiplier);
+		init(maxEntitiesPerNodePARAM, rectSizeIncreaseMultiplierPARAM);
 	}
 
-	void CQuadTree::init(int iMaxEntitiesPerNode, int iRectSizeIncreaseMultiplier)
+	void QuadTree::init(int maxEntitiesPerNodePARAM, int rectSizeIncreaseMultiplierPARAM)
 	{
 		free();
 
 		Rect rctInitialRootNodeRegion(-1024, -1024, 1024, 1024);
 
 		// Attempt to create root node, passing 0 as the pointer to the parent node
-		_mpRootNode = new CQuadTreeNode(rctInitialRootNodeRegion, 0, this);
+		_mpRootNode = new QuadTreeNode(rctInitialRootNodeRegion, 0, this);
 		ErrorIfFalse(_mpRootNode, L"QuadTree::init() failed. Unable to allocate memory for root node.");
 
 		// Make sure valid values were given
-		ErrorIfTrue(iMaxEntitiesPerNode < 1, L"QuadTree::init() failed. Given invalid number for iMaxEntitiesPerNode. Must be at least one.");
-		ErrorIfTrue(iRectSizeIncreaseMultiplier < 2, L"QuadTree::init() failed. Given invalid number for iRectSizeIncreaseMultiplier. Must be at least 2.");
+		ErrorIfTrue(maxEntitiesPerNodePARAM < 1, L"QuadTree::init() failed. Given invalid number for iMaxEntitiesPerNode. Must be at least one.");
+		ErrorIfTrue(rectSizeIncreaseMultiplierPARAM < 2, L"QuadTree::init() failed. Given invalid number for iRectSizeIncreaseMultiplier. Must be at least 2.");
 
 		// Store settings
-		_miMaxEntitiesPerNode = iMaxEntitiesPerNode;
-		_miRectSizeIncreaseMultiplier = iRectSizeIncreaseMultiplier;
+		_miMaxEntitiesPerNode = maxEntitiesPerNodePARAM;
+		_miRectSizeIncreaseMultiplier = rectSizeIncreaseMultiplierPARAM;
 
 		// Current maximum node depth
 		_muiCurrentMaxNodeDepth = 0;
@@ -35,12 +35,12 @@ namespace DC
 		_computeMaxNodeDepth();
 	}
 
-	CQuadTree::~CQuadTree()
+	QuadTree::~QuadTree()
 	{
 		free();
 	}
 
-	void CQuadTree::free(void)
+	void QuadTree::free(void)
 	{
 		// Delete root node, which will delete all children and their children and so on.
 		// Although this obviously removes the entities from the nodes, because the nodes themselves
@@ -53,7 +53,7 @@ namespace DC
 		}
 
 		// Delete all entities
-		std::map<std::wstring, CQuadTreeEntity*>::iterator it = _mmapEntities.begin();
+		std::map<std::wstring, QuadTreeEntity*>::iterator it = _mmapEntities.begin();
 		while (it != _mmapEntities.end())
 		{
 			delete it->second;
@@ -62,7 +62,7 @@ namespace DC
 		_mmapEntities.clear();
 	}
 /*
-	void CQuadTree::debugRender(const CVector3f& vCameraPosition, bool bRenderNodes, bool bRenderEntities, int iEntityCircleRadius, unsigned int uiEntityCircleNumSegments) const
+	void QuadTree::debugRender(const Vector3f& cameraPosition, bool renderNodes, bool renderEntities, int entityCircleRadius, unsigned int entityCircleNumSegments) const
 	{
 		if (!bRenderNodes && !bRenderEntities)
 			return;
@@ -75,9 +75,9 @@ namespace DC
 		// Setup orthographic projection matrix
 		CMatrix matrixWorld;
 		CMatrix matrixView;
-		CVector3f vTargetPos = vCameraPosition;
+		Vector3f vTargetPos = vCameraPosition;
 		vTargetPos.z -= 100.0f;
-		matrixView.setViewLookat(vCameraPosition, vTargetPos, CVector3f(0.0f, 1.0f, 0.0f));
+		matrixView.setViewLookat(vCameraPosition, vTargetPos, Vector3f(0.0f, 1.0f, 0.0f));
 
 		CMatrix matrixProjection;
 		matrixProjection.setProjectionPerspective(55.0f, 1.0f, 10000.0f);
@@ -108,7 +108,7 @@ namespace DC
 
 		// Call the root node's debugRender method which will render itself and it's children recursively
 		if (bRenderNodes)
-			_mpRootNode->debugRenderNodes(pLine, vertex, CColour(1.0f, 1.0f, 1.0f, 1.0f));
+			_mpRootNode->debugRenderNodes(pLine, vertex, Colour(1.0f, 1.0f, 1.0f, 1.0f));
 		if (bRenderEntities)
 			_mpRootNode->debugRenderEntities(pLine, iEntityCircleRadius, uiEntityCircleNumSegments);
 
@@ -122,40 +122,40 @@ namespace DC
 		pTexture->unbind();
 		pShader->unbind();
 	}
-
-	void CQuadTree::debugSetEntityColour(const std::wstring& strName, CColour& colour)
+*/
+	void QuadTree::debugSetEntityColour(const std::wstring& namePARAM, Colour& colourPARAM)
 	{
 		// Find the entity
-		std::map<std::wstring, CQuadTreeEntity*>::iterator it = _mmapEntities.find(strName);
-		ThrowIfTrue(_mmapEntities.end() == it, "CQuadTree::debugSetEntityColour() failed. The entity name of " + strName + " doesn't exist.");
-		it->second->_mColDebug = colour;
+		std::map<std::wstring, QuadTreeEntity*>::iterator it = _mmapEntities.find(namePARAM);
+		ErrorIfTrue(_mmapEntities.end() == it, L"QuadTree::debugSetEntityColour() failed. The entity name of " + namePARAM + L" doesn't exist.");
+		it->second->_mColDebug = colourPARAM;
 	}
 
-	void CQuadTree::debugSetAllEntitiesColour(CColour& colour)
+	void QuadTree::debugSetAllEntitiesColour(Colour& colourPARAM)
 	{
-		std::map<std::wstring, CQuadTreeEntity*>::iterator it = _mmapEntities.begin();
+		std::map<std::wstring, QuadTreeEntity*>::iterator it = _mmapEntities.begin();
 		while (it != _mmapEntities.end())
 		{
-			it->second->_mColDebug = colour;
+			it->second->_mColDebug = colourPARAM;
 			it++;
 		}
 	}
-*/
-	void CQuadTree::addEntity(const std::wstring& strName, int iPosX, int iPosY, int iUserData, void* pUserData)
+
+	void QuadTree::addEntity(const std::wstring& namePARAM, int positionXPARAM, int positionYPARAM, int userDataPARAM, void* pUserDataPARAM)
 	{
 		// Make sure the entity doesn't already exist by checking the hashmap
-		std::map<std::wstring, CQuadTreeEntity*>::iterator it = _mmapEntities.find(strName);
-		ErrorIfTrue(_mmapEntities.end() != it, L"QuadTree::addEntity() failed. The entity name of " + strName + L" already exists.");
+		std::map<std::wstring, QuadTreeEntity*>::iterator it = _mmapEntities.find(namePARAM);
+		ErrorIfTrue(_mmapEntities.end() != it, L"QuadTree::addEntity() failed. The entity name of " + namePARAM + L" already exists.");
 
 		// Create new entity, setting it's owner to 0
-		CQuadTreeEntity* pEntity = new CQuadTreeEntity(strName, iPosX, iPosY, 0, iUserData, pUserData);
+		QuadTreeEntity* pEntity = new QuadTreeEntity(namePARAM, positionXPARAM, positionYPARAM, 0, userDataPARAM, pUserDataPARAM);
 		ErrorIfFalse(pEntity, L"QuadTree::addEntity() failed to allocate memory for new entity.");
 
 		// Add entity to hashmap for fast lookup
-		_mmapEntities[strName] = pEntity;
+		_mmapEntities[namePARAM] = pEntity;
 
 		// Determine whether the given position of the entity fits in the root node
-		if (!_mpRootNode->_mRectRegion.doesPositionFitWithin(iPosX, iPosY))
+		if (!_mpRootNode->_mRectRegion.doesPositionFitWithin(positionXPARAM, positionYPARAM))
 		{
 			// The position of the new entity doesn't fit within the root node's area
 			// We're going to have to recreate the entire tree
@@ -172,11 +172,11 @@ namespace DC
 			while (!bNewPositionFits)
 			{
 				rectOldRootNodeRegion.resizeArea(_miRectSizeIncreaseMultiplier);
-				bNewPositionFits = rectOldRootNodeRegion.doesPositionFitWithin(iPosX, iPosY);
+				bNewPositionFits = rectOldRootNodeRegion.doesPositionFitWithin(positionXPARAM, positionYPARAM);
 			}
 
 			// Now re-create the root node, passing 0 as the pointer to the parent node and the new region size
-			_mpRootNode = new CQuadTreeNode(rectOldRootNodeRegion, 0, this);
+			_mpRootNode = new QuadTreeNode(rectOldRootNodeRegion, 0, this);
 			ErrorIfFalse(_mpRootNode, L"QuadTree::addEntity() failed. Unable to allocate memory for new root node.");
 
 			// Now re-insert all entities stored in the hash map back into the tree
@@ -194,18 +194,18 @@ namespace DC
 		}
 	}
 
-	void CQuadTree::removeEntity(const std::wstring& strName)
+	void QuadTree::removeEntity(const std::wstring& namePARAM)
 	{
 		// Make sure the entity exists by checking the hashmap
-		std::map<std::wstring, CQuadTreeEntity*>::iterator it = _mmapEntities.find(strName);
-		ErrorIfTrue(_mmapEntities.end() == it, L"QuadTree::removeEntity() failed. The entity name of " + strName + L" doesn't exist.");
+		std::map<std::wstring, QuadTreeEntity*>::iterator it = _mmapEntities.find(namePARAM);
+		ErrorIfTrue(_mmapEntities.end() == it, L"QuadTree::removeEntity() failed. The entity name of " + namePARAM + L" doesn't exist.");
 
 		// Get the node the entity is stored in to remove the entity from itself.
-		CQuadTreeNode* pNodeContainingRemovedEntity = it->second->_mpNodeOwner;
+		QuadTreeNode* pNodeContainingRemovedEntity = it->second->_mpNodeOwner;
 		pNodeContainingRemovedEntity->removeEntity(it->second);
 
 		// Remove the entity from the hashmap and delete it
-		CQuadTreeEntity* pEntity = it->second;
+		QuadTreeEntity* pEntity = it->second;
 		_mmapEntities.erase(it);
 		delete pEntity;
 
@@ -218,7 +218,7 @@ namespace DC
 			if (!bNodeIsRoot)  // The node wasn't the root node and therefore pNodeParent will contain a valid pointer to it's parent node.
 			{
 				// Store pointer to the parent
-				CQuadTreeNode* pNodeParent = pNodeContainingRemovedEntity->_mpParentNode;
+				QuadTreeNode* pNodeParent = pNodeContainingRemovedEntity->_mpParentNode;
 
 				// We're done, except...
 				// We need to traverse up to the root node and delete any NOW empty nodes, which may 
@@ -250,36 +250,36 @@ namespace DC
 		// The node which contained the entity has other entities, leave it alone.
 	}
 
-	bool CQuadTree::getEntityExists(const std::wstring& strName) const
+	bool QuadTree::getEntityExists(const std::wstring& namePARAM) const
 	{
 		// Check the hashmap
-		std::map<std::wstring, CQuadTreeEntity*>::iterator it = _mmapEntities.find(strName);
+		std::map<std::wstring, QuadTreeEntity*>::iterator it = _mmapEntities.find(namePARAM);
 		return(_mmapEntities.end() != it);
 	}
 
-	void CQuadTree::removeAllEntities(bool bResetTree)
+	void QuadTree::removeAllEntities(bool resetTreePARAM)
 	{
 		// Go through each entity, asking each node which it's in to remove itself
-		std::map<std::wstring, CQuadTreeEntity*>::iterator it = _mmapEntities.begin();
+		std::map<std::wstring, QuadTreeEntity*>::iterator it = _mmapEntities.begin();
 		while (it != _mmapEntities.end())
 		{
 			// Get the node the entity is stored in to remove the entity from itself.
 			it->second->_mpNodeOwner->removeEntity(it->second);
 
 			// Remove the entity from the hashmap and delete it
-			CQuadTreeEntity* pEntity = it->second;
+			QuadTreeEntity* pEntity = it->second;
 			_mmapEntities.erase(it);
 			delete pEntity;
 			it = _mmapEntities.begin();
 		}
 
 		// Now all entities are removed and deleted, reset the tree if bResetTree desires it
-		if (bResetTree)
+		if (resetTreePARAM)
 		{
 			// Get the root node's rect, so we can re-create it
 			Rect rectRootNode = _mpRootNode->_mRectRegion;
 			delete _mpRootNode;
-			_mpRootNode = new CQuadTreeNode(rectRootNode, 0, this);
+			_mpRootNode = new QuadTreeNode(rectRootNode, 0, this);
 
 			// Reset current max node depth
 			_muiCurrentMaxNodeDepth = 0;
@@ -289,18 +289,18 @@ namespace DC
 		}
 	}
 
-	void CQuadTree::setEntityPosition(const std::wstring& strName, int iNewPosX, int iNewPosY)
+	void QuadTree::setEntityPosition(const std::wstring& namePARAM, int positionXPARAM, int positionYPARAM)
 	{
 		// First make sure the named entity exists
-		std::map<std::wstring, CQuadTreeEntity*>::iterator it = _mmapEntities.find(strName);
-		ErrorIfTrue(it == _mmapEntities.end(), L"QuadTree::setEntityPosition() failed. The named entity of " + strName + L" doesn't exist.");
+		std::map<std::wstring, QuadTreeEntity*>::iterator it = _mmapEntities.find(namePARAM);
+		ErrorIfTrue(it == _mmapEntities.end(), L"QuadTree::setEntityPosition() failed. The named entity of " + namePARAM + L" doesn't exist.");
 
 		// First check to see if the new entity position still fits within it's current node
 		// If it does, we simply update the position
-		if (it->second->_mpNodeOwner->_mRectRegion.doesPositionFitWithin(iNewPosX, iNewPosY))
+		if (it->second->_mpNodeOwner->_mRectRegion.doesPositionFitWithin(positionXPARAM, positionYPARAM))
 		{
-			it->second->_miPosX = iNewPosX;
-			it->second->_miPosY = iNewPosY;
+			it->second->_miPosX = positionXPARAM;
+			it->second->_miPosY = positionYPARAM;
 			return;
 		}
 
@@ -309,20 +309,20 @@ namespace DC
 		// Remove the entity from the tree and then re-insert it
 		int iUserData = it->second->miUserData;
 		void* pUserData = it->second->mpUserData;
-		removeEntity(strName);
-		addEntity(strName, iNewPosX, iNewPosY, iUserData, pUserData);
+		removeEntity(namePARAM);
+		addEntity(namePARAM, positionXPARAM, positionYPARAM, iUserData, pUserData);
 	}
 
-	void CQuadTree::getEntityPosition(const std::wstring& strName, int& iPosX, int& iPosY) const
+	void QuadTree::getEntityPosition(const std::wstring& namePARAM, int& positionXPARAM, int& positionYPARAM) const
 	{
 		// First make sure the named entity exists
-		std::map<std::wstring, CQuadTreeEntity*>::iterator it = _mmapEntities.find(strName);
-		ErrorIfTrue(it == _mmapEntities.end(), L"QuadTree::getEntityPosition() failed. The named entity of " + strName + L" doesn't exist.");
-		iPosX = it->second->_miPosX;
-		iPosY = it->second->_miPosY;
+		std::map<std::wstring, QuadTreeEntity*>::iterator it = _mmapEntities.find(namePARAM);
+		ErrorIfTrue(it == _mmapEntities.end(), L"QuadTree::getEntityPosition() failed. The named entity of " + namePARAM + L" doesn't exist.");
+		positionXPARAM = it->second->_miPosX;
+		positionYPARAM = it->second->_miPosY;
 	}
 
-	void CQuadTree::_computeMaxNodeDepth(void)
+	void QuadTree::_computeMaxNodeDepth(void)
 	{
 		// Obtain smallest dimension of root node
 		int iDimOfRootX = _mpRootNode->_mRectRegion.maxX - _mpRootNode->_mRectRegion.minX;
@@ -339,36 +339,36 @@ namespace DC
 		}
 	}
 
-	std::vector<CQuadTreeNode*> CQuadTree::getNodesWithEntities(void) const
+	std::vector<QuadTreeNode*> QuadTree::getNodesWithEntities(void) const
 	{
-		std::vector<CQuadTreeNode*> vResult;
+		std::vector<QuadTreeNode*> vResult;
 		_mpRootNode->getNodesWithEntities(vResult);
 		return vResult;
 	}
 
-	std::vector<CQuadTreeNode*> CQuadTree::getNodesWithEntitiesWhichIntersect(const Rect& rect) const
+	std::vector<QuadTreeNode*> QuadTree::getNodesWithEntitiesWhichIntersect(const Rect& rectPARAM) const
 	{
-		std::vector<CQuadTreeNode*> vResult;
-		_mpRootNode->getNodesWithEntitiesWhichIntersect(vResult, rect);
+		std::vector<QuadTreeNode*> vResult;
+		_mpRootNode->getNodesWithEntitiesWhichIntersect(vResult, rectPARAM);
 		return vResult;
 	}
 
-	std::vector<CQuadTreeEntity*> CQuadTree::getEntitiesWithinRange(int iPosX, int iPosY, int iRange) const
+	std::vector<QuadTreeEntity*> QuadTree::getEntitiesWithinRange(int positionXPARAM, int positionYPARAM, int rangePARAM) const
 	{
 		// Create a rect which covers the maximum range from the given position
 		Rect rectRange;
-		rectRange.minX = iPosX - iRange;
-		rectRange.maxX = iPosX + iRange;
-		rectRange.minY = iPosY - iRange;
-		rectRange.maxY = iPosY + iRange;
+		rectRange.minX = positionXPARAM - rangePARAM;
+		rectRange.maxX = positionXPARAM + rangePARAM;
+		rectRange.minY = positionYPARAM - rangePARAM;
+		rectRange.maxY = positionYPARAM + rangePARAM;
 
 		// Go through the nodes and get a vector of nodes which intersect the rect and have entities in them
-		std::vector<CQuadTreeNode*> vNodes = getNodesWithEntitiesWhichIntersect(rectRange);
-		std::vector<CQuadTreeEntity*> vResult;
+		std::vector<QuadTreeNode*> vNodes = getNodesWithEntitiesWhichIntersect(rectRange);
+		std::vector<QuadTreeEntity*> vResult;
 		for (unsigned int ui = 0; ui < vNodes.size(); ui++)
 		{
 			// Go through each entity within each node and add them to the resulting vector
-			std::map<std::wstring, CQuadTreeEntity*>::iterator it = vNodes[ui]->_mmapEntities.begin();
+			std::map<std::wstring, QuadTreeEntity*>::iterator it = vNodes[ui]->_mmapEntities.begin();
 			while (it != vNodes[ui]->_mmapEntities.end())
 			{
 				vResult.push_back(it->second);
@@ -378,15 +378,15 @@ namespace DC
 		return vResult;
 	}
 
-	std::vector<CQuadTreeEntity*> CQuadTree::getEntitiesWithinRect(const Rect& rect) const
+	std::vector<QuadTreeEntity*> QuadTree::getEntitiesWithinRect(const Rect& rectPARAM) const
 	{
 		// Go through the nodes and get a vector of the nodes which intersect the rect and have entities in them
-		std::vector<CQuadTreeNode*> vNodes = getNodesWithEntitiesWhichIntersect(rect);
-		std::vector<CQuadTreeEntity*> vResult;
+		std::vector<QuadTreeNode*> vNodes = getNodesWithEntitiesWhichIntersect(rectPARAM);
+		std::vector<QuadTreeEntity*> vResult;
 		for (unsigned int ui = 0; ui < vNodes.size(); ui++)
 		{
 			// Go through each entity within each node and add them to the resulting vector
-			std::map<std::wstring, CQuadTreeEntity*>::iterator it = vNodes[ui]->_mmapEntities.begin();
+			std::map<std::wstring, QuadTreeEntity*>::iterator it = vNodes[ui]->_mmapEntities.begin();
 			while (it != vNodes[ui]->_mmapEntities.end())
 			{
 				vResult.push_back(it->second);
@@ -396,7 +396,7 @@ namespace DC
 		return vResult;
 	}
 
-	unsigned int CQuadTree::getNodeDepthCurrent(void)
+	unsigned int QuadTree::getNodeDepthCurrent(void)
 	{
 		// We have to recompute this, so go through all nodes, get their depth and compare
 		_muiCurrentMaxNodeDepth = 0;
@@ -404,7 +404,7 @@ namespace DC
 		return _muiCurrentMaxNodeDepth;
 	}
 
-	unsigned int CQuadTree::getNodeDepthMax(void) const
+	unsigned int QuadTree::getNodeDepthMax(void) const
 	{
 		return _muiMaxNodeDepth;
 	}

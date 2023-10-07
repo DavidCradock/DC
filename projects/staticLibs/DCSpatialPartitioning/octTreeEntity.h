@@ -5,19 +5,19 @@
 
 namespace DC
 {
-	class COctTreeNode;
+	class OctTreeNode;
 
-	// An entity which is assigned into an COctTreeNode
+	// An entity which is assigned into an OctTreeNode
 	// It contains it's unique name, it's position within the world and the node it belongs to.
-	class COctTreeEntity
+	class OctTreeEntity
 	{
-		friend class COctTree;
-		friend class COctTreeNode;
+		friend class OctTree;
+		friend class OctTreeNode;
 	public:
 		// Constructor.
-		// strName is the unique name given to this entity.
-		// vPosition is this entity's position within the world
-		COctTreeEntity(const std::wstring& strName, const Vector3f& vPosition, COctTreeNode* pNodeOwner, int iUserData = 0, void* pUserData = 0);
+		// name is the unique name given to this entity.
+		// position is this entity's position within the world
+		OctTreeEntity(const std::wstring& name, const Vector3f& position, OctTreeNode* nodeOwner, int userData = 0, void* pUserData = 0);
 
 		// Set the debug colour of the entity
 		void debugSetColour(Colour& colour);
@@ -36,7 +36,7 @@ namespace DC
 	private:
 		std::wstring _mstrName;			// Unique name of this entity
 		Vector3f _mvPosition;			// Position of this entity
-		COctTreeNode* _mpNodeOwner;		// The node this entity is in
+		OctTreeNode* _mpNodeOwner;		// The node this entity is in
 		Colour _mColDebug;				// The colour used when debug rendering this entity
 	};
 }

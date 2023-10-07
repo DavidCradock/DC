@@ -63,7 +63,7 @@ namespace DC
 		// Multiplication by scalar
 		// Adjusts the magnitude of a vector, keeping the direction the same (Unless the scalar is negative, in which case the direction is reversed) 
 		// Example:
-		// CVector3f vOne(2.0f, 2.0f, 2.0f);
+		// Vector3f vOne(2.0f, 2.0f, 2.0f);
 		// vOne *= 0.5f; 
 		void operator *=(const float scalar);
 

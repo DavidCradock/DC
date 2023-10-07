@@ -1,11 +1,10 @@
 #pragma once
 #include "quadTreeNode.h"
-#include "../DCMath/vector3f.h"
 
 namespace DC
 {
 	// This is a 2D spatial partitioning class.
-	// For 3D spatial partitioning, see the COctTree class
+	// For 3D spatial partitioning, see the OctTree class
 	// 
 	// A quad tree gives us fast retrieval of entities which are within a specified
 	// range of a given position aswell as fast retrieval of entities which are within a given area of space.
@@ -36,49 +35,49 @@ namespace DC
 	// creating the child nodes, their dims would be (1, 1) meaning half the region of the parent node would not
 	// be covered and make it so an entity within the uncovered area would not fit.
 	// The intial region is set to -1024, +1024 along each axis.
-	class CQuadTree
+	class QuadTree
 	{
-		friend class CQuadTreeNode;
-		friend class CQuadTreeEntity;
+		friend class QuadTreeNode;
+		friend class QuadTreeEntity;
 	public:
 		// Constructor
-		// iMaxEntitiesPerNode is the maximum number of entities able to be stored
+		// maxEntitiesPerNode is the maximum number of entities able to be stored
 		// within a node before that node will be subdivided again into child nodes.
 		// This must be at least 1, otherwise an exception occurs.
 		// If we add an entity which is outside of the root node's initial region of
 		// -1024 to 1024, then the tree is rebuilt.
-		// iRectSizeIncreaseMultiplier is used when the tree is rebuilt. It is the
+		// rectSizeIncreaseMultiplier is used when the tree is rebuilt. It is the
 		// amount to increase the root node's dimensions by until the new entity's
 		// position fits. A value of 2 would double the new root node's dimensions
 		// each time. It must be at least 2 otherwise an exception occurs.
-		CQuadTree(int iMaxEntitiesPerNode = 10, int iRectSizeIncreaseMultiplier = 2);
+		QuadTree(int maxEntitiesPerNode = 10, int rectSizeIncreaseMultiplier = 2);
 
 		// Destructor
 		// Deletes the root node, which will delete all children and their children and so on.
-		~CQuadTree();
+		~QuadTree();
 
 		// Initialise the quad tree using the new given settings.
 		// This will free the existing tree and any entities.
-		// iMaxEntitiesPerNode is the maximum number of entities able to be stored
+		// maxEntitiesPerNode is the maximum number of entities able to be stored
 		// within a node before that node will be subdivided again into child nodes.
 		// This must be at least 1, otherwise an exception occurs.
 		// If we add an entity which is outside of the root nodes initial region of
 		// -1024 to 1024, then the tree is rebuilt.
-		// fRectSizeIncreaseMultiplier is used when the tree is rebuilt. It is the
+		// rectSizeIncreaseMultiplier is used when the tree is rebuilt. It is the
 		// amount to increase the root node's dimensions by until the new entity's
 		// position fits. A value of 2 would double the new root node's dimensions
 		// each time. It must be at least 2 otherwise an exception occurs.
-		void init(int iMaxEntitiesPerNode = 10, int iRectSizeIncreaseMultiplier = 2);
+		void init(int maxEntitiesPerNode = 10, int rectSizeIncreaseMultiplier = 2);
 
 		// Deletes the root node and in turn all of it's children and all entities
 		void free(void);
 
 		// Debug rendering of the oct tree's nodes and entities
-		void debugRender(const Vector3f& vCameraPosition = Vector3f(0.0f, 0.0f, 0.0f), bool bRenderNodes = true, bool bRenderEntities = true, int iEntityCircleRadius = 8, unsigned int uiEntityCircleNumSegments = 6) const;
+//		void debugRender(const Vector3f& cameraPosition = Vector3f(0.0f, 0.0f, 0.0f), bool renderNodes = true, bool renderEntities = true, int entityCircleRadius = 8, unsigned int entityCircleNumSegments = 6) const;
 
 		// For debug rendering, sets the named entity's rendered colour
 		// If the named entity doesn't exist, an exception occurs.
-		void debugSetEntityColour(const std::wstring& strName, Colour& colour);
+		void debugSetEntityColour(const std::wstring& name, Colour& colour);
 
 		// For debug rendering, sets all entities' rendered colour to the one given
 		void debugSetAllEntitiesColour(Colour& colour);
@@ -86,43 +85,43 @@ namespace DC
 		// Add entity to the quad tree.
 		// Each entity needs a unique name, if the name given already exists, an exception occurs.
 		// If the specified position is outside of the tree's region, the tree is rebuilt
-		void addEntity(const std::wstring& strName, int iPosX, int iPosY, int iUserData = 0, void *pUserData = 0);
+		void addEntity(const std::wstring& name, int positionX, int positionY, int userData = 0, void *pUserData = 0);
 
 		// Removes the named entity from the tree.
 		// If the unique name doesn't exist, an exception occurs.
 		// To determine whether an entity exists, use getEntityExists()
-		void removeEntity(const std::wstring& strName);
+		void removeEntity(const std::wstring& name);
 
 		// Returns whether the named entity exists or not
-		bool getEntityExists(const std::wstring& strName) const;
+		bool getEntityExists(const std::wstring& name) const;
 
 		// Removes all entities from the tree and depending upon the passed bool, resets the tree to contain
 		// just the root node.
-		void removeAllEntities(bool bResetTree = false);
+		void removeAllEntities(bool resetTree = false);
 
 		// Set an existing entity's position to the one given, moving to the correct node if needed.
 		// If the named entity doesn't exist, an exception occurs
-		void setEntityPosition(const std::wstring& strName, int iNewPosX, int iNewPosY);
+		void setEntityPosition(const std::wstring& name, int positionX, int positionY);
 
 		// Sets the given ints to the named entity's position.
 		// If the named entity doesn't exist, an exception occurs
-		void getEntityPosition(const std::wstring& strName, int &iPosX, int &iPosY) const;
+		void getEntityPosition(const std::wstring& name, int &positionX, int &positionY) const;
 
 		// Returns a vector of CQuadTreeNodes which holds all nodes which have entities in them
-		std::vector<CQuadTreeNode*> getNodesWithEntities(void) const;
+		std::vector<QuadTreeNode*> getNodesWithEntities(void) const;
 
 		// Returns a vector of CQuadTreeNodes which holds all nodes which intersect with the given rect and have entities
-		std::vector<CQuadTreeNode*> getNodesWithEntitiesWhichIntersect(const Rect& rect) const;
+		std::vector<QuadTreeNode*> getNodesWithEntitiesWhichIntersect(const Rect& rect) const;
 
 		// Returns a vector of entities which are within range of the given position.
 		// This may return some entities which are outside of the range, as the test to see
 		// whether the entities aren't in range isn't 100% accurate.
-		std::vector<CQuadTreeEntity*> getEntitiesWithinRange(int iPosX, int iPosY, int iRange) const;
+		std::vector<QuadTreeEntity*> getEntitiesWithinRange(int positionX, int positionY, int range) const;
 
-		// Returns a vector of entities which are within the given CRect
+		// Returns a vector of entities which are within the given Rect
 		// This may return some entities which are outside of the range, as the test to see
 		// whether the entities aren't in range isn't 100% accurate.
-		std::vector<CQuadTreeEntity*> getEntitiesWithinRect(const Rect& rect) const;
+		std::vector<QuadTreeEntity*> getEntitiesWithinRect(const Rect& rect) const;
 
 		// Returns current node depth stat
 		unsigned int getNodeDepthCurrent(void);
@@ -132,7 +131,7 @@ namespace DC
 
 	private:
 		// Root node of the tree which holds all child nodes and their entities
-		CQuadTreeNode* _mpRootNode;
+		QuadTreeNode* _mpRootNode;
 
 		// Maximum number of entities able to be stored within a node before that node will
 		// be subdivided again into child nodes.
@@ -148,7 +147,7 @@ namespace DC
 
 		// Hashmap holding pointers to each of the added entities
 		// This is used for fast retrieval or removal of single entities
-		mutable std::map<std::wstring, CQuadTreeEntity*> _mmapEntities;
+		mutable std::map<std::wstring, QuadTreeEntity*> _mmapEntities;
 
 		// Holds the current maximum depth of the nodes.
 		// If there are no child nodes, this would be zero.

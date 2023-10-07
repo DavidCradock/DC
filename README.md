@@ -9,8 +9,9 @@
 - Load the X.sln file into Visual studio, hit compile, done.
 
 TODO
+Go through all code and refactor params so that they are all lowercase for their first character and have PARAM at the end in the definition only and only if needed.
+Go through all header file comments and check to make sure the mentioned variables are correct
 Add audio from old codebase and refactor
-
 
 Notes...
 

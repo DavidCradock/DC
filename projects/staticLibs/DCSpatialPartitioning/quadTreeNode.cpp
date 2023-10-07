@@ -4,26 +4,26 @@
 
 namespace DC
 {
-	CQuadTreeNode::CQuadTreeNode(const Rect& rectRegion, CQuadTreeNode* pParentNode, CQuadTree* pQuadTree)
+	QuadTreeNode::QuadTreeNode(const Rect& rectRegionPARAM, QuadTreeNode* parentNodePARAM, QuadTree* quadTreePARAM)
 	{
-		_mRectRegion = rectRegion;
-		_mpParentNode = pParentNode;
-		_mpQuadTree = pQuadTree;
+		_mRectRegion = rectRegionPARAM;
+		_mpParentNode = parentNodePARAM;
+		_mpQuadTree = quadTreePARAM;
 		// Is this the root node?
-		if (!pParentNode)
+		if (!parentNodePARAM)
 			_muiNodeDepth = 0;
 		else
-			_muiNodeDepth = pParentNode->_muiNodeDepth + 1;
+			_muiNodeDepth = parentNodePARAM->_muiNodeDepth + 1;
 
-		if (_muiNodeDepth > pQuadTree->_muiCurrentMaxNodeDepth)
-			pQuadTree->_muiCurrentMaxNodeDepth = _muiNodeDepth;
+		if (_muiNodeDepth > quadTreePARAM->_muiCurrentMaxNodeDepth)
+			quadTreePARAM->_muiCurrentMaxNodeDepth = _muiNodeDepth;
 
 		// No children yet
 		for (int i = 0; i < 4; i++)
 			_mpChildNode[i] = 0;
 	}
 
-	CQuadTreeNode::~CQuadTreeNode()
+	QuadTreeNode::~QuadTreeNode()
 	{
 		// Destroy each child node
 		// This will recursively call each child node's destructor
@@ -34,9 +34,8 @@ namespace DC
 				delete _mpChildNode[i];
 		}
 	}
-
 /*
-	void CQuadTreeNode::debugRenderNodes(CResourceVertexBufferLine* pLine, CResourceVertexBufferLine::Vertex& vertex, CColour colour) const
+	void QuadTreeNode::debugRenderNodes(CResourceVertexBufferLine* line, CResourceVertexBufferLine::Vertex& vertex, Colour colour) const
 	{
 		// Compute colour
 		float fDepthCol = (float)_mpQuadTree->_muiMaxNodeDepth - float(_muiNodeDepth);
@@ -82,10 +81,10 @@ namespace DC
 		}
 	}
 
-	void CQuadTreeNode::debugRenderEntities(CResourceVertexBufferLine* pLine, int iCircleRadius, unsigned int uiCircleNumSegments) const
+	void QuadTreeNode::debugRenderEntities(CResourceVertexBufferLine* pLine, int iCircleRadius, unsigned int uiCircleNumSegments) const
 	{
 		// For each entity in this node
-		std::map<std::wstring, CQuadTreeEntity*>::iterator it = _mmapEntities.begin();
+		std::map<std::wstring, QuadTreeEntity*>::iterator it = _mmapEntities.begin();
 		while (it != _mmapEntities.end())
 		{
 			pLine->addCircle(it->second->_miPosX, it->second->_miPosY, (float)iCircleRadius, uiCircleNumSegments, it->second->_mColDebug);
@@ -100,12 +99,12 @@ namespace DC
 		}
 	}
 */
-	bool CQuadTreeNode::hasChildNode(ChildNode childNode) const
+	bool QuadTreeNode::hasChildNode(ChildNode childNodePARAM) const
 	{
-		return _mpChildNode[childNode];
+		return _mpChildNode[childNodePARAM];
 	}
 
-	bool CQuadTreeNode::hasAnyChildNodes(void) const
+	bool QuadTreeNode::hasAnyChildNodes(void) const
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -115,7 +114,7 @@ namespace DC
 		return false;
 	}
 
-	bool CQuadTreeNode::hasEntitiesInThisAndAllChildren(void) const
+	bool QuadTreeNode::hasEntitiesInThisAndAllChildren(void) const
 	{
 		// If this node has entities in
 		if (_mmapEntities.size() > 0)
@@ -136,19 +135,19 @@ namespace DC
 		return false;
 	}
 
-	void CQuadTreeNode::createChildNode(ChildNode childNode)
+	void QuadTreeNode::createChildNode(ChildNode childNodePARAM)
 	{
-		if (hasChildNode(childNode))
+		if (hasChildNode(childNodePARAM))
 			return;
 
 		// Compute rect area of the new child node
-		Rect childNodeRect = computeChildNodeRegion(childNode);
+		Rect childNodeRect = computeChildNodeRegion(childNodePARAM);
 
-		_mpChildNode[childNode] = new CQuadTreeNode(childNodeRect, this, _mpQuadTree);
-		ErrorIfFalse(_mpChildNode[childNode], L"QuadTreeNode::createChildNode() failed. Unable to allocate memory for the new child node.");
+		_mpChildNode[childNodePARAM] = new QuadTreeNode(childNodeRect, this, _mpQuadTree);
+		ErrorIfFalse(_mpChildNode[childNodePARAM], L"QuadTreeNode::createChildNode() failed. Unable to allocate memory for the new child node.");
 	}
 
-	Rect CQuadTreeNode::computeChildNodeRegion(ChildNode childNode) const
+	Rect QuadTreeNode::computeChildNodeRegion(ChildNode childNodePARAM) const
 	{
 		// Compute dimensions of new child node using the rect region of this parent node.
 		int iChildDimsX = _mRectRegion.maxX - _mRectRegion.minX;
@@ -158,7 +157,7 @@ namespace DC
 
 		// Calculate region of the child node
 		Rect childNodeRegion;
-		switch (childNode)
+		switch (childNodePARAM)
 		{
 		case ChildNode::BL:
 			childNodeRegion.minX = _mRectRegion.minX;
@@ -190,7 +189,7 @@ namespace DC
 		return childNodeRegion;
 	}
 
-	void CQuadTreeNode::addEntity(CQuadTreeEntity* pEntity)
+	void QuadTreeNode::addEntity(QuadTreeEntity* entityPARAM)
 	{
 		// If this node has no children, attempt to add the entity to this node
 		if (!hasAnyChildNodes())
@@ -201,9 +200,9 @@ namespace DC
 				_muiNodeDepth == _mpQuadTree->_muiMaxNodeDepth)
 			{
 				// Add the entity to this node
-				// No need to check if the new entity name already exists, as CQuadTree::addEntity() has already checked
-				_mmapEntities[pEntity->_mstrName] = pEntity;
-				pEntity->_mpNodeOwner = this;	// Set node owner for the entity
+				// No need to check if the new entity name already exists, as QuadTree::addEntity() has already checked
+				_mmapEntities[entityPARAM->_mstrName] = entityPARAM;
+				entityPARAM->_mpNodeOwner = this;	// Set node owner for the entity
 				return;
 			}
 			// If we've reached maximum capacity for this node and max node depth hasn't been reached
@@ -219,11 +218,11 @@ namespace DC
 				Rect rctTR = computeChildNodeRegion(ChildNode::TR);
 
 				// Add the new entity to this node's entity map, so it'll be moved to the correct child node below
-				_mmapEntities[pEntity->_mstrName] = pEntity;
-				pEntity->_mpNodeOwner = this;	// Set node owner for the entity
+				_mmapEntities[entityPARAM->_mstrName] = entityPARAM;
+				entityPARAM->_mpNodeOwner = this;	// Set node owner for the entity
 
 				// Move all the entities from this node, into the child nodes
-				std::map<std::wstring, CQuadTreeEntity*>::iterator it = _mmapEntities.begin();
+				std::map<std::wstring, QuadTreeEntity*>::iterator it = _mmapEntities.begin();
 				while (it != _mmapEntities.end())
 				{
 					// Determine which child node the entity fits in, regardless of whether the child node exists or not
@@ -243,7 +242,7 @@ namespace DC
 					// Create the child node if it doesn't exist
 					if (!_mpChildNode[childNode])
 					{
-						_mpChildNode[childNode] = new CQuadTreeNode(computeChildNodeRegion(childNode), this, _mpQuadTree);
+						_mpChildNode[childNode] = new QuadTreeNode(computeChildNodeRegion(childNode), this, _mpQuadTree);
 						ErrorIfFalse(_mpChildNode[childNode], L"QuadTreeNode::addEntity() failed when trying to add entity " + it->second->_mstrName + L" to any of the four child nodes as it was unable to allocate memory for the child node.");
 					}
 					_mpChildNode[childNode]->addEntity(it->second);
@@ -264,38 +263,38 @@ namespace DC
 		Rect rctTR = computeChildNodeRegion(ChildNode::TR);
 
 		ChildNode childNode = ChildNode::NONE;
-		if (rctBL.doesPositionFitWithin(pEntity->_miPosX, pEntity->_miPosY))
+		if (rctBL.doesPositionFitWithin(entityPARAM->_miPosX, entityPARAM->_miPosY))
 			childNode = ChildNode::BL;
-		else if (rctBR.doesPositionFitWithin(pEntity->_miPosX, pEntity->_miPosY))
+		else if (rctBR.doesPositionFitWithin(entityPARAM->_miPosX, entityPARAM->_miPosY))
 			childNode = ChildNode::BR;
-		else if (rctTL.doesPositionFitWithin(pEntity->_miPosX, pEntity->_miPosY))
+		else if (rctTL.doesPositionFitWithin(entityPARAM->_miPosX, entityPARAM->_miPosY))
 			childNode = ChildNode::TL;
-		else if (rctTR.doesPositionFitWithin(pEntity->_miPosX, pEntity->_miPosY))
+		else if (rctTR.doesPositionFitWithin(entityPARAM->_miPosX, entityPARAM->_miPosY))
 			childNode = ChildNode::TR;
 		// Error checking, making sure the entity could fit in one of the four possible children
-		ErrorIfTrue(ChildNode::NONE == childNode, L"QuadTreeNode::addEntity() failed when trying to add entity " + pEntity->_mstrName + L" to any of the four child nodes as it's position doesn't fit inside any of them.");
+		ErrorIfTrue(ChildNode::NONE == childNode, L"QuadTreeNode::addEntity() failed when trying to add entity " + entityPARAM->_mstrName + L" to any of the four child nodes as it's position doesn't fit inside any of them.");
 
 		// Create the child node if it doesn't exist
 		if (!_mpChildNode[childNode])
 		{
-			_mpChildNode[childNode] = new CQuadTreeNode(computeChildNodeRegion(childNode), this, _mpQuadTree);
-			ErrorIfFalse(_mpChildNode[childNode], L"QuadTreeNode::addEntity() failed when trying to add entity " + pEntity->_mstrName + L" to any of the four child nodes as it was unable to allocate memory for the child node.");
+			_mpChildNode[childNode] = new QuadTreeNode(computeChildNodeRegion(childNode), this, _mpQuadTree);
+			ErrorIfFalse(_mpChildNode[childNode], L"QuadTreeNode::addEntity() failed when trying to add entity " + entityPARAM->_mstrName + L" to any of the four child nodes as it was unable to allocate memory for the child node.");
 		}
 
 		// Add the new entity
-		_mpChildNode[childNode]->addEntity(pEntity);
+		_mpChildNode[childNode]->addEntity(entityPARAM);
 	}
 
-	void CQuadTreeNode::removeEntity(CQuadTreeEntity* pEntity)
+	void QuadTreeNode::removeEntity(QuadTreeEntity* entityPARAM)
 	{
 		// Attempt to find the entity
-		std::map<std::wstring, CQuadTreeEntity*>::iterator it = _mmapEntities.find(pEntity->_mstrName);
-		ErrorIfTrue(it == _mmapEntities.end(), L"QuadTreeNode::removeEntity() failed. The entity named " + pEntity->_mstrName + L" could not be found");
+		std::map<std::wstring, QuadTreeEntity*>::iterator it = _mmapEntities.find(entityPARAM->_mstrName);
+		ErrorIfTrue(it == _mmapEntities.end(), L"QuadTreeNode::removeEntity() failed. The entity named " + entityPARAM->_mstrName + L" could not be found");
 		_mmapEntities.erase(it);
-		// No need to delete entity, the CQuadTree::removeAllEntities() or CQuadTree::removeEntity() does this
+		// No need to delete entity, the QuadTree::removeAllEntities() or QuadTree::removeEntity() does this
 	}
 
-	void CQuadTreeNode::getNodesWithEntities(std::vector<CQuadTreeNode*>& vecNodes)
+	void QuadTreeNode::getNodesWithEntities(std::vector<QuadTreeNode*>& nodesPARAM)
 	{
 		// If this node doesn't have any children, just check this node
 		if (!hasAnyChildNodes())
@@ -305,7 +304,7 @@ namespace DC
 				return;
 
 			// Add this node
-			vecNodes.push_back(this);
+			nodesPARAM.push_back(this);
 			return;
 		}
 		else  // This node has children, check those
@@ -313,12 +312,12 @@ namespace DC
 			for (int i = 0; i < 4; i++)
 			{
 				if (_mpChildNode[i])
-					_mpChildNode[i]->getNodesWithEntities(vecNodes);
+					_mpChildNode[i]->getNodesWithEntities(nodesPARAM);
 			}
 		}
 	}
 
-	void CQuadTreeNode::getNodesWithEntitiesWhichIntersect(std::vector<CQuadTreeNode*>& vecNodes, const Rect& rect)
+	void QuadTreeNode::getNodesWithEntitiesWhichIntersect(std::vector<QuadTreeNode*>& nodesPARAM, const Rect& rectPARAM)
 	{
 		// If this node doesn't have any children, just check this node
 		if (!hasAnyChildNodes())
@@ -328,9 +327,9 @@ namespace DC
 				return;
 
 			// If the rect interects with this node, add this node
-			if (_mRectRegion.intersects(rect))
+			if (_mRectRegion.intersects(rectPARAM))
 			{
-				vecNodes.push_back(this);
+				nodesPARAM.push_back(this);
 				return;
 			}
 		}
@@ -339,21 +338,21 @@ namespace DC
 			for (int i = 0; i < 4; i++)
 			{
 				if (_mpChildNode[i])
-					_mpChildNode[i]->getNodesWithEntitiesWhichIntersect(vecNodes, rect);
+					_mpChildNode[i]->getNodesWithEntitiesWhichIntersect(nodesPARAM, rectPARAM);
 			}
 		}
 	}
 
-	void CQuadTreeNode::getMaxNodeDepth(unsigned int& uiMaxNodeDepth)
+	void QuadTreeNode::getMaxNodeDepth(unsigned int& maxNodeDepthPARAM)
 	{
-		if (_muiNodeDepth > uiMaxNodeDepth)
-			uiMaxNodeDepth = _muiNodeDepth;
+		if (_muiNodeDepth > maxNodeDepthPARAM)
+			maxNodeDepthPARAM = _muiNodeDepth;
 
 		// Call this method for all children of this node
 		for (int i = 0; i < 4; i++)
 		{
 			if (_mpChildNode[i])	// If child exists
-				_mpChildNode[i]->getMaxNodeDepth(uiMaxNodeDepth);
+				_mpChildNode[i]->getMaxNodeDepth(maxNodeDepthPARAM);
 		}
 	}
 }

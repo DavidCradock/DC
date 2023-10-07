@@ -5,19 +5,19 @@
 
 namespace DC
 {
-	class CQuadTreeNode;
+	class QuadTreeNode;
 
-	// An entity which is assigned into a CQuadTreeNode
+	// An entity which is assigned into a QuadTreeNode
 	// It contains it's unique name, it's position within the world and the node it belongs to.
-	class CQuadTreeEntity
+	class QuadTreeEntity
 	{
-		friend class CQuadTree;
-		friend class CQuadTreeNode;
+		friend class QuadTree;
+		friend class QuadTreeNode;
 	public:
 		// Constructor.
-		// strName is the unique name given to this entity.
-		// iPosX and iPosX are this entity's position within the world
-		CQuadTreeEntity(const std::wstring& strName, int iPosX, int iPosY, CQuadTreeNode* pNodeOwner, int iUserData = 0, void *pUserData = 0);
+		// name is the unique name given to this entity.
+		// positionX and positionX are this entity's position within the world
+		QuadTreeEntity(const std::wstring& name, int positionX, int positionY, QuadTreeNode* nodeOwner, int userData = 0, void *pUserData = 0);
 
 		// Set the debug colour of the entity
 		void debugSetColour(Colour& colour);
@@ -37,7 +37,7 @@ namespace DC
 		std::wstring _mstrName;			// Unique name of this entity
 		int _miPosX;					// Position of this entity along X axis
 		int _miPosY;					// Position of this entity along Y axis
-		CQuadTreeNode* _mpNodeOwner;	// The node this entity is in
+		QuadTreeNode* _mpNodeOwner;	// The node this entity is in
 		Colour _mColDebug;				// The colour used when debug rendering this entity
 	};
 }

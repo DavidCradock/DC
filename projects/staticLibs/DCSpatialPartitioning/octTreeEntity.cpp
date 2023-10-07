@@ -3,28 +3,28 @@
 
 namespace DC
 {
-	COctTreeEntity::COctTreeEntity(const std::wstring& strName, const Vector3f& vPosition, COctTreeNode* pNodeOwner, int iUserData, void* pUserData)
+	OctTreeEntity::OctTreeEntity(const std::wstring& namePARAM, const Vector3f& positionPARAM, OctTreeNode* nodeOwnerPARAM, int userDataPARAM, void* pUserDataPARAM)
 	{
-		_mstrName = strName;
-		_mvPosition = vPosition;
-		_mpNodeOwner = pNodeOwner;
+		_mstrName = namePARAM;
+		_mvPosition = positionPARAM;
+		_mpNodeOwner = nodeOwnerPARAM;
 
 		// Store user data
-		miUserData = iUserData;
-		mpUserData = pUserData;
+		miUserData = userDataPARAM;
+		mpUserData = pUserDataPARAM;
 	}
 
-	void COctTreeEntity::debugSetColour(Colour& colour)
+	void OctTreeEntity::debugSetColour(Colour& colourPARAM)
 	{
-		_mColDebug = colour;
+		_mColDebug = colourPARAM;
 	}
 
-	Vector3f COctTreeEntity::getPosition(void)
+	Vector3f OctTreeEntity::getPosition(void)
 	{
 		return _mvPosition;;
 	}
 
-	std::wstring COctTreeEntity::getName(void)
+	std::wstring OctTreeEntity::getName(void)
 	{
 		return _mstrName;
 	}

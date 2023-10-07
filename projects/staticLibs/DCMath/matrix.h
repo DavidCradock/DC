@@ -191,7 +191,7 @@ namespace DC
 		// Returns a pointer to the float array containing the matrix
 		const float* getFloat(void) const;
 
-		// Returns the current translation stored in the matrix as a CVector3f
+		// Returns the current translation stored in the matrix as a Vector3f
 		Vector3f getTranslation(void) const;
 	private:
 		float m[16];	// Values for the matrix

@@ -5,7 +5,7 @@
 namespace DC
 {
 	// This is a 3D spatial partitioning class.
-	// For 2D spatial partitioning, see the CQuadTree class
+	// For 2D spatial partitioning, see the QuadTree class
 	// 
 	// An oct tree gives us fast retrieval of entities which are within a specified
 	// range of a given position aswell as fast retrieval of entities which are within a given area of space.
@@ -32,39 +32,39 @@ namespace DC
 	// child nodes and cause a stack overflow.
 	//
 	// The intial region is set to -8, +8 along each axis. 
-	class COctTree
+	class OctTree
 	{
-		friend class COctTreeNode;
-		friend class COctTreeEntity;
+		friend class OctTreeNode;
+		friend class OctTreeEntity;
 	public:
 		// Constructor
-		// iMaxEntitiesPerNode is the maximum number of entities able to be stored
+		// maxEntitiesPerNode is the maximum number of entities able to be stored
 		// within a node before that node will be subdivided again into child nodes.
 		// This must be at least 1, otherwise an exception occurs.
 		// If we add an entity which is outside of the root node's initial region
 		// then the tree is rebuilt.
-		// fSizeIncreaseMultiplier is used when the tree is rebuilt. It is the
+		// sizeIncreaseMultiplier is used when the tree is rebuilt. It is the
 		// amount to increase the root node's dimensions by until the new entity's
 		// position fits. A value of 2 would double the new root node's dimensions
 		// each time. It must be at least 2 otherwise an exception occurs.
-		COctTree(int iMaxEntitiesPerNode = 10, float fSizeIncreaseMultiplier = 2.0f);
+		OctTree(int maxEntitiesPerNode = 10, float sizeIncreaseMultiplier = 2.0f);
 
 		// Destructor
 		// Deletes the root node, which will delete all children and their children and so on.
-		~COctTree();
+		~OctTree();
 
 		// Initialise the oct tree using the new given settings.
 		// This will free the existing tree and any entities.
-		// iMaxEntitiesPerNode is the maximum number of entities able to be stored
+		// maxEntitiesPerNode is the maximum number of entities able to be stored
 		// within a node before that node will be subdivided again into child nodes.
 		// This must be at least 1, otherwise an exception occurs.
 		// If we add an entity which is outside of the root node's initial region
 		// then the tree is rebuilt.
-		// fSizeIncreaseMultiplier is used when the tree is rebuilt. It is the
+		// sizeIncreaseMultiplier is used when the tree is rebuilt. It is the
 		// amount to increase the root node's dimensions by until the new entity's
 		// position fits. A value of 2 would double the new root node's dimensions
 		// each time. It must be at least 2 otherwise an exception occurs.
-		void init(int iMaxEntitiesPerNode = 10, float fSizeIncreaseMultiplier = 2.0f);
+		void init(int maxEntitiesPerNode = 10, float sizeIncreaseMultiplier = 2.0f);
 
 		// Deletes the root node and in turn all of it's children and all entities
 		void free(void);
@@ -75,59 +75,59 @@ namespace DC
 		/*
 		// For debug rendering, sets the named entity's rendered colour
 		// If the named entity doesn't exist, an exception occurs.
-		void debugSetEntityColour(const std::wstring& strName, CColour& colour);
+		void debugSetEntityColour(const std::wstring& name, Colour& colour);
 
 		// For debug rendering, sets all entities' rendered colour to the one given
-		void debugSetAllEntitiesColour(CColour& colour);
+		void debugSetAllEntitiesColour(Colour& colour);
 		*/
 
 		// Add entity to the oct tree.
 		// Each entity needs a unique name, if the name given already exists, an exception occurs.
 		// If the specified position is outside of the tree's region, the tree is rebuilt
-		void addEntity(const std::wstring& strName, const Vector3f& vPosition, int iUserData = 0, void* pUserData = 0);
+		void addEntity(const std::wstring& name, const Vector3f& position, int userData = 0, void* pUserData = 0);
 
 		// Removes the named entity from the tree.
 		// If the unique name doesn't exist, an exception occurs.
 		// To determine whether an entity exists, use getEntityExists()
-		void removeEntity(const std::wstring& strName);
+		void removeEntity(const std::wstring& name);
 
 		// Returns whether the named entity exists or not
-		bool getEntityExists(const std::wstring& strName) const;
+		bool getEntityExists(const std::wstring& name) const;
 
 		// Removes all entities from the tree and depending upon the passed bool, resets the tree to contain
 		// just the root node.
-		void removeAllEntities(bool bResetTree = false);
+		void removeAllEntities(bool resetTree = false);
 
 		// Set an existing entity's position to the one given, moving to the correct node if needed.
 		// If the named entity doesn't exist, an exception occurs
-		void setEntityPosition(const std::wstring& strName, const Vector3f& vNewPosition);
+		void setEntityPosition(const std::wstring& name, const Vector3f& position);
 
 		// Sets the given vector to the named entity's position.
 		// If the named entity doesn't exist, an exception occurs
-		void getEntityPosition(const std::wstring& strName, Vector3f &vPosition) const;
+		void getEntityPosition(const std::wstring& name, Vector3f &position) const;
 
 		// Returns a vector of COctTreeNodes which holds all nodes which have entities in them
-		std::vector<COctTreeNode*> getNodesWithEntities(void) const;
+		std::vector<OctTreeNode*> getNodesWithEntities(void) const;
 
 		// Returns a vector of COctTreeNodes which holds all nodes which intersect with the given AABB and have entities
-		std::vector<COctTreeNode*> getNodesWithEntitiesWhichIntersect(const AABB& aabb) const;
+		std::vector<OctTreeNode*> getNodesWithEntitiesWhichIntersect(const AABB& aabb) const;
 
-		// Returns a vector of COctTreeNodes which holds all nodes which intersect with the given CFrustum and have entities
-		std::vector<COctTreeNode*> getNodesWithEntitiesWhichIntersect(const Frustum& frustum) const;
+		// Returns a vector of COctTreeNodes which holds all nodes which intersect with the given Frustum and have entities
+		std::vector<OctTreeNode*> getNodesWithEntitiesWhichIntersect(const Frustum& frustum) const;
 
 		// Returns a vector of entities which are within range of the given position.
 		// This may return some entities which are outside of the range, as the test to see
 		// whether the entities aren't in range isn't 100% accurate.
-		std::vector<COctTreeEntity*> getEntitiesWithinRange(const Vector3f& vPosition, float fRange) const;
+		std::vector<OctTreeEntity*> getEntitiesWithinRange(const Vector3f& position, float range) const;
 
-		// Returns a vector of entities which are within the given CAABB
+		// Returns a vector of entities which are within the given AABB
 		// This may return some entities which are outside of the range, as the test to see
 		// whether the entities aren't in range isn't 100% accurate.
-		std::vector<COctTreeEntity*> getEntitiesWithinAABB(const AABB& aabb) const;
+		std::vector<OctTreeEntity*> getEntitiesWithinAABB(const AABB& aabb) const;
 
-		// Returns a vector of entities which are within the given CFrustum
+		// Returns a vector of entities which are within the given Frustum
 		// TODO check this
-		std::vector<COctTreeEntity*> getEntitiesWithinFrustum(const Frustum& frustum) const;
+		std::vector<OctTreeEntity*> getEntitiesWithinFrustum(const Frustum& frustum) const;
 
 		// Returns current node depth stat
 		unsigned int getNodeDepthCurrent(void);
@@ -137,7 +137,7 @@ namespace DC
 
 	private:
 		// Root node of the tree which holds all child nodes and their entities
-		COctTreeNode* _mpRootNode;
+		OctTreeNode* _mpRootNode;
 
 		// Maximum number of entities able to be stored within a node before that node will
 		// be subdivided again into child nodes.
@@ -153,7 +153,7 @@ namespace DC
 
 		// Hashmap holding pointers to each of the added entities
 		// This is used for fast retrieval or removal of single entities
-		mutable std::map<std::wstring, COctTreeEntity*> _mmapEntities;
+		mutable std::map<std::wstring, OctTreeEntity*> _mmapEntities;
 
 		// Holds the current maximum depth of the nodes.
 		// If there are no child nodes, this would be zero.
@@ -176,7 +176,7 @@ namespace DC
 
 		// Based upon _mpRootNode->_mRegion, computes the maximum allowable node depth
 		// and sets _muiMaxNodeDepth.
-		void _computeMaxNodeDepth(void);
+		void computeMaxNodeDepth(void);
 
 	};
 }
