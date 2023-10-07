@@ -9,15 +9,14 @@
 - Load the X.sln file into Visual studio, hit compile, done.
 
 TODO
-Go through all code and refactor params so that they are all lowercase for their first character and have PARAM at the end in the definition only and only if needed.
-Go through all header file comments and check to make sure the mentioned variables are correct
 Add audio from old codebase and refactor
 
-Notes...
+
+#Notes...
 
 No logging because it's un-needed overhead and I usually implement logging, then never use it. The debugger is well suited for, surprise, debugging. The logs never help me.
 
-Changes to coding style
+#Changes to coding style
 
 Do not use _m for members as it's bloody obvious that the member is a member.
 
@@ -29,12 +28,15 @@ Use a descriptive, non abbreviated name for a variable/member. Abbreviation make
 
 Do not add "C" to beginning of class declarations, it's a class, it's obvious.
 
+Parameters are all lowercase for their first character and have PARAM at the end in the definition only and only if needed.
 
-Error handling
+Camel style casing, someFileWhichDoesSomething. It's easy to read and quite sparse.
+
+#Error handling
 
 Do not use exceptions, there's some overhead and using macros for critical errors is fine.
 
-Singleton pattern.
+#Singleton pattern.
 
 Do not use unless appropriate.
 
@@ -44,16 +46,13 @@ Their initialisation order can be really messy.
 
 Use globals instead, or pass pointers/references to objects.
 
-Strings.
+#Strings.
 
-Use wide strings as it's the default setting, they are recommended for many positive reasons (IE some user with a weird character is now supported) and it's easier to work with than multibyte.
-
+Use wide strings as it's the default setting, they are recommended for many positive reasons (IE some user with a weird character is now supported)
+and it's easier to work with than multibyte.
 Sure, the L"bloody L!" is kinda annoying having to add Ls everywhere, but calm down, it's only a single character to add. Relax! :D
 
-Source code filenaming.
+#Source code filenaming.
 
 Prepend "DC" for the library's main include header (and possible .cpp), but for the rest of the files, do not add the "DC"
 
-Camel style casing, someFileWhichDoesSomething. It's easy to read and quite sparse.
-
-For parameter to methods/functions follow the above naming (IE no f/i/str etc) make first letter uppercase if needed (For example when needing to differenciate between object members)

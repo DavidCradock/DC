@@ -76,9 +76,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="audioEmitter.cpp" />
+    <ClCompile Include="audioManager.cpp" />
+    <ClCompile Include="audioSample.cpp" />
     <ClCompile Include="DCAudio.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="audioEmitter.h" />
+    <ClInclude Include="audioManager.h" />
+    <ClInclude Include="audioSample.h" />
     <ClInclude Include="DCAudio.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

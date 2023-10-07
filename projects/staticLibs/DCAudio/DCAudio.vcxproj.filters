@@ -8,8 +8,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DCAudio.h" />
+    <ClInclude Include="audioEmitter.h" />
+    <ClInclude Include="audioManager.h" />
+    <ClInclude Include="audioSample.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DCAudio.cpp" />
+    <ClCompile Include="audioEmitter.cpp" />
+    <ClCompile Include="audioManager.cpp" />
+    <ClCompile Include="audioSample.cpp" />
   </ItemGroup>
 </Project>
