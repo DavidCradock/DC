@@ -10,7 +10,7 @@ namespace DC
 	public:
 		// Constructor.
 		// Sets the number of neurons in this layer.
-		NeuronLayer(int NumberOfNeurons, int NumberOfInputsPerNeuron);
+		NeuronLayer(int numberOfNeurons, int numberOfInputsPerNeuron);
 
 		// Holds each neuron in this layer
 		std::vector<Neuron> neurons;

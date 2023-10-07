@@ -78,26 +78,26 @@ namespace DC
 	private:
 		// Holds the rectangular region which this node covers
 		// Must be a multiple of 2, otherwise child nodes' regions will not cover all space.
-		Rect _mRectRegion;
+		Rect rectRegion;
 
 		// Pointer to the parent of this node. May be 0 if this is the root node
-		QuadTreeNode* _mpParentNode;
+		QuadTreeNode* parentNode;
 
 		// Pointer to the four possible child nodes.
 		// A pointer may be 0 for no child node allocated yet.
 		// Use the ChildNode enum with this array to access the correct child node.
-		QuadTreeNode* _mpChildNode[4];
+		QuadTreeNode* childNodes[4];
 
 		// The quad tree which owns this node, this is passed to the constructor
-		QuadTree* _mpQuadTree;
+		QuadTree* quadTree;
 
 		// Depth of this node.
 		// How many nodes there are above this node.
-		unsigned int _muiNodeDepth;
+		unsigned int nodeDepth;
 
 		// Hashmap holding pointers to each of the added entities, until
 		// this node has children, in which case this would be empty as 
 		// the child nodes now own the entities (or their siblings)
-		mutable std::map<std::wstring, QuadTreeEntity*> _mmapEntities;
+		mutable std::map<std::wstring, QuadTreeEntity*> entities;
 	};
 }

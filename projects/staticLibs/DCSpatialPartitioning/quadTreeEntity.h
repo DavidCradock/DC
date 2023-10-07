@@ -30,14 +30,14 @@ namespace DC
 
 		// Below are members which may be set to store various information.
 		// They have nothing to do with the quad tree itself.
-		int miUserData;
-		void* mpUserData;
+		int userData;
+		void* pUserData;
 
 	private:
-		std::wstring _mstrName;			// Unique name of this entity
-		int _miPosX;					// Position of this entity along X axis
-		int _miPosY;					// Position of this entity along Y axis
-		QuadTreeNode* _mpNodeOwner;	// The node this entity is in
-		Colour _mColDebug;				// The colour used when debug rendering this entity
+		std::wstring name;			// Unique name of this entity
+		int positionX;				// Position of this entity along X axis
+		int positionY;				// Position of this entity along Y axis
+		QuadTreeNode* nodeOwner;	// The node this entity is in
+		Colour debugColour;			// The colour used when debug rendering this entity
 	};
 }

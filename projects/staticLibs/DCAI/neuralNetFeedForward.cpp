@@ -13,27 +13,27 @@ namespace DC
 		create(1, 1, 0, 0);
 	}
 
-	NeuralNetworkFeedForward::NeuralNetworkFeedForward(int NumberOfInputs, int NumberOfOutputs, int NumberOfLayers, int NumberOfNeuronsPerLayer)
+	NeuralNetworkFeedForward::NeuralNetworkFeedForward(int numberOfInputsPARAM, int numberOfOutputsPARAM, int numberOfLayersPARAM, int numberOfNeuronsPerLayerPARAM)
 	{
-		create(NumberOfInputs, NumberOfOutputs, NumberOfLayers, NumberOfNeuronsPerLayer);
+		create(numberOfInputsPARAM, numberOfOutputsPARAM, numberOfLayersPARAM, numberOfNeuronsPerLayerPARAM);
 	}
 
-	void NeuralNetworkFeedForward::create(int NumberOfInputs, int NumberOfOutputs, int NumberOfLayers, int NumberOfNeuronsPerLayer)
+	void NeuralNetworkFeedForward::create(int numberOfInputsPARAM, int numberOfOutputsPARAM, int numberOfLayersPARAM, int numberOfNeuronsPerLayerPARAM)
 	{
 		// Check for valid parameters
-		ErrorIfTrue(NumberOfInputs < 1, L"NeuralNetworkFeedForward::create() given invalid number of inputs. Must be at least 1");
-		ErrorIfTrue(NumberOfOutputs < 1, L"NeuralNetworkFeedForward::create() given invalid number of outputs. Must be at least 1");
-		ErrorIfTrue(NumberOfLayers < 0, L"NeuralNetworkFeedForward::create() given invalid number of layers. Must be at least 0");
-		ErrorIfTrue(NumberOfNeuronsPerLayer < 1 && NumberOfLayers > 0, L"NeuralNetworkFeedForward::create() given invalid number of neurons per layer. Must be at least 1 if iNumLayers is > 0");
+		ErrorIfTrue(numberOfInputsPARAM < 1, L"NeuralNetworkFeedForward::create() given invalid number of inputs. Must be at least 1");
+		ErrorIfTrue(numberOfOutputsPARAM < 1, L"NeuralNetworkFeedForward::create() given invalid number of outputs. Must be at least 1");
+		ErrorIfTrue(numberOfLayersPARAM < 0, L"NeuralNetworkFeedForward::create() given invalid number of layers. Must be at least 0");
+		ErrorIfTrue(numberOfNeuronsPerLayerPARAM < 1 && numberOfLayersPARAM > 0, L"NeuralNetworkFeedForward::create() given invalid number of neurons per layer. Must be at least 1 if numberOfLayers is > 0");
 
 		// Clear everything
 		layers.clear();
 
 		// Set given parameters
-		numberOfInputs = NumberOfInputs;
-		numberOfOutputs = NumberOfOutputs;
-		numberOfLayers = NumberOfLayers;
-		numberOfNeuronsPerLayer = NumberOfNeuronsPerLayer;
+		numberOfInputs = numberOfInputsPARAM;
+		numberOfOutputs = numberOfOutputsPARAM;
+		numberOfLayers = numberOfLayersPARAM;
+		numberOfNeuronsPerLayer = numberOfNeuronsPerLayerPARAM;
 
 		// Set default bias
 		bias = -1;
@@ -171,15 +171,15 @@ namespace DC
 		return vecOutputs;
 	}
 
-	void NeuralNetworkFeedForward::setWeightBias(double WeightBias)
+	void NeuralNetworkFeedForward::setWeightBias(double weightBias)
 	{
-		bias = WeightBias;
+		bias = weightBias;
 	}
 
-	void NeuralNetworkFeedForward::setSigmoidResponse(double Response)
+	void NeuralNetworkFeedForward::setSigmoidResponse(double response)
 	{
-		ErrorIfTrue(areDoublesEqual(0, Response), L"NeuralNetworkFeedForward::setSigmoidResponse() failed. The given value should not be zero. Otherwise a divide by zero error occurs.");
-		sigmoidResponse = Response;
+		ErrorIfTrue(areDoublesEqual(0, response), L"NeuralNetworkFeedForward::setSigmoidResponse() failed. The given value should not be zero. Otherwise a divide by zero error occurs.");
+		sigmoidResponse = response;
 	}
 
 	std::vector<int> NeuralNetworkFeedForward::calculateSplitPoints(void)

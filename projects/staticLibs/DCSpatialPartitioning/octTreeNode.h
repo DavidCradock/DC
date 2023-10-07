@@ -89,26 +89,26 @@ namespace DC
 	private:
 		// Holds the region which this node covers
 		// Must be a multiple of 2, otherwise child nodes' regions will not cover all space.
-		AABB _mRegion;
+		AABB region;
 
 		// Pointer to the parent of this node. May be 0 if this is the root node
-		OctTreeNode* _mpParentNode;
+		OctTreeNode* parentNode;
 
 		// Pointer to the eight possible child nodes.
 		// A pointer may be 0 for no child node allocated yet.
 		// Use the ChildNode enum with this array to access the correct child node.
-		OctTreeNode* _mpChildNode[8];
+		OctTreeNode* childNodes[8];
 
 		// The quad tree which owns this node, this is passed to the constructor
-		OctTree* _mpOctTree;
+		OctTree* octTree;
 
 		// Depth of this node.
 		// How many nodes there are above this node.
-		unsigned int _muiNodeDepth;
+		unsigned int nodeDepth;
 
 		// Hashmap holding pointers to each of the added entities, until
 		// this node has children, in which case this would be empty as 
 		// the child nodes now own the entities (or their siblings)
-		mutable std::map<std::wstring, OctTreeEntity*> _mmapEntities;
+		mutable std::map<std::wstring, OctTreeEntity*> entities;
 	};
 }

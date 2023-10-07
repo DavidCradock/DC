@@ -6,3 +6,8 @@
 #include "neuralNetFeedForward.h"
 #include "neuron.h"
 #include "neuronLayer.h"
+
+namespace DC
+{
+
+}

@@ -13,7 +13,7 @@ namespace DC
 		// Sets the number of inputs this neuron has, creates each neuron
 		// and bias value for the neuron and sets them all to have random
 		// values between -1 and 1
-		Neuron(int NumberOfInputs);
+		Neuron(int numberOfInputs);
 
 		// Holds the weight values for each of the inputs this neuron has.
 		// It also holds the bias of the neuron at the end of the vector.

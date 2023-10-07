@@ -6,21 +6,21 @@ namespace DC
 {
 	OctTreeNode::OctTreeNode(const AABB& regionPARAM, OctTreeNode* parentNodePARAM, OctTree* octTreePARAM)
 	{
-		_mRegion = regionPARAM;
-		_mpParentNode = parentNodePARAM;
-		_mpOctTree = octTreePARAM;
+		region = regionPARAM;
+		parentNode = parentNodePARAM;
+		octTree = octTreePARAM;
 		// Is this the root node?
 		if (!parentNodePARAM)
-			_muiNodeDepth = 0;
+			nodeDepth = 0;
 		else
-			_muiNodeDepth = parentNodePARAM->_muiNodeDepth + 1;
+			nodeDepth = parentNodePARAM->nodeDepth + 1;
 
-		if (_muiNodeDepth > octTreePARAM->_muiCurrentMaxNodeDepth)
-			octTreePARAM->_muiCurrentMaxNodeDepth = _muiNodeDepth;
+		if (nodeDepth > octTreePARAM->currentMaxNodeDepth)
+			octTreePARAM->currentMaxNodeDepth = nodeDepth;
 
 		// No children yet
 		for (int i = 0; i < 8; i++)
-			_mpChildNode[i] = 0;
+			childNodes[i] = 0;
 	}
 
 	OctTreeNode::~OctTreeNode()
@@ -30,8 +30,8 @@ namespace DC
 		for (int i = 0; i < 8; i++)
 		{
 			// If child node exists
-			if (_mpChildNode[i])
-				delete _mpChildNode[i];
+			if (childNodes[i])
+				delete childNodes[i];
 		}
 	}
 
@@ -106,14 +106,14 @@ namespace DC
 
 	bool OctTreeNode::hasChildNode(ChildNode childNodePARAM) const
 	{
-		return _mpChildNode[childNodePARAM];
+		return childNodes[childNodePARAM];
 	}
 
 	bool OctTreeNode::hasAnyChildNodes(void) const
 	{
 		for (int i = 0; i < 8; i++)
 		{
-			if (_mpChildNode[i])
+			if (childNodes[i])
 				return true;
 		}
 		return false;
@@ -122,16 +122,16 @@ namespace DC
 	bool OctTreeNode::hasEntitiesInThisAndAllChildren(void) const
 	{
 		// If this node has entities in
-		if (_mmapEntities.size() > 0)
+		if (entities.size() > 0)
 			return true;
 
 		// Now recursively go through any existing child nodes
 		for (int i = 0; i < 8; i++)
 		{
 			// If node exists
-			if (_mpChildNode[i])
+			if (childNodes[i])
 			{
-				if (_mpChildNode[i]->hasEntitiesInThisAndAllChildren())
+				if (childNodes[i]->hasEntitiesInThisAndAllChildren())
 					return true;
 			}
 		}
@@ -148,15 +148,15 @@ namespace DC
 		// Compute region of the new child node
 		AABB childNodeRegion = computeChildNodeRegion(childNodePARAM);
 
-		_mpChildNode[childNodePARAM] = new OctTreeNode(childNodeRegion, this, _mpOctTree);
-		ErrorIfFalse(_mpChildNode[childNodePARAM], L"OctTreeNode::createChildNode() failed. Unable to allocate memory for the new child node.");
+		childNodes[childNodePARAM] = new OctTreeNode(childNodeRegion, this, octTree);
+		ErrorIfFalse(childNodes[childNodePARAM], L"OctTreeNode::createChildNode() failed. Unable to allocate memory for the new child node.");
 	}
 
 	AABB OctTreeNode::computeChildNodeRegion(ChildNode childNodePARAM) const
 	{
 		// Compute dimensions of new child node using the region of this parent node.
-		Vector3f vChildDims = _mRegion.getHalfDimensions();
-		Vector3f vParentPosition = _mRegion.getPosition();
+		Vector3f vChildDims = region.getHalfDimensions();
+		Vector3f vParentPosition = region.getPosition();
 		Vector3f vHalfChildDims = vChildDims * 0.5f;
 
 		// Calculate region of the child node
@@ -225,17 +225,17 @@ namespace DC
 		{
 			// We haven't reached max capacity for this node
 			// OR we've reached maximum node depth with this node
-			if (_mmapEntities.size() < _mpOctTree->_miMaxEntitiesPerNode ||
-				_muiNodeDepth == _mpOctTree->_muiMaxNodeDepth)
+			if (entities.size() < octTree->maxEntitiesPerNode ||
+				nodeDepth == octTree->maxNodeDepth)
 			{
 				// Add the entity to this node
 				// No need to check if the new entity name already exists, as OctTree::addEntity() has already checked
-				_mmapEntities[entityPARAM->_mstrName] = entityPARAM;
-				entityPARAM->_mpNodeOwner = this;	// Set node owner for the entity
+				entities[entityPARAM->name] = entityPARAM;
+				entityPARAM->nodeOwner = this;	// Set node owner for the entity
 				return;
 			}
 			// If we've reached maximum capacity for this node and max node depth hasn't been reached
-			if (_mmapEntities.size() == _mpOctTree->_miMaxEntitiesPerNode)
+			if (entities.size() == octTree->maxEntitiesPerNode)
 			{
 				// We need to create child node/s then move all the entities from this node into the children, 
 				// as well as the new entity
@@ -251,46 +251,46 @@ namespace DC
 				AABB aabbPPP = computeChildNodeRegion(ChildNode::POSX_POSY_POSZ);
 
 				// Add the new entity to this node's entity map, so it'll be moved to the correct child node below
-				_mmapEntities[entityPARAM->_mstrName] = entityPARAM;
-				entityPARAM->_mpNodeOwner = this;	// Set node owner for the entity
+				entities[entityPARAM->name] = entityPARAM;
+				entityPARAM->nodeOwner = this;	// Set node owner for the entity
 
 				// Move all the entities from this node, into the child nodes
-				std::map<std::wstring, OctTreeEntity*>::iterator it = _mmapEntities.begin();
-				while (it != _mmapEntities.end())
+				std::map<std::wstring, OctTreeEntity*>::iterator it = entities.begin();
+				while (it != entities.end())
 				{
 					// Determine which child node the entity fits in, regardless of whether the child node exists or not
 					ChildNode childNode = ChildNode::NONE;
-					if (aabbNNN.getPointIsInside(it->second->_mvPosition))
+					if (aabbNNN.getPointIsInside(it->second->position))
 						childNode = ChildNode::NEGX_NEGY_NEGZ;
-					else if (aabbNNP.getPointIsInside(it->second->_mvPosition))
+					else if (aabbNNP.getPointIsInside(it->second->position))
 						childNode = ChildNode::NEGX_NEGY_POSZ;
-					else if (aabbNPN.getPointIsInside(it->second->_mvPosition))
+					else if (aabbNPN.getPointIsInside(it->second->position))
 						childNode = ChildNode::NEGX_POSY_NEGZ;
-					else if (aabbNPP.getPointIsInside(it->second->_mvPosition))
+					else if (aabbNPP.getPointIsInside(it->second->position))
 						childNode = ChildNode::NEGX_POSY_POSZ;
-					else if (aabbPNN.getPointIsInside(it->second->_mvPosition))
+					else if (aabbPNN.getPointIsInside(it->second->position))
 						childNode = ChildNode::POSX_NEGY_NEGZ;
-					else if (aabbPNP.getPointIsInside(it->second->_mvPosition))
+					else if (aabbPNP.getPointIsInside(it->second->position))
 						childNode = ChildNode::POSX_NEGY_POSZ;
-					else if (aabbPPN.getPointIsInside(it->second->_mvPosition))
+					else if (aabbPPN.getPointIsInside(it->second->position))
 						childNode = ChildNode::POSX_POSY_NEGZ;
-					else if (aabbPPP.getPointIsInside(it->second->_mvPosition))
+					else if (aabbPPP.getPointIsInside(it->second->position))
 						childNode = ChildNode::POSX_POSY_POSZ;
 
 					// Error checking, making sure the entity could fit in one of the eight possible children
-					ErrorIfTrue(ChildNode::NONE == childNode, L"OctTreeNode::addEntity() failed when trying to add entity " + it->second->_mstrName + L" to any of the eight child nodes as it's position doesn't fit inside any of them.");
+					ErrorIfTrue(ChildNode::NONE == childNode, L"OctTreeNode::addEntity() failed when trying to add entity " + it->second->name + L" to any of the eight child nodes as it's position doesn't fit inside any of them.");
 
 					// Create the child node if it doesn't exist
-					if (!_mpChildNode[childNode])
+					if (!childNodes[childNode])
 					{
-						_mpChildNode[childNode] = new OctTreeNode(computeChildNodeRegion(childNode), this, _mpOctTree);
-						ErrorIfFalse(_mpChildNode[childNode], L"OctTreeNode::addEntity() failed when trying to add entity " + it->second->_mstrName + L" to any of the eight child nodes as it was unable to allocate memory for the child node.");
+						childNodes[childNode] = new OctTreeNode(computeChildNodeRegion(childNode), this, octTree);
+						ErrorIfFalse(childNodes[childNode], L"OctTreeNode::addEntity() failed when trying to add entity " + it->second->name + L" to any of the eight child nodes as it was unable to allocate memory for the child node.");
 					}
-					_mpChildNode[childNode]->addEntity(it->second);
+					childNodes[childNode]->addEntity(it->second);
 					it++;
 				}
 				// Remove all entities from this node as they are now stored in the children
-				_mmapEntities.clear();
+				entities.clear();
 				return;
 			}
 		}
@@ -308,43 +308,43 @@ namespace DC
 		AABB aabbPPP = computeChildNodeRegion(ChildNode::POSX_POSY_POSZ);
 
 		ChildNode childNode = ChildNode::NONE;
-		if (aabbNNN.getPointIsInside(entityPARAM->_mvPosition))
+		if (aabbNNN.getPointIsInside(entityPARAM->position))
 			childNode = ChildNode::NEGX_NEGY_NEGZ;
-		else if (aabbNNP.getPointIsInside(entityPARAM->_mvPosition))
+		else if (aabbNNP.getPointIsInside(entityPARAM->position))
 			childNode = ChildNode::NEGX_NEGY_POSZ;
-		else if (aabbNPN.getPointIsInside(entityPARAM->_mvPosition))
+		else if (aabbNPN.getPointIsInside(entityPARAM->position))
 			childNode = ChildNode::NEGX_POSY_NEGZ;
-		else if (aabbNPP.getPointIsInside(entityPARAM->_mvPosition))
+		else if (aabbNPP.getPointIsInside(entityPARAM->position))
 			childNode = ChildNode::NEGX_POSY_POSZ;
-		else if (aabbPNN.getPointIsInside(entityPARAM->_mvPosition))
+		else if (aabbPNN.getPointIsInside(entityPARAM->position))
 			childNode = ChildNode::POSX_NEGY_NEGZ;
-		else if (aabbPNP.getPointIsInside(entityPARAM->_mvPosition))
+		else if (aabbPNP.getPointIsInside(entityPARAM->position))
 			childNode = ChildNode::POSX_NEGY_POSZ;
-		else if (aabbPPN.getPointIsInside(entityPARAM->_mvPosition))
+		else if (aabbPPN.getPointIsInside(entityPARAM->position))
 			childNode = ChildNode::POSX_POSY_NEGZ;
-		else if (aabbPPP.getPointIsInside(entityPARAM->_mvPosition))
+		else if (aabbPPP.getPointIsInside(entityPARAM->position))
 			childNode = ChildNode::POSX_POSY_POSZ;
 
 		// Error checking, making sure the entity could fit in one of the eight possible children
-		ErrorIfTrue(ChildNode::NONE == childNode, L"OctTreeNode::addEntity() failed when trying to add entity " + entityPARAM->_mstrName + L" to any of the eight child nodes as it's position doesn't fit inside any of them.");
+		ErrorIfTrue(ChildNode::NONE == childNode, L"OctTreeNode::addEntity() failed when trying to add entity " + entityPARAM->name + L" to any of the eight child nodes as it's position doesn't fit inside any of them.");
 
 		// Create the child node if it doesn't exist
-		if (!_mpChildNode[childNode])
+		if (!childNodes[childNode])
 		{
-			_mpChildNode[childNode] = new OctTreeNode(computeChildNodeRegion(childNode), this, _mpOctTree);
-			ErrorIfFalse(_mpChildNode[childNode], L"OctTreeNode::addEntity() failed when trying to add entity " + entityPARAM->_mstrName + L" to any of the eight child nodes as it was unable to allocate memory for the child node.");
+			childNodes[childNode] = new OctTreeNode(computeChildNodeRegion(childNode), this, octTree);
+			ErrorIfFalse(childNodes[childNode], L"OctTreeNode::addEntity() failed when trying to add entity " + entityPARAM->name + L" to any of the eight child nodes as it was unable to allocate memory for the child node.");
 		}
 
 		// Add the new entity
-		_mpChildNode[childNode]->addEntity(entityPARAM);
+		childNodes[childNode]->addEntity(entityPARAM);
 	}
 
 	void OctTreeNode::removeEntity(OctTreeEntity* entityPARAM)
 	{
 		// Attempt to find the entity
-		std::map<std::wstring, OctTreeEntity*>::iterator it = _mmapEntities.find(entityPARAM->_mstrName);
-		ErrorIfTrue(it == _mmapEntities.end(), L"OctTreeNode::removeEntity() failed. The entity named " + entityPARAM->_mstrName + L" could not be found");
-		_mmapEntities.erase(it);
+		std::map<std::wstring, OctTreeEntity*>::iterator it = entities.find(entityPARAM->name);
+		ErrorIfTrue(it == entities.end(), L"OctTreeNode::removeEntity() failed. The entity named " + entityPARAM->name + L" could not be found");
+		entities.erase(it);
 		// No need to delete entity, the OctTree::removeAllEntities() or OctTree::removeEntity() does this
 	}
 
@@ -354,7 +354,7 @@ namespace DC
 		if (!hasAnyChildNodes())
 		{
 			// If this node doesn't have any entities
-			if (0 == _mmapEntities.size())
+			if (0 == entities.size())
 				return;
 
 			// Add this node
@@ -365,8 +365,8 @@ namespace DC
 		{
 			for (int i = 0; i < 8; i++)
 			{
-				if (_mpChildNode[i])
-					_mpChildNode[i]->getNodesWithEntities(nodesPARAM);
+				if (childNodes[i])
+					childNodes[i]->getNodesWithEntities(nodesPARAM);
 			}
 		}
 	}
@@ -377,11 +377,11 @@ namespace DC
 		if (!hasAnyChildNodes())
 		{
 			// If this node doesn't have any entities
-			if (0 == _mmapEntities.size())
+			if (0 == entities.size())
 				return;
 
 			// If the AABB interects with this node, add this node
-			if (_mRegion.getAABBintersects(aabbPARAM))
+			if (region.getAABBintersects(aabbPARAM))
 			{
 				nodesPARAM.push_back(this);
 				return;
@@ -391,8 +391,8 @@ namespace DC
 		{
 			for (int i = 0; i < 8; i++)
 			{
-				if (_mpChildNode[i])
-					_mpChildNode[i]->getNodesWithEntitiesWhichIntersect(nodesPARAM, aabbPARAM);
+				if (childNodes[i])
+					childNodes[i]->getNodesWithEntitiesWhichIntersect(nodesPARAM, aabbPARAM);
 			}
 		}
 	}
@@ -403,11 +403,11 @@ namespace DC
 		if (!hasAnyChildNodes())
 		{
 			// If this node doesn't have any entities
-			if (0 == _mmapEntities.size())
+			if (0 == entities.size())
 				return;
 
 			// If the AABB interects with this node, add this node
-			if (frustumPARAM.isAABBIntersecting(_mRegion))
+			if (frustumPARAM.isAABBIntersecting(region))
 			{
 				nodesPARAM.push_back(this);
 				return;
@@ -417,22 +417,22 @@ namespace DC
 		{
 			for (int i = 0; i < 8; i++)
 			{
-				if (_mpChildNode[i])
-					_mpChildNode[i]->getNodesWithEntitiesWhichIntersect(nodesPARAM, frustumPARAM);
+				if (childNodes[i])
+					childNodes[i]->getNodesWithEntitiesWhichIntersect(nodesPARAM, frustumPARAM);
 			}
 		}
 	}
 
 	void OctTreeNode::getMaxNodeDepth(unsigned int& maxNodeDepthPARAM)
 	{
-		if (_muiNodeDepth > maxNodeDepthPARAM)
-			maxNodeDepthPARAM = _muiNodeDepth;
+		if (nodeDepth > maxNodeDepthPARAM)
+			maxNodeDepthPARAM = nodeDepth;
 
 		// Call this method for all children of this node
 		for (int i = 0; i < 4; i++)
 		{
-			if (_mpChildNode[i])	// If child exists
-				_mpChildNode[i]->getMaxNodeDepth(maxNodeDepthPARAM);
+			if (childNodes[i])	// If child exists
+				childNodes[i]->getMaxNodeDepth(maxNodeDepthPARAM);
 		}
 	}
 }

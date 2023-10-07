@@ -50,14 +50,14 @@ namespace DC
 		// The wheel is then spun until the ball stops at a position and then that member is chosen.
 		// It does not guarantee that a member with a high fitness will be chosen, but it increases the odds that it will be.
 		// Note: This may not return any best performing members, so it's probably best to use elitism if using this when selecting members.
-		Genome rouletteWheelSelection(const std::vector<Genome>& Population) const;
+		Genome rouletteWheelSelection(const std::vector<Genome>& population) const;
 
 		// Given a vector of doubles representing the fitness of each member within a population, calculates
 		// the best, worst, average and total fitness of the population and stores those results in the given variables.
-		void computeFitness(const std::vector<double>& PopulationFitness, double& WorstFitness, double& AverageFitness, double& BestFitness, double& TotalFitness) const;
+		void computeFitness(const std::vector<double>& populationFitness, double& worstFitness, double& averageFitness, double& bestFitness, double& totalFitness) const;
 
 		// Given a vector of Genome objects, calculates the best, worst, average and total fitness of the population and stores those results in the given variables.
-		void computeFitness(const std::vector<Genome>& Population, double& WorstFitness, double& AverageFitness, double& BestFitness, double& TotalFitness) const;
+		void computeFitness(const std::vector<Genome>& population, double& worstFitness, double& averageFitness, double& bestFitness, double& totalFitness) const;
 
 		// Given the weights of two networks (the parents), performs a basic crossover of their weights
 		// and creates two child network weights from them.
@@ -71,15 +71,15 @@ namespace DC
 		// then the genes are swapped at another random value which represents a position among all the genes.
 		// A value of around 0.7 is pretty good, in certain cases however, a different value may produce better results.
 		void crossover(
-			std::vector<double>& MumWeights,
-			std::vector<double>& DadWeights,
-			std::vector<double>& ChildAWeights,
-			std::vector<double>& ChildBWeights,
-			double CrossoverRate = 0.7) const;
+			std::vector<double>& mumWeights,
+			std::vector<double>& dadWeights,
+			std::vector<double>& childAWeights,
+			std::vector<double>& childBWeights,
+			double crossoverRate = 0.7) const;
 
 		// Given the weights of two networks (the parents), performs a crossover of their weights between each neuron
 		// and creates two child network weights from them.
-		// SplitPoints needs to be obtained from one of the parent neural networks with a call to it's calculateSplitPoints() method.
+		// splitPoints needs to be obtained from one of the parent neural networks with a call to it's calculateSplitPoints() method.
 		// If any of the given vectors' sizes for the parents are not all the same, an exception occurs.
 		// The child vectors are cleared before doing anything, as they are the outputs.
 		// This crossover takes into consideration the number of weights in each neuron and only splits the weight between those.
@@ -89,19 +89,19 @@ namespace DC
 		// then the genes are swapped at another random value which represents a position among all the genes.
 		// A value of around 0.7 is pretty good, in certain cases however, a different value may produce better results.
 		void crossoverBetweenNeurons(
-			std::vector<double>& MumWeights,
-			std::vector<double>& DadWeights,
-			std::vector<double>& ChildAWeights,
-			std::vector<double>& ChildBWeights,
-			const std::vector<int>& SplitPoints,
-			double CrossoverRate = 0.7) const;
+			std::vector<double>& mumWeights,
+			std::vector<double>& dadWeights,
+			std::vector<double>& childAWeights,
+			std::vector<double>& childBWeights,
+			const std::vector<int>& splitPoints,
+			double crossoverRate = 0.7) const;
 
 		// Given the weights of a neural network, mutates them depending upon the given values
 		// The mutation rate is the probability that a gene will be changed.
 		// This is typically a very small value of around 0.001 or so.
 		// We generate a random value between 0 and 1 for each weight in the given vector and if this
 		// value is less than dMutationProbability, the weight is mutated by a maximum of dMaxMutationAmount.
-		void mutate(std::vector<double>& NetworkWeights, double MutationProbability = 0.001, double MutationMaxAmount = 0.3) const;
+		void mutate(std::vector<double>& networkWeights, double mutationProbability = 0.001, double mutationMaxAmount = 0.3) const;
 
 		// Given a vector of Genomes holding each neural network and their fitness scores,
 		// generates and returns a vector of Genomes which contain a new generation.
@@ -109,26 +109,26 @@ namespace DC
 		// to generate the new population.
 		std::vector<Genome> createNewGeneration(
 			const std::vector<Genome>& genomes,
-			const std::vector<int>& SplitsPoints,
-			double MutationProbability = 0.001,
-			double MutationMaxAmount = 0.3,
-			double CrossoverRate = 0.7,
-			int NumberOfElite = 2,
-			int NumCopiesOfEachElite = 1) const;
+			const std::vector<int>& splitsPoints,
+			double mutationProbability = 0.001,
+			double mutationMaxAmount = 0.3,
+			double crossoverRate = 0.7,
+			int numberOfElite = 2,
+			int numCopiesOfEachElite = 1) const;
 
 		// Performs elitism
 		// Given two vectors of Genomes representing the old population and the new population.
-		// NumberOfElite is the number of elite from the top to copy.
-		// NumCopiesOfEachElite is how many copies of each iNumberOfElite to place.
+		// numberOfElite is the number of elite from the top to copy.
+		// numCopiesOfEachElite is how many copies of each iNumberOfElite to place.
 		// As long as the new population's size is less than the size of the old population,
 		// will choose a certain number of genomes with the best fitness and inserts them into
 		// the new population.
 		// This is typically called fom inside a createNewGeneration method.
 		// This will sort the old population vector so that the genomes with the greatest fitness
-		// are twoards the end of the vector.
+		// are towards the end of the vector.
 		// We don't want the number of elites and number of copies to be too high, otherwise the population's
 		// diversity will suffer. These values all depend upon the size of the population.
-		void insertElite(std::vector<Genome>& OldPop, std::vector<Genome>& NewPop, int NumberOfElite = 2, int NumCopiesOfEachElite = 1) const;
+		void insertElite(std::vector<Genome>& oldPopulation, std::vector<Genome>& newPopulation, int numberOfElite = 2, int numberOfCopiesOfEachElite = 1) const;
 	private:
 	};
 }

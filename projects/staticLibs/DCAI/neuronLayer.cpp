@@ -2,12 +2,12 @@
 
 namespace DC
 {
-	NeuronLayer::NeuronLayer(int NumberOfNeurons, int NumberOfInputsPerNeuron)
+	NeuronLayer::NeuronLayer(int numberOfNeuronsPARAM, int numberOfInputsPerNeuronPARAM)
 	{
-		numberOfNeurons = NumberOfNeurons;
-		for (int i = 0; i < NumberOfNeurons; i++)
+		numberOfNeurons = numberOfNeuronsPARAM;
+		for (int i = 0; i < numberOfNeuronsPARAM; i++)
 		{
-			neurons.push_back(Neuron(NumberOfInputsPerNeuron));
+			neurons.push_back(Neuron(numberOfInputsPerNeuronPARAM));
 		}
 	}
 }

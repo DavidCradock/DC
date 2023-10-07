@@ -25,16 +25,16 @@ namespace DC
 		Genome();
 
 		// Constructor which copies the given values into itself
-		Genome(std::vector<double>& NeuralNetworkWeights, double NetworkFitness);
+		Genome(std::vector<double>& neuralNetworkWeights, double networkFitness);
 
 		// Constructor which copies the given values into itself
-		Genome(const NeuralNetworkFeedForward& neuralNetwork, double NetworkFitness);
+		Genome(const NeuralNetworkFeedForward& neuralNetwork, double networkFitness);
 
 		// Sets this genome to the given values.
-		void set(std::vector<double>& NeuralNetworkWeights, double NetworkFitness);
+		void set(std::vector<double>& neuralNetworkWeights, double networkFitness);
 
 		// Sets this genome to hold the given fitness and weights stored in the given neural network
-		void set(const NeuralNetworkFeedForward& NeuralNetwork, double NetworkFitness);
+		void set(const NeuralNetworkFeedForward& neuralNetwork, double networkFitness);
 
 		// This should be filled with the weights from a neural network by calling it's getNeuronWeights() method.
 		std::vector<double>	weights;

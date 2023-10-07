@@ -146,10 +146,10 @@ namespace DC
 
 		// Constructor.
 		// Sets values to the ones given
-		NeuralNetworkFeedForward(int NumberOfInputs, int NumberOfOutputs, int NumberOfLayers, int NumberOfNeuronsPerLayer);
+		NeuralNetworkFeedForward(int numberOfInputs, int numberOfOutputs, int numberOfLayers, int numberOfNeuronsPerLayer);
 
 		// Creates/recreates the network
-		void create(int NumberOfInputs, int NumberOfOutputs, int NumberOfLayers, int NumberOfNeuronsPerLayer);
+		void create(int numberOfInputs, int numberOfOutputs, int numberOfLayers, int numberOfNeuronsPerLayer);
 
 		// Returns a vector holding all the weights of all the neurons in each of the layers, including the output layer
 		std::vector<double> getNeuronWeights(void) const;
@@ -166,13 +166,13 @@ namespace DC
 
 		// Sets the bias which is used during update when computing the output for a neuron (weight * input) * bias
 		// This is typically set to -1 and left alone.
-		void setWeightBias(double WeightBias = -1);
+		void setWeightBias(double weightBias = -1);
 
 		// Sets the response value used by the sigmoid function which sets the shape of the curve produced from the sigmoid function.
 		// Higher values, flatten the curve, lower ones tighten it.
 		// A default value of 1 is usually used.
 		// Do not set it to zero, this'll create a divide by zero error. (Actually, an exception occurs)
-		void setSigmoidResponse(double Response = 1);
+		void setSigmoidResponse(double response = 1);
 
 		// Calculate splits points used by the genetic algorithm training class
 		// This returns points in the weights vector which are spaced out between each neuron.

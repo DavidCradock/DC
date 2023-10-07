@@ -137,23 +137,23 @@ namespace DC
 
 	private:
 		// Root node of the tree which holds all child nodes and their entities
-		OctTreeNode* _mpRootNode;
+		OctTreeNode* rootNode;
 
 		// Maximum number of entities able to be stored within a node before that node will
 		// be subdivided again into child nodes.
 		// Set during construction
-		int _miMaxEntitiesPerNode;
+		int maxEntitiesPerNode;
 
 		// When adding a new entity and it's position doesn't fit within the root
 		// node's area, the area is increased by this amount until the new
 		// entity's position fits. A value of 2 would double the new root node's
 		// dimensions each time.
 		// Set during construction
-		float _mfSizeIncreaseMultiplier;
+		float sizeIncreaseMultiplier;
 
 		// Hashmap holding pointers to each of the added entities
 		// This is used for fast retrieval or removal of single entities
-		mutable std::map<std::wstring, OctTreeEntity*> _mmapEntities;
+		mutable std::map<std::wstring, OctTreeEntity*> entities;
 
 		// Holds the current maximum depth of the nodes.
 		// If there are no child nodes, this would be zero.
@@ -162,7 +162,7 @@ namespace DC
 		// division depth, in which case, additionally added entities no longer
 		// subdivide a node into children and instead simply add the new entity
 		// into the node, ignoring the _miMaxEntitiesPerNode value.
-		unsigned int _muiCurrentMaxNodeDepth;
+		unsigned int currentMaxNodeDepth;
 
 		// Holds the maximum depth of child nodes.
 		// If adding an entity into a node, that node's depth is equal to this value,
@@ -172,7 +172,7 @@ namespace DC
 		// infinite sub-division of nodes and cause a stack overflow.
 		// This value is computed upon construction and whenever the root node's
 		// dimensions are increased.
-		unsigned int _muiMaxNodeDepth;
+		unsigned int maxNodeDepth;
 
 		// Based upon _mpRootNode->_mRegion, computes the maximum allowable node depth
 		// and sets _muiMaxNodeDepth.

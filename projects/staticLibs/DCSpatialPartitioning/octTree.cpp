@@ -5,7 +5,7 @@ namespace DC
 {
 	OctTree::OctTree(int maxEntitiesPerNodePARAM, float sizeIncreaseMultiplierPARAM)
 	{
-		_mpRootNode = 0;
+		rootNode = 0;
 		init(maxEntitiesPerNodePARAM, sizeIncreaseMultiplierPARAM);
 	}
 
@@ -16,19 +16,19 @@ namespace DC
 		AABB aabbInitialRootNodeRegion(Vector3f(-8, -8, -8), Vector3f(8, 8, 8));
 
 		// Attempt to create root node, passing 0 as the pointer to the parent node
-		_mpRootNode = new OctTreeNode(aabbInitialRootNodeRegion, 0, this);
-		ErrorIfFalse(_mpRootNode, L"OctTree::init() failed. Unable to allocate memory for root node.");
+		rootNode = new OctTreeNode(aabbInitialRootNodeRegion, 0, this);
+		ErrorIfFalse(rootNode, L"OctTree::init() failed. Unable to allocate memory for root node.");
 
 		// Make sure valid values were given
 		ErrorIfTrue(maxEntitiesPerNodePARAM < 1, L"OctTree::init() failed. Given invalid number for iMaxEntitiesPerNode. Must be at least one.");
 		ErrorIfTrue(sizeIncreaseMultiplierPARAM < 2, L"OctTree::init() failed. Given invalid number for fSizeIncreaseMultiplier. Must be at least 2.0f.");
 
 		// Store settings
-		_miMaxEntitiesPerNode = maxEntitiesPerNodePARAM;
-		_mfSizeIncreaseMultiplier = sizeIncreaseMultiplierPARAM;
+		maxEntitiesPerNode = maxEntitiesPerNodePARAM;
+		sizeIncreaseMultiplier = sizeIncreaseMultiplierPARAM;
 
 		// Current maximum node depth
-		_muiCurrentMaxNodeDepth = 0;
+		currentMaxNodeDepth = 0;
 
 		// Compute maximum node depth before node division is forbidden.
 		computeMaxNodeDepth();
@@ -45,20 +45,20 @@ namespace DC
 		// Although this obviously removes the entities from the nodes, because the nodes themselves
 		// no longer exist, this does NOT delete the entity pointers. They are stored in this object's
 		// _mmapEntities hashmap.
-		if (_mpRootNode)
+		if (rootNode)
 		{
-			delete _mpRootNode;
-			_mpRootNode = 0;
+			delete rootNode;
+			rootNode = 0;
 		}
 
 		// Delete all entities
-		std::map<std::wstring, OctTreeEntity*>::iterator it = _mmapEntities.begin();
-		while (it != _mmapEntities.end())
+		std::map<std::wstring, OctTreeEntity*>::iterator it = entities.begin();
+		while (it != entities.end())
 		{
 			delete it->second;
 			it++;
 		}
-		_mmapEntities.clear();
+		entities.clear();
 	}
 /*
 	void OctTree::debugRender(CSMCamera& camera) const
@@ -126,18 +126,18 @@ namespace DC
 	void OctTree::addEntity(const std::wstring& namePARAM, const Vector3f& positionPARAM, int userDataPARAM, void* pUserDataPARAM)
 	{
 		// Make sure the entity doesn't already exist by checking the hashmap
-		std::map<std::wstring, OctTreeEntity*>::iterator it = _mmapEntities.find(namePARAM);
-		ErrorIfTrue(_mmapEntities.end() != it, L"OctTree::addEntity() failed. The entity name of " + namePARAM + L" already exists.");
+		std::map<std::wstring, OctTreeEntity*>::iterator it = entities.find(namePARAM);
+		ErrorIfTrue(entities.end() != it, L"OctTree::addEntity() failed. The entity name of " + namePARAM + L" already exists.");
 
 		// Create new entity, setting it's owner to 0
 		OctTreeEntity* pEntity = new OctTreeEntity(namePARAM, positionPARAM, 0, userDataPARAM, pUserDataPARAM);
 		ErrorIfFalse(pEntity, L"OctTree::addEntity() failed to allocate memory for new entity.");
 
 		// Add entity to hashmap for fast lookup
-		_mmapEntities[namePARAM] = pEntity;
+		entities[namePARAM] = pEntity;
 
 		// Determine whether the given position of the entity fits in the root node
-		if (!_mpRootNode->_mRegion.getPointIsInside(positionPARAM))
+		if (!rootNode->region.getPointIsInside(positionPARAM))
 		{
 			// The position of the new entity doesn't fit within the root node's area
 			// We're going to have to recreate the entire tree
@@ -146,61 +146,61 @@ namespace DC
 			// This does not delete the entities (As they're stored in the _mmapEntities hashmap)
 			// But before deleting the root node, get it's currently set region which we will multiply to get
 			// the root node's new dimensions
-			AABB aabbOldRootNodeRegion = _mpRootNode->_mRegion;
-			delete _mpRootNode;
+			AABB aabbOldRootNodeRegion = rootNode->region;
+			delete rootNode;
 
 			// Inscrease the old root node's region size until the new entity's position fits within
 			bool bNewPositionFits = false;
 			while (!bNewPositionFits)
 			{
-				aabbOldRootNodeRegion.resizeArea(_mfSizeIncreaseMultiplier);
+				aabbOldRootNodeRegion.resizeArea(sizeIncreaseMultiplier);
 				bNewPositionFits = aabbOldRootNodeRegion.getPointIsInside(positionPARAM);
 			}
 
 			// Now re-create the root node, passing 0 as the pointer to the parent node and the new region size
-			_mpRootNode = new OctTreeNode(aabbOldRootNodeRegion, 0, this);
-			ErrorIfFalse(_mpRootNode, L"OctTree::addEntity() failed. Unable to allocate memory for new root node.");
+			rootNode = new OctTreeNode(aabbOldRootNodeRegion, 0, this);
+			ErrorIfFalse(rootNode, L"OctTree::addEntity() failed. Unable to allocate memory for new root node.");
 
 			// Now re-insert all entities stored in the hash map back into the tree
 			// The new entity has already been added to the hash map, so no need to insert it seperately
-			it = _mmapEntities.begin();
-			while (it != _mmapEntities.end())
+			it = entities.begin();
+			while (it != entities.end())
 			{
-				_mpRootNode->addEntity(it->second);
+				rootNode->addEntity(it->second);
 				it++;
 			}
 		}
 		else  // The entity position does fit inside the area of this node, simply add it
 		{
-			_mpRootNode->addEntity(pEntity);
+			rootNode->addEntity(pEntity);
 		}
 	}
 
 	void OctTree::removeEntity(const std::wstring& namePARAM)
 	{
 		// Make sure the entity exists by checking the hashmap
-		std::map<std::wstring, OctTreeEntity*>::iterator it = _mmapEntities.find(namePARAM);
-		ErrorIfTrue(_mmapEntities.end() == it, L"OctTree::removeEntity() failed. The entity name of " + namePARAM + L" doesn't exist.");
+		std::map<std::wstring, OctTreeEntity*>::iterator it = entities.find(namePARAM);
+		ErrorIfTrue(entities.end() == it, L"OctTree::removeEntity() failed. The entity name of " + namePARAM + L" doesn't exist.");
 
 		// Get the node the entity is stored in to remove the entity from itself.
-		OctTreeNode* pNodeContainingRemovedEntity = it->second->_mpNodeOwner;
+		OctTreeNode* pNodeContainingRemovedEntity = it->second->nodeOwner;
 		pNodeContainingRemovedEntity->removeEntity(it->second);
 
 		// Remove the entity from the hashmap and delete it
 		OctTreeEntity* pEntity = it->second;
-		_mmapEntities.erase(it);
+		entities.erase(it);
 		delete pEntity;
 
 		// Now check to see if the node is now empty and if so, remove it
 		if (!pNodeContainingRemovedEntity->hasEntitiesInThisAndAllChildren())
 		{
 			// Is the node which held the removed entity, the root node
-			bool bNodeIsRoot = _mpRootNode == pNodeContainingRemovedEntity;
+			bool bNodeIsRoot = rootNode == pNodeContainingRemovedEntity;
 
 			if (!bNodeIsRoot)  // The node wasn't the root node and therefore pNodeParent will contain a valid pointer to it's parent node.
 			{
 				// Store pointer to the parent
-				OctTreeNode* pNodeParent = pNodeContainingRemovedEntity->_mpParentNode;
+				OctTreeNode* pNodeParent = pNodeContainingRemovedEntity->parentNode;
 
 				// We're done, except...
 				// We need to traverse up to the root node and delete any NOW empty nodes, which may 
@@ -211,16 +211,16 @@ namespace DC
 					// Go through each of the eight possible child nodes of the parent
 					for (int i = 0; i < 8; i++)
 					{
-						if (pNodeParent->_mpChildNode[i])	// There is a child at this array position
+						if (pNodeParent->childNodes[i])	// There is a child at this array position
 						{
-							if (!pNodeParent->_mpChildNode[i]->hasEntitiesInThisAndAllChildren())	// Node is empty
+							if (!pNodeParent->childNodes[i]->hasEntitiesInThisAndAllChildren())	// Node is empty
 							{
-								delete pNodeParent->_mpChildNode[i];
-								pNodeParent->_mpChildNode[i] = 0;
+								delete pNodeParent->childNodes[i];
+								pNodeParent->childNodes[i] = 0;
 							}
 						}
 					}
-					pNodeParent = pNodeParent->_mpParentNode;
+					pNodeParent = pNodeParent->parentNode;
 				}
 
 				// This will delete the node and all it's children.
@@ -235,36 +235,36 @@ namespace DC
 	bool OctTree::getEntityExists(const std::wstring& namePARAM) const
 	{
 		// Check the hashmap
-		std::map<std::wstring, OctTreeEntity*>::iterator it = _mmapEntities.find(namePARAM);
-		return(_mmapEntities.end() != it);
+		std::map<std::wstring, OctTreeEntity*>::iterator it = entities.find(namePARAM);
+		return(entities.end() != it);
 	}
 
 	void OctTree::removeAllEntities(bool resetTreePARAM)
 	{
 		// Go through each entity, asking each node which it's in to remove itself
-		std::map<std::wstring, OctTreeEntity*>::iterator it = _mmapEntities.begin();
-		while (it != _mmapEntities.end())
+		std::map<std::wstring, OctTreeEntity*>::iterator it = entities.begin();
+		while (it != entities.end())
 		{
 			// Get the node the entity is stored in to remove the entity from itself.
-			it->second->_mpNodeOwner->removeEntity(it->second);
+			it->second->nodeOwner->removeEntity(it->second);
 
 			// Remove the entity from the hashmap and delete it
 			OctTreeEntity* pEntity = it->second;
-			_mmapEntities.erase(it);
+			entities.erase(it);
 			delete pEntity;
-			it = _mmapEntities.begin();
+			it = entities.begin();
 		}
 
 		// Now all entities are removed and deleted, reset the tree if bResetTree desires it
 		if (resetTreePARAM)
 		{
 			// Get the root node's AABB, so we can re-create it
-			AABB aabbRootNode = _mpRootNode->_mRegion;
-			delete _mpRootNode;
-			_mpRootNode = new OctTreeNode(aabbRootNode, 0, this);
+			AABB aabbRootNode = rootNode->region;
+			delete rootNode;
+			rootNode = new OctTreeNode(aabbRootNode, 0, this);
 
 			// Reset current max node depth
-			_muiCurrentMaxNodeDepth = 0;
+			currentMaxNodeDepth = 0;
 
 			// Compute new maximum node depth
 			computeMaxNodeDepth();
@@ -274,22 +274,22 @@ namespace DC
 	void OctTree::setEntityPosition(const std::wstring& namePARAM, const Vector3f& positionPARAM)
 	{
 		// First make sure the named entity exists
-		std::map<std::wstring, OctTreeEntity*>::iterator it = _mmapEntities.find(namePARAM);
-		ErrorIfTrue(it == _mmapEntities.end(), L"OctTree::setEntityPosition() failed. The named entity of " + namePARAM + L" doesn't exist.");
+		std::map<std::wstring, OctTreeEntity*>::iterator it = entities.find(namePARAM);
+		ErrorIfTrue(it == entities.end(), L"OctTree::setEntityPosition() failed. The named entity of " + namePARAM + L" doesn't exist.");
 
 		// First check to see if the new entity position still fits within it's current node
 		// If it does, we simply update the position
-		if (it->second->_mpNodeOwner->_mRegion.getPointIsInside(positionPARAM))
+		if (it->second->nodeOwner->region.getPointIsInside(positionPARAM))
 		{
-			it->second->_mvPosition = positionPARAM;
+			it->second->position = positionPARAM;
 			return;
 		}
 
 		// If we get here, the new position doesn't fit within the entity's current node
 
 		// Remove the entity from the tree and then re-insert it
-		int iUserData = it->second->miUserData;
-		void* pUserData = it->second->mpUserData;
+		int iUserData = it->second->userData;
+		void* pUserData = it->second->pUserData;
 		removeEntity(namePARAM);
 		addEntity(namePARAM, positionPARAM, iUserData, pUserData);
 	}
@@ -297,15 +297,15 @@ namespace DC
 	void OctTree::getEntityPosition(const std::wstring& namePARAM, Vector3f& positionPARAM) const
 	{
 		// First make sure the named entity exists
-		std::map<std::wstring, OctTreeEntity*>::iterator it = _mmapEntities.find(namePARAM);
-		ErrorIfTrue(it == _mmapEntities.end(), L"OctTree::getEntityPosition() failed. The named entity of " + namePARAM + L" doesn't exist.");
-		positionPARAM = it->second->_mvPosition;
+		std::map<std::wstring, OctTreeEntity*>::iterator it = entities.find(namePARAM);
+		ErrorIfTrue(it == entities.end(), L"OctTree::getEntityPosition() failed. The named entity of " + namePARAM + L" doesn't exist.");
+		positionPARAM = it->second->position;
 	}
 
 	void OctTree::computeMaxNodeDepth(void)
 	{
 		// Obtain smallest dimension of root node
-		Vector3f vRootNodeDims = _mpRootNode->_mRegion.getDimensions();
+		Vector3f vRootNodeDims = rootNode->region.getDimensions();
 		float fSmallestDim = vRootNodeDims.x;
 		if (vRootNodeDims.y < fSmallestDim)
 			fSmallestDim = vRootNodeDims.y;
@@ -313,32 +313,32 @@ namespace DC
 			fSmallestDim = vRootNodeDims.z;
 
 		// Now compute max node depth
-		_muiMaxNodeDepth = 0;
+		maxNodeDepth = 0;
 		while (fSmallestDim > 2)
 		{
 			fSmallestDim *= 0.5f;
-			_muiMaxNodeDepth++;
+			maxNodeDepth++;
 		}
 	}
 
 	std::vector<OctTreeNode*> OctTree::getNodesWithEntities(void) const
 	{
 		std::vector<OctTreeNode*> vResult;
-		_mpRootNode->getNodesWithEntities(vResult);
+		rootNode->getNodesWithEntities(vResult);
 		return vResult;
 	}
 
 	std::vector<OctTreeNode*> OctTree::getNodesWithEntitiesWhichIntersect(const AABB& aabbPARAM) const
 	{
 		std::vector<OctTreeNode*> vResult;
-		_mpRootNode->getNodesWithEntitiesWhichIntersect(vResult, aabbPARAM);
+		rootNode->getNodesWithEntitiesWhichIntersect(vResult, aabbPARAM);
 		return vResult;
 	}
 
 	std::vector<OctTreeNode*> OctTree::getNodesWithEntitiesWhichIntersect(const Frustum& frustumPARAM) const
 	{
 		std::vector<OctTreeNode*> vResult;
-		_mpRootNode->getNodesWithEntitiesWhichIntersect(vResult, frustumPARAM);
+		rootNode->getNodesWithEntitiesWhichIntersect(vResult, frustumPARAM);
 		return vResult;
 	}
 
@@ -355,8 +355,8 @@ namespace DC
 		for (unsigned int ui = 0; ui < vNodes.size(); ui++)
 		{
 			// Go through each entity within each node and add them to the resulting vector
-			std::map<std::wstring, OctTreeEntity*>::iterator it = vNodes[ui]->_mmapEntities.begin();
-			while (it != vNodes[ui]->_mmapEntities.end())
+			std::map<std::wstring, OctTreeEntity*>::iterator it = vNodes[ui]->entities.begin();
+			while (it != vNodes[ui]->entities.end())
 			{
 				vResult.push_back(it->second);
 				it++;
@@ -373,8 +373,8 @@ namespace DC
 		for (unsigned int ui = 0; ui < vNodes.size(); ui++)
 		{
 			// Go through each entity within each node and add them to the resulting vector
-			std::map<std::wstring, OctTreeEntity*>::iterator it = vNodes[ui]->_mmapEntities.begin();
-			while (it != vNodes[ui]->_mmapEntities.end())
+			std::map<std::wstring, OctTreeEntity*>::iterator it = vNodes[ui]->entities.begin();
+			while (it != vNodes[ui]->entities.end())
 			{
 				vResult.push_back(it->second);
 				it++;
@@ -391,8 +391,8 @@ namespace DC
 		for (unsigned int ui = 0; ui < vNodes.size(); ui++)
 		{
 			// Go through each entity within each node and add them to the resulting vector
-			std::map<std::wstring, OctTreeEntity*>::iterator it = vNodes[ui]->_mmapEntities.begin();
-			while (it != vNodes[ui]->_mmapEntities.end())
+			std::map<std::wstring, OctTreeEntity*>::iterator it = vNodes[ui]->entities.begin();
+			while (it != vNodes[ui]->entities.end())
 			{
 				vResult.push_back(it->second);
 				it++;
@@ -404,14 +404,14 @@ namespace DC
 	unsigned int OctTree::getNodeDepthCurrent(void)
 	{
 		// We have to recompute this, so go through all nodes, get their depth and compare
-		_muiCurrentMaxNodeDepth = 0;
-		_mpRootNode->getMaxNodeDepth(_muiCurrentMaxNodeDepth);
-		return _muiCurrentMaxNodeDepth;
+		currentMaxNodeDepth = 0;
+		rootNode->getMaxNodeDepth(currentMaxNodeDepth);
+		return currentMaxNodeDepth;
 	}
 
 	unsigned int OctTree::getNodeDepthMax(void) const
 	{
-		return _muiMaxNodeDepth;
+		return maxNodeDepth;
 	}
 
 }

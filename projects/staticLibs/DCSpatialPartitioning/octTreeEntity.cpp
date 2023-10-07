@@ -5,27 +5,27 @@ namespace DC
 {
 	OctTreeEntity::OctTreeEntity(const std::wstring& namePARAM, const Vector3f& positionPARAM, OctTreeNode* nodeOwnerPARAM, int userDataPARAM, void* pUserDataPARAM)
 	{
-		_mstrName = namePARAM;
-		_mvPosition = positionPARAM;
-		_mpNodeOwner = nodeOwnerPARAM;
+		name = namePARAM;
+		position = positionPARAM;
+		nodeOwner = nodeOwnerPARAM;
 
 		// Store user data
-		miUserData = userDataPARAM;
-		mpUserData = pUserDataPARAM;
+		userData = userDataPARAM;
+		pUserData = pUserDataPARAM;
 	}
 
 	void OctTreeEntity::debugSetColour(Colour& colourPARAM)
 	{
-		_mColDebug = colourPARAM;
+		debugColour = colourPARAM;
 	}
 
 	Vector3f OctTreeEntity::getPosition(void)
 	{
-		return _mvPosition;;
+		return position;;
 	}
 
 	std::wstring OctTreeEntity::getName(void)
 	{
-		return _mstrName;
+		return name;
 	}
 }

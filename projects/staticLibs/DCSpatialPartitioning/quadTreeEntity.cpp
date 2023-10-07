@@ -5,31 +5,31 @@ namespace DC
 {
 	QuadTreeEntity::QuadTreeEntity(const std::wstring& namePARAM, int positionXPARAM, int positionYPARAM, QuadTreeNode* nodeOwnerPARAM, int userDataPARAM, void* pUserDataPARAM)
 	{
-		_mstrName = namePARAM;
-		_miPosX = positionXPARAM;
-		_miPosY = positionYPARAM;
-		_mpNodeOwner = nodeOwnerPARAM;
+		name = namePARAM;
+		positionX = positionXPARAM;
+		positionY = positionYPARAM;
+		nodeOwner = nodeOwnerPARAM;
 
 		// Store user data
-		miUserData = userDataPARAM;
-		mpUserData = pUserDataPARAM;
+		userData = userDataPARAM;
+		pUserData = pUserDataPARAM;
 	}
 
 	void QuadTreeEntity::debugSetColour(Colour& colourPARAM)
 	{
-		_mColDebug = colourPARAM;
+		debugColour = colourPARAM;
 	}
 
 	Vector2f QuadTreeEntity::getPosition(void)
 	{
 		Vector2f v;
-		v.x = float(_miPosX);
-		v.y = float(_miPosY);
+		v.x = float(positionX);
+		v.y = float(positionY);
 		return v;
 	}
 
 	std::wstring QuadTreeEntity::getName(void)
 	{
-		return _mstrName;
+		return name;
 	}
 }

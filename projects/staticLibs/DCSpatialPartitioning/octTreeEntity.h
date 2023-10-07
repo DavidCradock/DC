@@ -30,13 +30,13 @@ namespace DC
 
 		// Below are members which may be set to store various information.
 		// They have nothing to do with the oct tree itself.
-		int miUserData;
-		void* mpUserData;
+		int userData;
+		void* pUserData;
 
 	private:
-		std::wstring _mstrName;			// Unique name of this entity
-		Vector3f _mvPosition;			// Position of this entity
-		OctTreeNode* _mpNodeOwner;		// The node this entity is in
-		Colour _mColDebug;				// The colour used when debug rendering this entity
+		std::wstring name;				// Unique name of this entity
+		Vector3f position;				// Position of this entity
+		OctTreeNode* nodeOwner;			// The node this entity is in
+		Colour debugColour;				// The colour used when debug rendering this entity
 	};
 }

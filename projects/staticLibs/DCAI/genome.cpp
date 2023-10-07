@@ -7,27 +7,27 @@ namespace DC
 		fitness = 0;
 	}
 
-	Genome::Genome(std::vector<double>& NeuralNetworkWeights, double NetworkFitness)
+	Genome::Genome(std::vector<double>& neuralNetworkWeights, double networkFitness)
 	{
-		fitness = NetworkFitness;
-		weights = NeuralNetworkWeights;
+		fitness = networkFitness;
+		weights = neuralNetworkWeights;
 	}
 
-	Genome::Genome(const NeuralNetworkFeedForward& NeuralNetwork, double NetworkFitness)
+	Genome::Genome(const NeuralNetworkFeedForward& neuralNetwork, double networkFitness)
 	{
-		fitness = NetworkFitness;
-		weights = NeuralNetwork.getNeuronWeights();
+		fitness = networkFitness;
+		weights = neuralNetwork.getNeuronWeights();
 	}
 
-	void Genome::set(std::vector<double>& NeuralNetworkWeights, double NetworkFitness)
+	void Genome::set(std::vector<double>& neuralNetworkWeights, double networkFitness)
 	{
-		fitness = NetworkFitness;
-		weights = NeuralNetworkWeights;
+		fitness = networkFitness;
+		weights = neuralNetworkWeights;
 	}
 
-	void Genome::set(const NeuralNetworkFeedForward& NeuralNetwork, double NetworkFitness)
+	void Genome::set(const NeuralNetworkFeedForward& neuralNetwork, double networkFitness)
 	{
-		fitness = NetworkFitness;
-		weights = NeuralNetwork.getNeuronWeights();
+		fitness = networkFitness;
+		weights = neuralNetwork.getNeuronWeights();
 	}
 }
