@@ -45,17 +45,17 @@ namespace DC
 		width = height = numberOfChannels = 0;
 	}
 
-	void Image::createBlank(unsigned int Width, unsigned int Height, unsigned short NumberOfChannels)
+	void Image::createBlank(unsigned int widthPARAM, unsigned int heightPARAM, unsigned short numberOfChannelsPARAM)
 	{
 		free();
-		ErrorIfTrue(Width < 1, L"Image::createBlank() failed as given width < 1.");
-		ErrorIfTrue(Height < 1, L"Image::createBlank() failed as given height < 1.");
-		ErrorIfTrue(NumberOfChannels < 3, L"Image::createBlank() failed as given number of channels < 1. (Only 3 or 4 is valid)");
-		ErrorIfTrue(NumberOfChannels > 4, L"Image::createBlank() failed as given number of channels > 4. (Only 3 or 4 is valid)");
+		ErrorIfTrue(widthPARAM < 1, L"Image::createBlank() failed as given width < 1.");
+		ErrorIfTrue(heightPARAM < 1, L"Image::createBlank() failed as given height < 1.");
+		ErrorIfTrue(numberOfChannelsPARAM < 3, L"Image::createBlank() failed as given number of channels < 1. (Only 3 or 4 is valid)");
+		ErrorIfTrue(numberOfChannelsPARAM > 4, L"Image::createBlank() failed as given number of channels > 4. (Only 3 or 4 is valid)");
 
-		width = Width;
-		height = Height;
-		numberOfChannels = NumberOfChannels;
+		width = widthPARAM;
+		height = heightPARAM;
+		numberOfChannels = numberOfChannelsPARAM;
 		dataSize = width * height * numberOfChannels;
 		data = new unsigned char[dataSize];
 		ErrorIfTrue(!data, L"Image::createBlank() failed to allocate memory.");
@@ -65,22 +65,22 @@ namespace DC
 			data[i] = 0;
 	}
 
-	bool Image::load(const String& Filename, bool FlipForOpenGL)
+	bool Image::load(const String& filename, bool flipForOpenGL)
 	{
 		free();
-		STB::stbi_set_flip_vertically_on_load(FlipForOpenGL);
+		STB::stbi_set_flip_vertically_on_load(flipForOpenGL);
 
 		// Get number of channels in the image file
 		int iDims[2];
 		int iNumChannels = 3;
-		loadInfo(Filename, iDims[0], iDims[1], iNumChannels);
+		loadInfo(filename, iDims[0], iDims[1], iNumChannels);
 		STB::stbi_uc* pixels = 0;
 		if (4 == iNumChannels)
-			pixels = STB::stbi_load(Filename.c_str(), &width, &height, &numberOfChannels, STB::STBI_rgb_alpha);
+			pixels = STB::stbi_load(filename.c_str(), &width, &height, &numberOfChannels, STB::STBI_rgb_alpha);
 		else if (3 == iNumChannels)
-			pixels = STB::stbi_load(Filename.c_str(), &width, &height, &numberOfChannels, STB::STBI_rgb);
+			pixels = STB::stbi_load(filename.c_str(), &width, &height, &numberOfChannels, STB::STBI_rgb);
 		else if (1 == iNumChannels)
-			pixels = STB::stbi_load(Filename.c_str(), &width, &height, &numberOfChannels, 1);
+			pixels = STB::stbi_load(filename.c_str(), &width, &height, &numberOfChannels, 1);
 
 		if (!pixels)
 			return false;
@@ -112,7 +112,7 @@ namespace DC
 		return true;
 	}
 
-	bool Image::loadInfo(const String& Filename, int& Width, int& Height, int& NumberOfChannels)
+	bool Image::loadInfo(const String& filename, int& widthPARAM, int& heightPARAM, int& numberOfChannelsPARAM)
 	{
 		// To query the width, height and component count of an image without having to
 		// decode the full file, you can use the stbi_info family of functions:
@@ -121,54 +121,54 @@ namespace DC
 		//   ok = stbi_info(filename, &ix, &iy, &n);
 		//   // returns ok=1 and sets ix, iy, n if image is a supported format,
 		//   // 0 otherwise.
-		return (bool)STB::stbi_info(Filename.c_str(), &Width, &Height, &NumberOfChannels);
+		return (bool)STB::stbi_info(filename.c_str(), &widthPARAM, &heightPARAM, &numberOfChannelsPARAM);
 	}
 
-	void Image::saveAsBMP(const String& Filename, bool FlipOnSave) const
+	void Image::saveAsBMP(const String& filename, bool flipOnSave) const
 	{
 		ErrorIfTrue(!data, L"Image::saveAsBMP() failed. Image not yet created.");
-		STB::stbi_flip_vertically_on_write(FlipOnSave); // flag is non-zero to flip data vertically
+		STB::stbi_flip_vertically_on_write(flipOnSave); // flag is non-zero to flip data vertically
 		String err;
 		err += L"Image::saveAsBMP(\"";
-		err += Filename;
+		err += filename;
 		err += L"\") failed.Image failed to be written.";
-		ErrorIfTrue(!STB::stbi_write_bmp(Filename.c_str(), width, height, numberOfChannels, data), err);
+		ErrorIfTrue(!STB::stbi_write_bmp(filename.c_str(), width, height, numberOfChannels, data), err);
 	}
 
-	void Image::saveAsJPG(const String& Filename, bool FlipOnSave, int Quality) const
+	void Image::saveAsJPG(const String& filename, bool flipOnSave, int quality) const
 	{
 		ErrorIfTrue(!data, L"Image::saveAsJPG() failed. Image not yet created.");
-		STB::stbi_flip_vertically_on_write(FlipOnSave); // flag is non-zero to flip data vertically
+		STB::stbi_flip_vertically_on_write(flipOnSave); // flag is non-zero to flip data vertically
 		String err;
 		err += L"Image::saveAsJPG(\"";
-		err += Filename;
+		err += filename;
 		err += L"\") failed.Image failed to be written.";
-		ErrorIfTrue(!STB::stbi_write_jpg(Filename.c_str(), width, height, numberOfChannels, data, Quality), err);
+		ErrorIfTrue(!STB::stbi_write_jpg(filename.c_str(), width, height, numberOfChannels, data, quality), err);
 	}
 
-	void Image::saveAsPNG(const String& Filename, bool FlipOnSave) const
+	void Image::saveAsPNG(const String& filename, bool flipOnSave) const
 	{
 		ErrorIfTrue(!data, L"Image::saveAsPNG() failed. Image not yet created.");
-		STB::stbi_flip_vertically_on_write(FlipOnSave); // flag is non-zero to flip data vertically
+		STB::stbi_flip_vertically_on_write(flipOnSave); // flag is non-zero to flip data vertically
 		String err;
 		err += L"Image::saveAsPNG(\"";
-		err += Filename;
+		err += filename;
 		err += L"\") failed.Image failed to be written.";
-		ErrorIfTrue(!STB::stbi_write_png(Filename.c_str(), width, height, numberOfChannels, data, width * numberOfChannels), err);
+		ErrorIfTrue(!STB::stbi_write_png(filename.c_str(), width, height, numberOfChannels, data, width * numberOfChannels), err);
 	}
 
-	void Image::saveAsTGA(const String& Filename, bool FlipOnSave) const
+	void Image::saveAsTGA(const String& filename, bool flipOnSave) const
 	{
 		ErrorIfTrue(!data, L"Image::saveAsTGA() failed. Image not yet created.");
-		STB::stbi_flip_vertically_on_write(FlipOnSave); // flag is non-zero to flip data vertically
+		STB::stbi_flip_vertically_on_write(flipOnSave); // flag is non-zero to flip data vertically
 		String err;
 		err += L"Image::saveAsTGA(\"";
-		err += Filename;
+		err += filename;
 		err += L"\") failed.Image failed to be written.";
-		ErrorIfTrue(!STB::stbi_write_tga(Filename.c_str(), width, height, numberOfChannels, data), err);
+		ErrorIfTrue(!STB::stbi_write_tga(filename.c_str(), width, height, numberOfChannels, data), err);
 	}
 
-	void Image::fill(unsigned char Red, unsigned char Green, unsigned char Blue, unsigned char Alpha)
+	void Image::fill(unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha)
 	{
 		ErrorIfTrue(!data, L"Image::fill() failed. Image not yet created.");
 
@@ -179,9 +179,9 @@ namespace DC
 		{
 			while (i < dataSize)
 			{
-				data[i] = Red;
-				data[i+1] = Green;
-				data[i+2] = Blue;
+				data[i] = red;
+				data[i+1] = green;
+				data[i+2] = blue;
 				i += numberOfChannels;
 			}
 			return;
@@ -192,10 +192,10 @@ namespace DC
 		{
 			while (i < dataSize)
 			{
-				data[i] = Red;
-				data[i+1] = Green;
-				data[i+2] = Blue;
-				data[i+3] = Alpha;
+				data[i] = red;
+				data[i+1] = green;
+				data[i+2] = blue;
+				data[i+3] = alpha;
 				i += numberOfChannels;
 			}
 		}
@@ -292,13 +292,13 @@ namespace DC
 		data = pNewImageStartAddress;	// Make image data point to the new data
 	}
 
-	void Image::invert(bool InvertColour, bool InvertAlpha)
+	void Image::invert(bool invertColour, bool invertAlpha)
 	{
 		ErrorIfTrue(!data, L"Image::invert() failed. Image not yet created.");
 
 		unsigned int i = 0;
 		int iIndex;
-		if (InvertColour)
+		if (invertColour)
 		{
 			while (i < dataSize)
 			{
@@ -310,7 +310,7 @@ namespace DC
 			}
 		}
 
-		if (numberOfChannels == 4 && InvertAlpha)
+		if (numberOfChannels == 4 && invertAlpha)
 		{
 			i = 3;
 			while (i < dataSize)
@@ -344,11 +344,11 @@ namespace DC
 	}
 
 
-	void Image::greyscale(float RedSensitivity, float GreenSensitivity, float BlueSensitivity)
+	void Image::greyscale(float redSensitivity, float greenSensitivity, float blueSensitivity)
 	{
 		ErrorIfTrue(!data, L"Image::greyscale() failed. Image not yet created.");
 
-		Vector3f vCol(RedSensitivity, GreenSensitivity, BlueSensitivity);
+		Vector3f vCol(redSensitivity, greenSensitivity, blueSensitivity);
 
 		unsigned int i = 0;
 		float fTmp;
@@ -434,35 +434,35 @@ namespace DC
 		}
 	}
 
-	void Image::copyTo(Image & DestinationImage) const
+	void Image::copyTo(Image& destinationImage) const
 	{
 		ErrorIfTrue(!data, L"Image::copyTo() failed. Source image not yet created.");
 
 		// If destination image is the same as this one, do nothing
-		if (DestinationImage.data == this->data)
+		if (destinationImage.data == this->data)
 			return;
 
-		DestinationImage.free();
-		DestinationImage.createBlank(width, height, numberOfChannels);
-		memcpy(DestinationImage.data, data, sizeof(unsigned char) * dataSize);
+		destinationImage.free();
+		destinationImage.createBlank(width, height, numberOfChannels);
+		memcpy(destinationImage.data, data, sizeof(unsigned char) * dataSize);
 	}
 
-	void Image::copyRectTo(Image& DestinationImage, int SourcePositionX, int SourcePositionY, int SourceWidth, int SourceHeight, int DestinationPositionX, int DestinationPositionY) const
+	void Image::copyRectTo(Image& destinationImage, int sourcePositionX, int sourcePositionY, int sourceWidth, int sourceHeight, int destinationPositionX, int destinationPositionY) const
 	{
 		// Check that both images have data
 		ErrorIfTrue(!data, L"Image::copyRectTo() failed. Source image not yet created.");
-		ErrorIfTrue(!DestinationImage.data, L"Image::copyRectTo() failed. Destination image not yet created.");
+		ErrorIfTrue(!destinationImage.data, L"Image::copyRectTo() failed. Destination image not yet created.");
 
 		// Compute source rect
-		int iSrcLeft = SourcePositionX;
-		int iSrcBot = SourcePositionY;
-		int iSrcRight = iSrcLeft + SourceWidth;
-		int iSrcTop = iSrcBot + SourceHeight;
+		int iSrcLeft = sourcePositionX;
+		int iSrcBot = sourcePositionY;
+		int iSrcRight = iSrcLeft + sourceWidth;
+		int iSrcTop = iSrcBot + sourceHeight;
 		// Compute destination rect
-		int iDstLeft = DestinationPositionX;
-		int iDstBot = DestinationPositionY;
-		int iDstRight = iDstLeft + SourceWidth;
-		int iDstTop = iDstBot + SourceHeight;
+		int iDstLeft = destinationPositionX;
+		int iDstBot = destinationPositionY;
+		int iDstRight = iDstLeft + sourceWidth;
+		int iDstTop = iDstBot + sourceHeight;
 
 		// The above may be invalid due to different sizes, invalid positions, dims etc.
 		// Invalid starting positions
@@ -470,15 +470,15 @@ namespace DC
 			return;
 		if (iSrcBot >= height)
 			return;
-		if (iDstLeft >= DestinationImage.width)
+		if (iDstLeft >= destinationImage.width)
 			return;
-		if (iDstBot >= DestinationImage.height)
+		if (iDstBot >= destinationImage.height)
 			return;
 		// Clamp right and top to edges of their respective images
 		clamp(iSrcRight, iSrcLeft, width);
 		clamp(iSrcTop, iSrcBot, height);
-		clamp(iDstRight, iDstLeft, DestinationImage.width);
-		clamp(iDstTop, iDstBot, DestinationImage.height);
+		clamp(iDstRight, iDstLeft, destinationImage.width);
+		clamp(iDstTop, iDstBot, destinationImage.height);
 		// Compute rect dims for both images
 		unsigned int iSrcRectWidth = iSrcRight - iSrcLeft;
 		unsigned int iSrcRectHeight = iSrcTop - iSrcBot;
@@ -509,7 +509,7 @@ namespace DC
 				idx = iDstLeft + ix;
 				idy = iDstBot + iy;
 				getPixel(isx, isy, colTmp[0], colTmp[1], colTmp[2], colTmp[3]);
-				DestinationImage.setPixel(idx, idy, colTmp[0], colTmp[1], colTmp[2], colTmp[3]);
+				destinationImage.setPixel(idx, idy, colTmp[0], colTmp[1], colTmp[2], colTmp[3]);
 			}
 		}
 	}
@@ -581,7 +581,7 @@ namespace DC
 		}
 	}
 
-	void Image::edgeDetect(Image& outputImage, unsigned char Red, unsigned char Green, unsigned char Blue)
+	void Image::edgeDetect(Image& outputImage, unsigned char red, unsigned char green, unsigned char blue)
 	{
 		ErrorIfTrue(!data, L"Image::edgeDetect() failed. Image data doesn't exist.");
 		ErrorIfTrue(numberOfChannels < 3, L"Image::edgeDetect() failed. Some image data exists, but doesn't have enough colour channels.");
@@ -593,7 +593,7 @@ namespace DC
 		{
 			while (iY < (int)height)
 			{
-				if (_isPixelEdge(iX, iY, Red, Green, Blue))
+				if (_isPixelEdge(iX, iY, red, green, blue))
 					outputImage.setPixel(iX, iY, 255, 255, 255, 255);
 				else
 					outputImage.setPixel(iX, iY, 0, 0, 0, 0);
@@ -644,11 +644,11 @@ namespace DC
 		}
 	}
 
-	void Image::normalmap(Image& outputImage, float Scale) const
+	void Image::normalmap(Image& outputImage, float scale) const
 	{
 		ErrorIfTrue(!data, L"Image::normalmap() failed. Image data doesn't exist.");
 
-		clamp(Scale, 0.0f, 1.0f);
+		clamp(scale, 0.0f, 1.0f);
 
 		// Copy this image into a new one so this is left unaffected.
 		// This uses the copyToAddBorder() method which adds a border and copies the edge pixels to the new pixels in the border.
@@ -679,7 +679,7 @@ namespace DC
 				
 				fX = float(r[1] - r[0]) / 255.0f;	// Convert to -1.0f to 1.0f
 				fY = float(r[2] - r[0]) / 255.0f;	// ....
-				fZ = Scale;
+				fZ = scale;
 
 				// Compute length of vector and normalize
 				fLength = sqrt((fX * fX) + (fY * fY) + (fZ * fZ));
@@ -687,7 +687,7 @@ namespace DC
 				{
 					fX = 0.0f;
 					fY = 0.0f;
-					fZ = Scale;
+					fZ = scale;
 				}
 				else
 				{
@@ -709,32 +709,32 @@ namespace DC
 	}
 
 	/*
-	void Image::fillFromOpenGL(const Vector2f& vSourcePosTLCorner)
+	void Image::fillFromOpenGL(const Vector2f& sourcePosTLCorner)
 	{
 		if (!data)
 			return;
 		if (4 == _miNumChannels)
-			glReadPixels((int)vSourcePosTLCorner.x, (int)vSourcePosTLCorner.y, _miWidth, _miHeight, GL_RGBA, GL_UNSIGNED_BYTE, data);
+			glReadPixels((int)sourcePosTLCorner.x, (int)sourcePosTLCorner.y, _miWidth, _miHeight, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		else if (3 == _miNumChannels)
-			glReadPixels((int)vSourcePosTLCorner.x, (int)vSourcePosTLCorner.y, _miWidth, _miHeight, GL_RGB, GL_UNSIGNED_BYTE, data);
+			glReadPixels((int)sourcePosTLCorner.x, (int)sourcePosTLCorner.y, _miWidth, _miHeight, GL_RGB, GL_UNSIGNED_BYTE, data);
 		flipVertically();
 	}
 	*/
 
-	void Image::drawColourWheel(unsigned int WidthAndHeightOfImage, unsigned char Brightness)
+	void Image::drawColourWheel(unsigned int widthAndHeightOfImage, unsigned char brightness)
 	{
-		ErrorIfTrue(WidthAndHeightOfImage < 1, L"Image::drawColourWheel() failed. Parsed iWidthAndHeightOfImage must be at least 1");
-		createBlank(WidthAndHeightOfImage, WidthAndHeightOfImage, 4);
+		ErrorIfTrue(widthAndHeightOfImage < 1, L"Image::drawColourWheel() failed. Parsed widthAndHeightOfImage must be at least 1");
+		createBlank(widthAndHeightOfImage, widthAndHeightOfImage, 4);
 
-		float fBrightness = float(Brightness) / 255.0f;
+		float fBrightness = float(brightness) / 255.0f;
 		Vector2f vCentrePixelPosition;
-		vCentrePixelPosition.x = float(WidthAndHeightOfImage) * 0.5f;
+		vCentrePixelPosition.x = float(widthAndHeightOfImage) * 0.5f;
 		vCentrePixelPosition.y = vCentrePixelPosition.x;
 
 		Vector2f vCurrentPixelPosition;
 		Vector2f vCurrentPixelOffsetFromCentre;
 		Colour colour;
-		float fCircleRadius = float(WidthAndHeightOfImage) * 0.5f;
+		float fCircleRadius = float(widthAndHeightOfImage) * 0.5f;
 		float fDistanceFromCentre;
 		float fSaturation;	// 0.0f = white, 1.0f = full colour
 		float fAngleDegrees;
@@ -768,18 +768,18 @@ namespace DC
 		}
 	}
 
-	Colour Image::getColourWheelColour(unsigned int PositionX, unsigned int PositionY, unsigned int WidthAndHeightOfImage, unsigned char Brightness)
+	Colour Image::getColourWheelColour(unsigned int positionX, unsigned int positionY, unsigned int widthAndHeightOfImage, unsigned char brightness)
 	{
-		ErrorIfTrue(WidthAndHeightOfImage < 1, L"Image::getColourWheelColour() failed. Parsed iWidthAndHeightOfImage must be at least 1");
+		ErrorIfTrue(widthAndHeightOfImage < 1, L"Image::getColourWheelColour() failed. Parsed widthAndHeightOfImage must be at least 1");
 
 		Colour colour;
-		Vector2f vCurrentPixelPosition((float)PositionX, float(PositionY));
+		Vector2f vCurrentPixelPosition((float)positionX, float(positionY));
 		Vector2f vCentrePixelPosition;
-		vCentrePixelPosition.x = float(WidthAndHeightOfImage) * 0.5f;
+		vCentrePixelPosition.x = float(widthAndHeightOfImage) * 0.5f;
 		vCentrePixelPosition.y = vCentrePixelPosition.x;
 		Vector2f vCurrentPixelOffsetFromCentre = vCurrentPixelPosition - vCentrePixelPosition;
 		float fDistanceFromCentre = vCurrentPixelOffsetFromCentre.getMagnitude();
-		float fCircleRadius = float(WidthAndHeightOfImage) * 0.5f;
+		float fCircleRadius = float(widthAndHeightOfImage) * 0.5f;
 		float fSaturation = fCircleRadius - fDistanceFromCentre;
 		fSaturation /= fCircleRadius;	// 0 at edge of circle, 1 at centre. Can be < 0 which is outside circle
 		float fAngleDegrees = vCurrentPixelOffsetFromCentre.getAngleDegrees360();
@@ -788,72 +788,72 @@ namespace DC
 			colour.set(0.0f, 0.0f, 0.0f, 0.0f);
 		else
 		{
-			colour.setFromHSB(fAngleDegrees, fSaturation, float(Brightness) / 255.0f);
+			colour.setFromHSB(fAngleDegrees, fSaturation, float(brightness) / 255.0f);
 			colour.alpha = 1.0f;
 		}
 		return colour;
 	}
 
-	void Image::drawGradient(unsigned int Width, unsigned int Height, unsigned int NumberOfChannels, const Colour& Colour0, const Colour& Colour1)
+	void Image::drawGradient(unsigned int widthPARAM, unsigned int heightPARAM, unsigned int numberOfChannelsPARAM, const Colour& colour0, const Colour& colour1)
 	{
-		ErrorIfTrue(Width < 1 || Height < 1, L"Image::drawGradient() failed. Invalid dimensions given.");
-		ErrorIfTrue(NumberOfChannels < 3 || NumberOfChannels > 4, L"Image::drawGradient() failed. Number of channels must be either 3 or 4.");
-		createBlank(Width, Height, NumberOfChannels);
+		ErrorIfTrue(widthPARAM < 1 || heightPARAM < 1, L"Image::drawGradient() failed. Invalid dimensions given.");
+		ErrorIfTrue(numberOfChannelsPARAM < 3 || numberOfChannelsPARAM > 4, L"Image::drawGradient() failed. Number of channels must be either 3 or 4.");
+		createBlank(widthPARAM, heightPARAM, numberOfChannelsPARAM);
 		bool bHorizontal = true;
-		if (Height > Width)
+		if (heightPARAM > widthPARAM)
 			bHorizontal = false;
 
 		Colour colour;
 		unsigned int iPixelIndex = 0;
 		if (bHorizontal)
 		{
-			for (unsigned int iPosX = 0; iPosX < Width; iPosX++)
+			for (unsigned int iPosX = 0; iPosX < widthPARAM; iPosX++)
 			{
-				colour = Colour0.interpolate(Colour1, float(iPosX) / float(Width));
-				for (unsigned int iPosY = 0; iPosY < Height; iPosY++)
+				colour = colour0.interpolate(colour1, float(iPosX) / float(widthPARAM));
+				for (unsigned int iPosY = 0; iPosY < heightPARAM; iPosY++)
 				{
 					iPixelIndex = iPosX + (iPosY * width);
-					iPixelIndex *= NumberOfChannels;
+					iPixelIndex *= numberOfChannelsPARAM;
 					data[iPixelIndex] = unsigned char(colour.red * 255);
 					data[iPixelIndex + 1] = unsigned char(colour.green * 255);
 					data[iPixelIndex + 2] = unsigned char(colour.blue * 255);
-					if (NumberOfChannels == 4)
+					if (numberOfChannelsPARAM == 4)
 						data[iPixelIndex + 3] = unsigned char(colour.alpha * 255);
 				}
 			}
 		}
 		else
 		{
-			for (unsigned int iPosY = 0; iPosY < Height; iPosY++)
+			for (unsigned int iPosY = 0; iPosY < heightPARAM; iPosY++)
 			{
-				colour = Colour0.interpolate(Colour1, float(iPosY) / float(Height));
-				for (unsigned int iPosX = 0; iPosX < Width; iPosX++)
+				colour = colour0.interpolate(colour1, float(iPosY) / float(heightPARAM));
+				for (unsigned int iPosX = 0; iPosX < widthPARAM; iPosX++)
 				{
 					iPixelIndex = iPosX + (iPosY * width);
-					iPixelIndex *= NumberOfChannels;
+					iPixelIndex *= numberOfChannelsPARAM;
 					data[iPixelIndex] = unsigned char(colour.red * 255);
 					data[iPixelIndex + 1] = unsigned char(colour.green * 255);
 					data[iPixelIndex + 2] = unsigned char(colour.blue * 255);
-					if (NumberOfChannels == 4)
+					if (numberOfChannelsPARAM == 4)
 						data[iPixelIndex + 3] = unsigned char(colour.alpha * 255);
 				}
 			}
 		}
 	}
 
-	void Image::drawCircle(unsigned int WidthAndHeightOfImage, const Colour& InnerColour, const Colour& OuterColour)
+	void Image::drawCircle(unsigned int widthAndHeightOfImage, const Colour& innerColour, const Colour& outerColour)
 	{
-		ErrorIfTrue(WidthAndHeightOfImage < 1, L"Image::drawCircle() failed. Parsed WidthAndHeightOfImage must be at least 1");
-		createBlank(WidthAndHeightOfImage, WidthAndHeightOfImage, 4);
+		ErrorIfTrue(widthAndHeightOfImage < 1, L"Image::drawCircle() failed. Parsed WidthAndHeightOfImage must be at least 1");
+		createBlank(widthAndHeightOfImage, widthAndHeightOfImage, 4);
 
 		Vector2f vCentrePixelPosition;
-		vCentrePixelPosition.x = float(WidthAndHeightOfImage) * 0.5f;
+		vCentrePixelPosition.x = float(widthAndHeightOfImage) * 0.5f;
 		vCentrePixelPosition.y = vCentrePixelPosition.x;
 
 		Vector2f vCurrentPixelPosition;
 		Vector2f vCurrentPixelOffsetFromCentre;
 		Colour colour;
-		float fCircleRadius = float(WidthAndHeightOfImage) * 0.5f;
+		float fCircleRadius = float(widthAndHeightOfImage) * 0.5f;
 		float fDistanceFromCentre;
 		float fOneOver360 = 1.0f / 360.0f;
 		unsigned int iPixelIndex = 0;
@@ -869,7 +869,7 @@ namespace DC
 				if (fDistanceFromCentre < 0.0f)
 					colour.set(0.0f, 0.0f, 0.0f, 0.0f);
 				else
-					colour = OuterColour.interpolate(InnerColour, fDistanceFromCentre);
+					colour = outerColour.interpolate(innerColour, fDistanceFromCentre);
 				data[iPixelIndex] = unsigned char(colour.red * 255);
 				data[iPixelIndex + 1] = unsigned char(colour.green * 255);
 				data[iPixelIndex + 2] = unsigned char(colour.blue * 255);

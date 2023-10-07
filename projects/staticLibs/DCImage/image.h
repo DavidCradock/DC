@@ -42,39 +42,39 @@ namespace DC
 		//  An image of dimensions 4096x4096x4 is 64MB
 		//  An image of dimensions 16384x16384x4 is 1024MB AKA 1GB
 		// Calls ErrorIfTrue from DCCommon/error.h if invalid parameters are given.
-		void createBlank(unsigned int Width, unsigned int Height, unsigned short NumberOfChannels);
+		void createBlank(unsigned int width, unsigned int height, unsigned short numberOfChannels);
 
 		// Attempts to load the image data from a file stored on disk.
 		// Depending upon the file name extension, determines the file type and loads it in.
 		// If the image couldn't be loaded, false is returned, else true
 		// The image is freed at the start of this method
 		// Loads image from file using the stb_image library
-		bool load(const String& Filename, bool FlipForOpenGL = false);
+		bool load(const String& filename, bool flipForOpenGL = false);
 
 		// Attempts to read only the image width and height from the given filename, which is faster than loading the whole thing in.
 		// Returns true if the image data was loaded, else false.
-		bool loadInfo(const String& Filename, int& Width, int& Height, int& NumberOfChannels);
+		bool loadInfo(const String& filename, int& width, int& height, int& numberOfChannels);
 
 		// Save image as BMP file to disk.
 		// Calls ErrorIfTrue from DCCommon/error.h if image contains no data or saving fails.
-		void saveAsBMP(const String& Filename, bool FlipOnSave = false) const;
+		void saveAsBMP(const String& filename, bool flipOnSave = false) const;
 
 		// Save image to JPG file to disk
 		// Calls ErrorIfTrue from DCCommon/error.h if image contains no data or saving fails.
-		void saveAsJPG(const String& Filename, bool FlipOnSave = false, int Quality = 100) const;
+		void saveAsJPG(const String& filename, bool flipOnSave = false, int quality = 100) const;
 
 		// Save image to PNG file to disk
 		// Calls ErrorIfTrue from DCCommon/error.h if image contains no data or saving fails.
-		void saveAsPNG(const String& Filename, bool FlipOnSave = false) const;
+		void saveAsPNG(const String& filename, bool flipOnSave = false) const;
 
 		// Save image to TGA file to disk
 		// Calls ErrorIfTrue from DCCommon/error.h if image contains no data or saving fails.
-		void saveAsTGA(const String& Filename, bool FlipOnSave = false) const;
+		void saveAsTGA(const String& filename, bool flipOnSave = false) const;
 
 		// Fills the image with the given colour values.
 		// If the image only contains 3 colour channels, the alpha component is ignored. 
 		// Calls ErrorIfTrue from DCCommon/error.h if image hasn't been created yet
-		void fill(unsigned char Red, unsigned char Green, unsigned char Blue, unsigned char Alpha = 255);
+		void fill(unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha = 255);
 
 		// Return pointer to image data for manual modification. 
 		// Please, BE CAREFULL if you're using this method to directly access the image data.
@@ -106,12 +106,12 @@ namespace DC
 		// Sets pixel at given coordinate to given values.
 		// Due to additional overhead of this method due to function calling and bounds checking,
 		// If you're wanting to modify many pixels, it's best to use the "unsafe" getData() method. 
-		inline void setPixel(int PositionX, int PositionY, unsigned char Red, unsigned char Green, unsigned char Blue, unsigned char Alpha);
+		inline void setPixel(int positionX, int positionY, unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha);
 
 		// Gets pixel values at specified position
 		// Due to additional overhead of this method due to function calling and bounds checking,
 		// If you're wanting to modify many pixels, it's best to use the "unsafe" getData() method.
-		inline void getPixel(int PositionX, int PositionY, unsigned char& Red, unsigned char& Green, unsigned char& Blue, unsigned char& Alpha) const;
+		inline void getPixel(int positionX, int positionY, unsigned char& red, unsigned char& green, unsigned char& blue, unsigned char& alpha) const;
 
 		// Swap red and blue colour components around
 		// If this image contains no data, an error occurs.
@@ -123,7 +123,7 @@ namespace DC
 
 		// Inverts the colours of the image, AKA new colour = 255 - current colour
 		// If this image contains no data, an error occurs.
-		void invert(bool InvertColour = true, bool InvertAlpha = false);
+		void invert(bool invertColour = true, bool invertAlpha = false);
 
 		// Converts the image's RGB components to greyscale, simply finding mean average of RGB components
 		// If this image contains no data, an error occurs.
@@ -132,7 +132,7 @@ namespace DC
 		// Converts the image's RGB components to greyscale, taking into consideration the average human's eye sensitivity to the individual RGB components.
 		// If default params are not used (They approximate the average human's eye sensitivity), they should be of unit length.
 		// If this image contains no data, an error occurs.
-		void greyscale(float RedSensitivity = 0.299f, float GreenSensitivity = 0.587f, float BlueSensitivity = 0.144f);
+		void greyscale(float redSensitivity = 0.299f, float greenSensitivity = 0.587f, float blueSensitivity = 0.144f);
 
 		// Adjusts brightness of colour components
 		// Accepted range for iAmount can be between -255 to +255 which would make entire image totally black or white.
@@ -148,14 +148,14 @@ namespace DC
 		// Silently fails if both this image and the one parsed are actually the same objects, or there is no image data to copy.
 		// If this image contains no data, an error occurs.
 		// The DestinationImage is totally replaced. 
-		void copyTo(Image& DestinationImage) const;
+		void copyTo(Image& destinationImage) const;
 
 		// Copies a rectangular region from this object, into the one given.
 		// Automatic clipping is done so that if the source region doesn't fit into destination, it will be clipped.
 		// The destination image can be this image itself IE img.copyRectTo(img)
-		// DestinationImage The destination image to copy the rectangular region of this object into
+		// destinationImage The destination image to copy the rectangular region of this object into
 		// If this image or the destination image contain no data, an error occurs.
-		void copyRectTo(Image& DestinationImage, int SourcePositionX, int SourcePositionY, int SourceWidth, int SourceHeight, int DestinationPositionX, int DestinationPositionY) const;
+		void copyRectTo(Image& destinationImage, int sourcePositionX, int sourcePositionY, int sourceWidth, int sourceHeight, int destinationPositionX, int destinationPositionY) const;
 
 		// Copies the contents of this image into the outputImage and gives the output image a border and sets the pixels around that
 		// border to be the same as the ones in this image's edge pixels, thereby making the output image have dimensions which are +2 of this one.
@@ -173,7 +173,7 @@ namespace DC
 		// I wish I could place images here in the code, as it'd be much easier to show what this does with images.
 		// Edges are detected by using the given colour value which should represent the colour of the image's background
 		// If this image contains no data, or doesn't have at least 3 channels, an error occurs.
-		void edgeDetect(Image& outputImage, unsigned char Red, unsigned char Green, unsigned char Blue);
+		void edgeDetect(Image& outputImage, unsigned char red, unsigned char green, unsigned char blue);
 
 		// Removes the alpha channel of the image, leaving the RGB components
 		// If this image contains no data, or doesn't have 4 channels, an error occurs.
@@ -188,7 +188,7 @@ namespace DC
 		// However, this image first creates a copy of itself in memory, then calls greyscaleSimple() on that to ensure proper computation of the normals.
 		// Scale should be between 0.0f and 1.0f and affects how "intense" the normals are generated. This value is clamped internally. Lower values increase the effect
 		// If this image contains no data, an error occurs.
-		void normalmap(Image& outputImage, float Scale = 1.0f) const;
+		void normalmap(Image& outputImage, float scale = 1.0f) const;
 
 		// Uses glReadPixels() to read the contents of the currently set backbuffer/framebuffer into this image.
 		// This image must already have dimensions and it is those dimensions which are used during the glReadPixels call.
@@ -196,21 +196,21 @@ namespace DC
 		// If the position + dims go outside of the source, pixels are undefined
 		// If the image doesn't have any dimensions, this silently fails.
 		// Can read in either RGBA or RGB
-//		void fillFromOpenGL(const Vector2f& SourcePosTLCorner = Vector2f());
+//		void fillFromOpenGL(const Vector2f& sourcePosTLCorner = Vector2f());
 
 		// Sets this image to the given width and height, sets it to have 4 colour channels and then draws a hue based colour wheel using the given brightness.
-		void drawColourWheel(unsigned int WidthAndHeightOfImage, unsigned char Brightness = 255);
+		void drawColourWheel(unsigned int widthAndHeightOfImage, unsigned char brightness = 255);
 
 		// Not 100% image related, but given an X and Y coordinate over an imaginary drawn colour wheel, returns a CColour value which would
 		// represent the colour of the colour wheel at those X and Y coordinates.
 		// No checking of incorrect position values.
-		Colour getColourWheelColour(unsigned int PositionX, unsigned int PositionY, unsigned int WidthAndHeightOfImage, unsigned char Brightness);
+		Colour getColourWheelColour(unsigned int positionX, unsigned int positionY, unsigned int widthAndHeightOfImage, unsigned char brightness);
 
 		// Creates this image with the specified values and draws a gradient between the two given colours.
-		void drawGradient(unsigned int Width, unsigned int Height, unsigned int NumberOfChannels, const Colour& Colour0, const Colour& Colour1);
+		void drawGradient(unsigned int width, unsigned int height, unsigned int numberOfChannels, const Colour& colour0, const Colour& colour1);
 
 		// Creates this image with the specified values and draws a circle with the given colour values
-		void drawCircle(unsigned int WidthAndHeightOfImage, const Colour& InnerColour, const Colour& OuterColour);
+		void drawCircle(unsigned int widthAndHeightOfImage, const Colour& innerColour, const Colour& outerColour);
 	private:
 		unsigned char* data;
 		unsigned int dataSize;
@@ -219,7 +219,7 @@ namespace DC
 		int numberOfChannels;
 
 		// Used by edgeDetect()
-		inline bool _isPixelEdge(int PositionX, int PositionY, unsigned char Red, unsigned char Green, unsigned char Blue);
+		inline bool _isPixelEdge(int positionX, int positionY, unsigned char red, unsigned char green, unsigned char blue);
 	};
 
 
@@ -231,82 +231,82 @@ namespace DC
 	/////////////////////////////////////////////////////////////////////////////////////////
 
 
-	inline void Image::setPixel(int PositionX, int PositionY, unsigned char Red, unsigned char Green, unsigned char Blue, unsigned char Alpha)
+	inline void Image::setPixel(int positionX, int positionY, unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha)
 	{
-		if (PositionX >= width)
+		if (positionX >= width)
 			return;
-		if (PositionY >= height)
+		if (positionY >= height)
 			return;
 
-		unsigned int iIndex = PositionX + (PositionY * width);
+		unsigned int iIndex = positionX + (positionY * width);
 		iIndex *= numberOfChannels;
 		switch (numberOfChannels)
 		{
 		case 1:
-			data[iIndex] = Red;
+			data[iIndex] = red;
 			break;
 		case 3:
-			data[iIndex] = Red;
-			data[iIndex + 1] = Green;
-			data[iIndex + 2] = Blue;
+			data[iIndex] = red;
+			data[iIndex + 1] = green;
+			data[iIndex + 2] = blue;
 			break;
 		case 4:
-			data[iIndex] = Red;
-			data[iIndex + 1] = Green;
-			data[iIndex + 2] = Blue;
-			data[iIndex + 3] = Alpha;
+			data[iIndex] = red;
+			data[iIndex + 1] = green;
+			data[iIndex + 2] = blue;
+			data[iIndex + 3] = alpha;
 			break;
 		}
 	}
 
-	inline void Image::getPixel(int PositionX, int PositionY, unsigned char& Red, unsigned char& Green, unsigned char& Blue, unsigned char& Alpha) const
+	inline void Image::getPixel(int positionX, int positionY, unsigned char& red, unsigned char& green, unsigned char& blue, unsigned char& alpha) const
 	{
-		if (PositionX >= width)
+		if (positionX >= width)
 			return;
-		if (PositionY >= height)
+		if (positionY >= height)
 			return;
 
-		unsigned int iIndex = PositionX + (PositionY * width);
+		unsigned int iIndex = positionX + (positionY * width);
 		iIndex *= numberOfChannels;
 		switch (numberOfChannels)
 		{
 		case 1:
-			Red = data[iIndex];
+			red = data[iIndex];
 			break;
 		case 3:
-			Red = data[iIndex];
-			Green = data[iIndex + 1];
-			Blue = data[iIndex + 2];
+			red = data[iIndex];
+			green = data[iIndex + 1];
+			blue = data[iIndex + 2];
 			break;
 		case 4:
-			Red = data[iIndex];
-			Green = data[iIndex + 1];
-			Blue = data[iIndex + 2];
-			Alpha = data[iIndex + 3];
+			red = data[iIndex];
+			green = data[iIndex + 1];
+			blue = data[iIndex + 2];
+			alpha = data[iIndex + 3];
 			break;
 		}
 	}
 
-	inline bool Image::_isPixelEdge(int PositionX, int PositionY, unsigned char Red, unsigned char Green, unsigned char Blue)
+	inline bool Image::_isPixelEdge(int positionX, int positionY, unsigned char red, unsigned char green, unsigned char blue)
 	{
 		// Don't check edge pixels of image
-		if (PositionX == 0)
+		if (positionX == 0)
 			return false;
-		if (PositionY == 0)
+		if (positionY == 0)
 			return false;
-		if (PositionX >= int(width) - 1)
+		if (positionX >= int(width) - 1)
 			return false;
-		if (PositionY >= int(height) - 1)
+		if (positionY >= int(height) - 1)
 			return false;
 
 		// Get center pixel colour values
 		unsigned char col[4];
-		getPixel(PositionX, PositionY, col[0], col[1], col[2], col[3]);
+		getPixel(positionX, positionY, col[0], col[1], col[2], col[3]);
 
 		// If the center pixel's colour is same as mask, it's not an edge
-		if (col[0] == Red)
-			if (col[1] == Green)
-				if (col[2] == Blue)
+		if (col[0] == red)
+			if (col[1] == green)
+				if (col[2] == blue)
 					return false;
 
 		// If we get here, the center pixel is not the same as the mask colour
@@ -315,58 +315,58 @@ namespace DC
 		// If they are the same as the mask, then it's an edge
 
 		// Left
-		getPixel(PositionX - 1, PositionY, col[0], col[1], col[2], col[3]);
-		if (col[0] == Red)
-			if (col[1] == Green)
-				if (col[2] == Blue)
+		getPixel(positionX - 1, positionY, col[0], col[1], col[2], col[3]);
+		if (col[0] == red)
+			if (col[1] == green)
+				if (col[2] == blue)
 					return true;
 		// Right
-		getPixel(PositionX + 1, PositionY, col[0], col[1], col[2], col[3]);
-		if (col[0] == Red)
-			if (col[1] == Green)
-				if (col[2] == Blue)
+		getPixel(positionX + 1, positionY, col[0], col[1], col[2], col[3]);
+		if (col[0] == red)
+			if (col[1] == green)
+				if (col[2] == blue)
 					return true;
 
 		// Top
-		getPixel(PositionX, PositionY - 1, col[0], col[1], col[2], col[3]);
-		if (col[0] == Red)
-			if (col[1] == Green)
-				if (col[2] == Blue)
+		getPixel(positionX, positionY - 1, col[0], col[1], col[2], col[3]);
+		if (col[0] == red)
+			if (col[1] == green)
+				if (col[2] == blue)
 					return true;
 
 		// Bottom
-		getPixel(PositionX, PositionY + 1, col[0], col[1], col[2], col[3]);
-		if (col[0] == Red)
-			if (col[1] == Green)
-				if (col[2] == Blue)
+		getPixel(positionX, positionY + 1, col[0], col[1], col[2], col[3]);
+		if (col[0] == red)
+			if (col[1] == green)
+				if (col[2] == blue)
 					return true;
 
 		// Top left
-		getPixel(PositionX - 1, PositionY - 1, col[0], col[1], col[2], col[3]);
-		if (col[0] == Red)
-			if (col[1] == Green)
-				if (col[2] == Blue)
+		getPixel(positionX - 1, positionY - 1, col[0], col[1], col[2], col[3]);
+		if (col[0] == red)
+			if (col[1] == green)
+				if (col[2] == blue)
 					return true;
 
 		// Top right
-		getPixel(PositionX + 1, PositionY - 1, col[0], col[1], col[2], col[3]);
-		if (col[0] == Red)
-			if (col[1] == Green)
-				if (col[2] == Blue)
+		getPixel(positionX + 1, positionY - 1, col[0], col[1], col[2], col[3]);
+		if (col[0] == red)
+			if (col[1] == green)
+				if (col[2] == blue)
 					return true;
 
 		// Bottom left
-		getPixel(PositionX - 1, PositionY + 1, col[0], col[1], col[2], col[3]);
-		if (col[0] == Red)
-			if (col[1] == Green)
-				if (col[2] == Blue)
+		getPixel(positionX - 1, positionY + 1, col[0], col[1], col[2], col[3]);
+		if (col[0] == red)
+			if (col[1] == green)
+				if (col[2] == blue)
 					return true;
 
 		// Bottom right
-		getPixel(PositionX + 1, PositionY + 1, col[0], col[1], col[2], col[3]);
-		if (col[0] == Red)
-			if (col[1] == Green)
-				if (col[2] == Blue)
+		getPixel(positionX + 1, positionY + 1, col[0], col[1], col[2], col[3]);
+		if (col[0] == red)
+			if (col[1] == green)
+				if (col[2] == blue)
 					return true;
 
 		return false;	// Shouldn't get here, keep compiler happy
