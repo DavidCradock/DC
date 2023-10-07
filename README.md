@@ -8,15 +8,14 @@
 - Download and install Visual studio
 - Load the X.sln file into Visual studio, hit compile, done.
 
-TODO
+# TODO
 Add audio from old codebase and refactor
-
 
 # Notes...
 
 No logging because it's un-needed overhead and I usually implement logging, then never use it. The debugger is well suited for, surprise, debugging. The logs never help me.
 
-#Changes to coding style
+# Changes to coding style
 
 Do not use _m for members as it's bloody obvious that the member is a member.
 
