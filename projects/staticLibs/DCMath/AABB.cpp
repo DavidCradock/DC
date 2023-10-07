@@ -8,16 +8,16 @@ namespace DC
 		max.set(0.5f, 0.5f, 0.5f);
 	}
 
-	AABB::AABB(const Vector3f& Min, const Vector3f& Max)
+	AABB::AABB(const Vector3f& minParam, const Vector3f& maxPARAM)
 	{
-		min = Min;
-		max = Max;
+		min = minParam;
+		max = maxPARAM;
 	}
 
-	void AABB::setMinMax(const Vector3f& Min, const Vector3f& Max)
+	void AABB::setMinMax(const Vector3f& minParam, const Vector3f& maxPARAM)
 	{
-		min = Min;
-		max = Max;
+		min = minParam;
+		max = maxPARAM;
 	}
 
 	void AABB::setPosDims(const Vector3f& position, const Vector3f& dimensions)

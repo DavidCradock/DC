@@ -13,10 +13,10 @@ namespace DC
 		Plane();
 		~Plane();
 
-		Plane(const Vector3f& Normal, float DistanceToOrigin);
+		Plane(const Vector3f& normal, float distanceToOrigin);
 
 		// Sets plane to given values
-		void set(const Vector3f& Normal, float DistanceToOrigin);
+		void set(const Vector3f& normal, float distanceToOrigin);
 
 		// Returns normal of plane
 		Vector3f getNormal(void) const;

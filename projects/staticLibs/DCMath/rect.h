@@ -12,10 +12,10 @@ namespace DC
 		Rect();
 
 		// Construct the rectangle, setting to passed values
-		Rect(int MinX, int MinY, int MaxX, int MaxY);
+		Rect(int minX, int minY, int maxX, int maxY);
 
 		// Sets this rect using given values
-		void set(int MinX, int MinY, int MaxX, int MaxY);
+		void set(int minX, int minY, int maxX, int maxY);
 
 		// Returns true if the passed Rect intersects with this one
 		bool intersects(const Rect& other) const;

@@ -6,20 +6,20 @@ namespace DC
 	{
 	}
 
-	Rect::Rect(int MinX, int MinY, int MaxX, int MaxY)
+	Rect::Rect(int minXPARAM, int minYPARAM, int maxXPARAM, int maxYPARAM)
 	{
-		minX = MinX;
-		minY = MinY;
-		maxX = MaxX;
-		maxY = MaxY;
+		minX = minXPARAM;
+		minY = minYPARAM;
+		maxX = maxXPARAM;
+		maxY = maxYPARAM;
 	}
 
-	void Rect::set(int MinX, int MinY, int MaxX, int MaxY)
+	void Rect::set(int minXPARAM, int minYPARAM, int maxXPARAM, int maxYPARAM)
 	{
-		minX = MinX;
-		minY = MinY;
-		maxX = MaxX;
-		maxY = MaxY;
+		minX = minXPARAM;
+		minY = minYPARAM;
+		maxX = maxXPARAM;
+		maxY = maxYPARAM;
 	}
 
 	bool Rect::intersects(const Rect& other) const

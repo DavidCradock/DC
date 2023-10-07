@@ -13,10 +13,10 @@ namespace DC
 		AABB();
 
 		// Sets box with given values
-		AABB(const Vector3f& Min, const Vector3f& Max);
+		AABB(const Vector3f& min, const Vector3f& max);
 
 		// Sets box position and dims with given values
-		void setMinMax(const Vector3f& Min, const Vector3f& Max);
+		void setMinMax(const Vector3f& min, const Vector3f& max);
 
 		// Sets box position and dimes with given values
 		void setPosDims(const Vector3f& position, const Vector3f& dimensions);

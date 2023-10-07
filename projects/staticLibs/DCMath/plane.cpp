@@ -13,16 +13,16 @@ namespace DC
 
 	}
 
-	Plane::Plane(const Vector3f& Normal, float DistanceToOrigin)
+	Plane::Plane(const Vector3f& normalPARAM, float distanceToOriginPARAM)
 	{
-		normal = Normal;
-		distanceToOrigin = DistanceToOrigin;
+		normal = normalPARAM;
+		distanceToOrigin = distanceToOriginPARAM;
 	}
 
-	void Plane::set(const Vector3f& Normal, float DistanceToOrigin)
+	void Plane::set(const Vector3f& normalPARAM, float distanceToOriginPARAM)
 	{
-		normal = Normal;
-		distanceToOrigin = DistanceToOrigin;
+		normal = normalPARAM;
+		distanceToOrigin = distanceToOriginPARAM;
 	}
 
 	Vector3f Plane::getNormal(void) const
