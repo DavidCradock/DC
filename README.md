@@ -39,7 +39,7 @@ Prepend "DC" for the library's main include header (and possible .cpp), but for 
 
 Do not use exceptions, there's some overhead and using macros for critical errors is fine.
 
-#Singleton pattern.
+# Singleton pattern.
 
 Do not use unless appropriate.
 
