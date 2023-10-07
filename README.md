@@ -12,7 +12,7 @@ TODO
 Add audio from old codebase and refactor
 
 
-#Notes...
+# Notes...
 
 No logging because it's un-needed overhead and I usually implement logging, then never use it. The debugger is well suited for, surprise, debugging. The logs never help me.
 
@@ -32,7 +32,11 @@ Parameters are all lowercase for their first character and have PARAM at the end
 
 Camel style casing, someFileWhichDoesSomething. It's easy to read and quite sparse.
 
-#Error handling
+# Source code filenaming.
+
+Prepend "DC" for the library's main include header (and possible .cpp), but for the rest of the files, do not add the "DC"
+
+# Error handling
 
 Do not use exceptions, there's some overhead and using macros for critical errors is fine.
 
@@ -46,13 +50,8 @@ Their initialisation order can be really messy.
 
 Use globals instead, or pass pointers/references to objects.
 
-#Strings.
+# Strings.
 
 Use wide strings as it's the default setting, they are recommended for many positive reasons (IE some user with a weird character is now supported)
 and it's easier to work with than multibyte.
 Sure, the L"bloody L!" is kinda annoying having to add Ls everywhere, but calm down, it's only a single character to add. Relax! :D
-
-#Source code filenaming.
-
-Prepend "DC" for the library's main include header (and possible .cpp), but for the rest of the files, do not add the "DC"
-
