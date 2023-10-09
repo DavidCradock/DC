@@ -1,27 +1,21 @@
 #include "audioManager.h"
+#include "../DCCommon/error.h"
 
 namespace DC
 {
 	SCAudioManager::SCAudioManager()
 	{
-		SCLog* pLog = SCLog::getPointer();
-		pLog->add("SCAudioManager::SCAudioManager() called.");
-
-		pLog->add("SCAudioManager initialising COM.");
 		HRESULT hr;
 		hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
-		ThrowIfTrue(FAILED(hr), "SCAudioManager() failed to initialise COM.");
+		ErrorIfTrue(FAILED(hr), L"AudioManager() failed to initialise COM.");
 
-		pLog->add("SCAudioManager creating XAudio2 engine instance.");
 		_mpXAudio2 = nullptr;
-		ThrowIfTrue(FAILED(hr = XAudio2Create(&_mpXAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR)), "SCAudioManager() failed to create instance of the XAudio2 engine.");
+		ErrorIfTrue(FAILED(hr = XAudio2Create(&_mpXAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR)), L"AudioManager() failed to create instance of the XAudio2 engine.");
 
-		pLog->add("SCAudioManager creating mastering voice.");
 		_mpMasterVoice = nullptr;
-		ThrowIfTrue(FAILED(hr = _mpXAudio2->CreateMasteringVoice(&_mpMasterVoice)), "SCAudioManager() failed to create mastering voice.");
+		ErrorIfTrue(FAILED(hr = _mpXAudio2->CreateMasteringVoice(&_mpMasterVoice)), L"AudioManager() failed to create mastering voice.");
 
-		addNewSampleGroup("default");
-		pLog->add("SCAudioManager initialisation complete.");
+		addNewSampleGroup(L"default");
 	}
 
 	unsigned int SCAudioManager::getNumSampleGroups(void)
@@ -29,32 +23,32 @@ namespace DC
 		return (unsigned int)_mmapGroup.size();
 	}
 
-	unsigned int SCAudioManager::getNumSamplesInGroup(const std::string& strGroupName)
+	unsigned int SCAudioManager::getNumSamplesInGroup(const String& strGroupName)
 	{
 		if (!sampleGroupExists(strGroupName))
 		{
-			std::string err("SCAudioManager::getNumSamplesInGroup(\"");
+			String err(L"AudioManager::getNumSamplesInGroup(\"");
 			err.append(strGroupName);
-			err.append("\") failed. The group doesn't exist.");
-			ThrowIfTrue(1, err);
+			err.append(L"\") failed. The group doesn't exist.");
+			ErrorIfTrue(1, err);
 		}
-		std::map<std::string, Group*>::iterator itg = _mmapGroup.find(strGroupName);
+		std::map<String, Group*>::iterator itg = _mmapGroup.find(strGroupName);
 		return (unsigned int)itg->second->mmapResource.size();;
 	}
 
-	unsigned int SCAudioManager::getNumSamplesInGroupLoaded(const std::string& strGroupName)
+	unsigned int SCAudioManager::getNumSamplesInGroupLoaded(const String& strGroupName)
 	{
 		if (!sampleGroupExists(strGroupName))
 		{
-			std::string err("SCAudioManager::getNumSamplesInGroupLoaded(\"");
+			String err(L"AudioManager::getNumSamplesInGroupLoaded(\"");
 			err.append(strGroupName);
-			err.append("\") failed. The group doesn't exist.");
-			ThrowIfTrue(1, err);
+			err.append(L"\") failed. The group doesn't exist.");
+			ErrorIfTrue(1, err);
 		}
-		std::map<std::string, Group*>::iterator itg = _mmapGroup.find(strGroupName);
+		std::map<String, Group*>::iterator itg = _mmapGroup.find(strGroupName);
 
 		unsigned int iResLoadedTotal = 0;
-		std::map<std::string, ResourceSample*>::iterator it = itg->second->mmapResource.begin();
+		std::map<String, ResourceSample*>::iterator it = itg->second->mmapResource.begin();
 		while (it != itg->second->mmapResource.end())
 		{
 			if (it->second->bLoaded)
@@ -64,18 +58,18 @@ namespace DC
 		return iResLoadedTotal;
 	}
 
-	const std::string& SCAudioManager::getSampleGroupName(unsigned int iGroupIndex)
+	const String& SCAudioManager::getSampleGroupName(unsigned int iGroupIndex)
 	{
 		if (iGroupIndex >= _mmapGroup.size())
 		{
-			std::string err("SCAudioManager::getSampleGroupName(");
-
-			err.append(std::to_string(iGroupIndex));
-			err.append(") failed. Invalid index given. Number of groups is ");
-			err.append(std::to_string(getNumSampleGroups()));
-			ThrowIfTrue(1, err);
+			String err(L"AudioManager::getSampleGroupName(");
+			
+			err.appendUnsignedInt(iGroupIndex);
+			err.append(L") failed. Invalid index given. Number of groups is ");
+			err.appendUnsignedInt(getNumSampleGroups());
+			ErrorIfTrue(1, err);
 		}
-		std::map<std::string, Group*>::iterator itg = _mmapGroup.begin();
+		std::map<String, Group*>::iterator itg = _mmapGroup.begin();
 		unsigned int i = 0;
 		while (i < iGroupIndex)
 		{
@@ -85,7 +79,7 @@ namespace DC
 		return itg->first;
 	}
 
-	void SCAudioManager::addNewSampleGroup(const std::string& strNewGroupName)
+	void SCAudioManager::addNewSampleGroup(const String& strNewGroupName)
 	{
 		if (sampleGroupExists(strNewGroupName))
 		{
@@ -95,30 +89,30 @@ namespace DC
 		_mmapGroup[strNewGroupName] = pNewGroup;
 	}
 
-	bool SCAudioManager::sampleGroupExists(const std::string& strGroupName)
+	bool SCAudioManager::sampleGroupExists(const String& strGroupName)
 	{
-		std::map<std::string, Group*>::iterator it = _mmapGroup.find(strGroupName);
+		std::map<String, Group*>::iterator it = _mmapGroup.find(strGroupName);
 		if (it == _mmapGroup.end())
 			return false;
 		return true;
 	}
 
-	void SCAudioManager::loadSampleGroup(const std::string& strGroupName)
+	void SCAudioManager::loadSampleGroup(const String& strGroupName)
 	{
 		// Group doesn't exist?
 		if (!sampleGroupExists(strGroupName))
 		{
-			std::string err("SCAudioManager::loadSampleGroup(\"");
+			String err(L"AudioManager::loadSampleGroup(\"");
 			err.append(strGroupName);
-			err.append("\") failed. As the given named group doesn't exist.");
-			ThrowIfTrue(1, err);
+			err.append(L"\") failed. As the given named group doesn't exist.");
+			ErrorIfTrue(1, err);
 		}
 
 		// Load any unloaded resources within the group
-		std::map<std::string, Group*>::iterator itg = _mmapGroup.find(strGroupName);
+		std::map<String, Group*>::iterator itg = _mmapGroup.find(strGroupName);
 
 		// For each resource in this group...
-		std::map<std::string, ResourceSample*>::iterator it = itg->second->mmapResource.begin();
+		std::map<String, ResourceSample*>::iterator it = itg->second->mmapResource.begin();
 		while (it != itg->second->mmapResource.end())
 		{
 			if (!it->second->bLoaded)
@@ -130,22 +124,22 @@ namespace DC
 		}
 	}
 
-	void SCAudioManager::loadSampleGroupSingle(const std::string& strGroupName)
+	void SCAudioManager::loadSampleGroupSingle(const String& strGroupName)
 	{
 		// Group doesn't exist?
 		if (!sampleGroupExists(strGroupName))
 		{
-			std::string err("SCAudioManager::loadSampleGroupSingle(\"");
+			String err(L"AudioManager::loadSampleGroupSingle(\"");
 			err.append(strGroupName);
-			err.append("\") failed. As the given named group doesn't exist.");
-			ThrowIfTrue(1, err);
+			err += L"\") failed. As the given named group doesn't exist.";
+			ErrorIfTrue(1, err);
 		}
 
 		// Load any unloaded resources within the group
-		std::map<std::string, Group*>::iterator itg = _mmapGroup.find(strGroupName);
+		std::map<String, Group*>::iterator itg = _mmapGroup.find(strGroupName);
 
 		// For each resource in this group...
-		std::map<std::string, ResourceSample*>::iterator it = itg->second->mmapResource.begin();
+		std::map<String, ResourceSample*>::iterator it = itg->second->mmapResource.begin();
 		while (it != itg->second->mmapResource.end())
 		{
 			if (!it->second->bLoaded)
@@ -158,22 +152,22 @@ namespace DC
 		}
 	}
 
-	void SCAudioManager::unloadSampleGroup(const std::string& strGroupName)
+	void SCAudioManager::unloadSampleGroup(const String& strGroupName)
 	{
 		// Group doesn't exist?
 		if (!sampleGroupExists(strGroupName))
 		{
-			std::string err("SCAudioManager::unloadSampleGroup(\"");
+			String err(L"AudioManager::unloadSampleGroup(\"");
 			err.append(strGroupName);
-			err.append("\") failed. As the given named group doesn't exist.");
-			ThrowIfTrue(1, err);
+			err += L"\") failed. As the given named group doesn't exist.";
+			ErrorIfTrue(1, err);
 		}
 
 		// Unload any loaded resources within the group
-		std::map<std::string, Group*>::iterator itg = _mmapGroup.find(strGroupName);
+		std::map<String, Group*>::iterator itg = _mmapGroup.find(strGroupName);
 
 		// For each resource in this group...
-		std::map<std::string, ResourceSample*>::iterator it = itg->second->mmapResource.begin();
+		std::map<String, ResourceSample*>::iterator it = itg->second->mmapResource.begin();
 		while (it != itg->second->mmapResource.end())
 		{
 			if (it->second->bLoaded)
@@ -185,27 +179,24 @@ namespace DC
 		}
 	}
 
-	CAudioSample* SCAudioManager::addSample(const std::string& strNewResourceName, const std::string& strGroupName)
+	CAudioSample* SCAudioManager::addSample(const String& strNewResourceName, const String& strGroupName)
 	{
-		// Call loading screen
-		SCResourceLoadingScreen::getPointer()->loadingResource("Audio sample", strNewResourceName);
-
 		// Group doesn't exist?
 		if (!sampleGroupExists(strGroupName))
 		{
-			std::string err("SCAudioManager::addSample(\"");
+			String err(L"AudioManager::addSample(\"");
 			err.append(strNewResourceName);
-			err.append("\", \"");
+			err += L"\", \"";
 			err.append(strGroupName);
-			err.append("\") failed. As the given named group of \"");
+			err += L"\") failed. As the given named group of \"";
 			err.append(strGroupName);
-			err.append("\" which the new resource was to be placed into, doesn't exist.");
-			ThrowIfTrue(1, err);
+			err += L"\" which the new resource was to be placed into, doesn't exist.";
+			ErrorIfTrue(1, err);
 		}
 
 		// Resource already exists in the group?
-		std::map<std::string, Group*>::iterator itg = _mmapGroup.find(strGroupName);									// Get iterator to the group (we know it exists)
-		std::map<std::string, ResourceSample*>::iterator it = itg->second->mmapResource.find(strNewResourceName);		// Try to find the named resource in the group
+		std::map<String, Group*>::iterator itg = _mmapGroup.find(strGroupName);									// Get iterator to the group (we know it exists)
+		std::map<String, ResourceSample*>::iterator it = itg->second->mmapResource.find(strNewResourceName);		// Try to find the named resource in the group
 		if (itg->second->mmapResource.end() != it)
 		{
 			it->second->uiReferenceCount++;
@@ -227,34 +218,34 @@ namespace DC
 		return pNewRes->pResource;
 	}
 
-	CAudioSample* SCAudioManager::getSample(const std::string& strResourceName, const std::string& strGroupName)
+	CAudioSample* SCAudioManager::getSample(const String& strResourceName, const String& strGroupName)
 	{
 		// Group doesn't exist?
 		if (!sampleGroupExists(strGroupName))
 		{
-			std::string err("SCAudioManager::getSample(\"");
+			String err(L"AudioManager::getSample(\"");
 			err.append(strResourceName);
-			err.append("\", \"");
+			err += L"\", \"";
 			err.append(strGroupName);
-			err.append("\") failed. As the given named group of \"");
+			err += L"\") failed. As the given named group of \"";
 			err.append(strGroupName);
-			err.append("\" doesn't exist.");
-			ThrowIfTrue(1, err);
+			err += L"\" doesn't exist.";
+			ErrorIfTrue(1, err);
 		}
 
 		// Resource doesn't exist in the group?
-		std::map<std::string, Group*>::iterator itg = _mmapGroup.find(strGroupName);							// Get iterator to the group (we know it exists)
-		std::map<std::string, ResourceSample*>::iterator it = itg->second->mmapResource.find(strResourceName);	// Try to find the named resource in the group
+		std::map<String, Group*>::iterator itg = _mmapGroup.find(strGroupName);							// Get iterator to the group (we know it exists)
+		std::map<String, ResourceSample*>::iterator it = itg->second->mmapResource.find(strResourceName);	// Try to find the named resource in the group
 		if (itg->second->mmapResource.end() == it)
 		{
-			std::string err("SCAudioManager::getSample(\"");
+			String err(L"AudioManager::getSample(\"");
 			err.append(strResourceName);
-			err.append("\", \"");
+			err.appendWChar(L"\", \"");
 			err.append(strGroupName);
-			err.append("\") failed. Although the given named group of \"");
+			err.appendWChar(L"\") failed. Although the given named group of \"");
 			err.append(strGroupName);
-			err.append("\" exists, the named resource couldn't be found.");
-			ThrowIfTrue(1, err);
+			err.appendWChar(L"\" exists, the named resource couldn't be found.");
+			ErrorIfTrue(1, err);
 		}
 
 		// Is the resource in an unloaded state?
@@ -268,56 +259,56 @@ namespace DC
 		return it->second->pResource;
 	}
 
-	bool SCAudioManager::getExistsSample(const std::string& strResourceName, const std::string& strGroupName)
+	bool SCAudioManager::getExistsSample(const String& strResourceName, const String& strGroupName)
 	{
-		std::map<std::string, Group*>::iterator itg = _mmapGroup.find(strGroupName);
+		std::map<String, Group*>::iterator itg = _mmapGroup.find(strGroupName);
 		if (itg == _mmapGroup.end())
 			return false;
-		std::map<std::string, ResourceSample*>::iterator it = itg->second->mmapResource.find(strResourceName);
+		std::map<String, ResourceSample*>::iterator it = itg->second->mmapResource.find(strResourceName);
 		if (it == itg->second->mmapResource.end())
 			return false;
 		return true;
 	}
 
-	bool SCAudioManager::getSampleLoaded(const std::string& strResourceName, const std::string& strGroupName)
+	bool SCAudioManager::getSampleLoaded(const String& strResourceName, const String& strGroupName)
 	{
-		std::map<std::string, Group*>::iterator itg = _mmapGroup.find(strGroupName);
+		std::map<String, Group*>::iterator itg = _mmapGroup.find(strGroupName);
 		if (itg == _mmapGroup.end())
 			return false;
-		std::map<std::string, ResourceSample*>::iterator it = itg->second->mmapResource.find(strResourceName);
+		std::map<String, ResourceSample*>::iterator it = itg->second->mmapResource.find(strResourceName);
 		if (it == itg->second->mmapResource.end())
 			return false;
 		return it->second->bLoaded;
 	}
 
-	void SCAudioManager::removeSample(const std::string& strResourceName, const std::string& strGroupName)
+	void SCAudioManager::removeSample(const String& strResourceName, const String& strGroupName)
 	{
 		// Group doesn't exist?
 		if (!sampleGroupExists(strGroupName))
 		{
-			std::string err("SCAudioManager::removeSample(\"");
+			String err(L"AudioManager::removeSample(\"");
 			err.append(strResourceName);
-			err.append("\", \"");
+			err.appendWChar(L"\", \"");
 			err.append(strGroupName);
-			err.append("\") failed. As the given named group of \"");
+			err.appendWChar(L"\") failed. As the given named group of \"");
 			err.append(strGroupName);
-			err.append("\" which the resource is supposed to be in, doesn't exist.");
-			ThrowIfTrue(1, err);
+			err.appendWChar(L"\" which the resource is supposed to be in, doesn't exist.");
+			ErrorIfTrue(1, err);
 		}
 
 		// Resource doesn't exist in the group?
-		std::map<std::string, Group*>::iterator itg = _mmapGroup.find(strGroupName);							// Get iterator to the group (we know it exists)
-		std::map<std::string, ResourceSample*>::iterator it = itg->second->mmapResource.find(strResourceName);	// Try to find the named resource in the group
+		std::map<String, Group*>::iterator itg = _mmapGroup.find(strGroupName);							// Get iterator to the group (we know it exists)
+		std::map<String, ResourceSample*>::iterator it = itg->second->mmapResource.find(strResourceName);	// Try to find the named resource in the group
 		if (itg->second->mmapResource.end() == it)
 		{
-			std::string err("SCAudioManager::removeSample(\"");
+			String err(L"AudioManager::removeSample(\"");
 			err.append(strResourceName);
-			err.append("\", \"");
+			err.appendWChar(L"\", \"");
 			err.append(strGroupName);
-			err.append("\") failed. Although the given named group of \"");
+			err.appendWChar(L"\") failed. Although the given named group of \"");
 			err.append(strGroupName);
-			err.append("\" which the resource is supposed to be in, exists, the named resource couldn't be found.");
-			ThrowIfTrue(1, err);
+			err.appendWChar(L"\" which the resource is supposed to be in, exists, the named resource couldn't be found.");
+			ErrorIfTrue(1, err);
 		}
 
 		// If we get here, we've found the resource in the group
@@ -347,23 +338,26 @@ namespace DC
 		return pPerformanceData.MemoryUsageInBytes;
 	}
 
-	CAudioEmitter* SCAudioManager::addEmitter(const std::string& strEmitterName, const std::string& strSampleName, unsigned int iMaxSimultaneousInstances, const std::string& strSampleGroupname)
+	CAudioEmitter* SCAudioManager::addEmitter(const String& strEmitterName, const String& strSampleName, unsigned int iMaxSimultaneousInstances, const String& strSampleGroupname)
 	{
-		std::string strErr("SCAudioManager::addEmitter(");
-		strErr += strEmitterName + ", " + strSampleName + ", " + std::to_string(iMaxSimultaneousInstances) + ", " + strSampleGroupname + ") ";
+		String strErr(L"AudioManager::addEmitter(");
+		strErr += strEmitterName + L", " + strSampleName + L", ";
+		strErr.appendUnsignedInt(iMaxSimultaneousInstances);
+		strErr += L", " + strSampleGroupname + L") ";
+
 		// Make sure the named group exists
-		std::map<std::string, Group*>::iterator itg = _mmapGroup.find(strSampleGroupname);
+		std::map<String, Group*>::iterator itg = _mmapGroup.find(strSampleGroupname);
 		if (itg == _mmapGroup.end())
 		{
-			strErr += "failed as the named group doesn't exist.";
-			ThrowIfTrue(1, strErr);
+			strErr += L"failed as the named group doesn't exist.";
+			ErrorIfTrue(1, strErr);
 		}
 		// Make sure the named sample exists
-		std::map<std::string, ResourceSample*>::iterator it = itg->second->mmapResource.find(strSampleName);
+		std::map<String, ResourceSample*>::iterator it = itg->second->mmapResource.find(strSampleName);
 		if (it == itg->second->mmapResource.end())
 		{
-			strErr += "failed as although the named group exists, the named sample doesn't.";
-			ThrowIfTrue(1, strErr);
+			strErr += L"failed as although the named group exists, the named sample doesn't.";
+			ErrorIfTrue(1, strErr);
 		}
 		// If we get here, the sample was found in the named group.
 
@@ -378,12 +372,12 @@ namespace DC
 		{
 			// Create new resource
 			ResourceEmitter* pNewResEmitter = new ResourceEmitter;
-			ThrowIfMemoryNotAllocated(pNewResEmitter);
+			ErrorIfMemoryNotAllocated(pNewResEmitter);
 
 			// Create the new emitter object
 			pNewResEmitter->uiReferenceCount = 1;
 			pNewResEmitter->pResource = new CAudioEmitter(it->second->pResource->wfx, iMaxSimultaneousInstances);
-			ThrowIfMemoryNotAllocated(pNewResEmitter->pResource);
+			ErrorIfMemoryNotAllocated(pNewResEmitter->pResource);
 			pEmitter = pNewResEmitter->pResource;	// Store pointer so we can return it below.
 
 			// Store the sample's name and group within the emitter as emitters only work with their set sample data
@@ -396,15 +390,15 @@ namespace DC
 		return pEmitter;
 	}
 
-	void SCAudioManager::removeEmitter(const std::string& strEmitterName)
+	void SCAudioManager::removeEmitter(const String& strEmitterName)
 	{
 		auto it = _mmapResourceEmitters.find(strEmitterName);
 		if (it == _mmapResourceEmitters.end())
 		{
-			std::string strErr("SCAudioManager::removeEmitter(");
+			String strErr(L"AudioManager::removeEmitter(");
 			strErr += strEmitterName;
-			strErr += ") failed as the named emitter doesn't exist.";
-			ThrowIfTrue(1, strErr);
+			strErr += L") failed as the named emitter doesn't exist.";
+			ErrorIfTrue(1, strErr);
 		}
 		it->second->uiReferenceCount--;
 		if (it->second->uiReferenceCount == 0)
@@ -415,7 +409,7 @@ namespace DC
 		}
 	}
 
-	bool SCAudioManager::getExistsEmitter(const std::string& strEmitterName)
+	bool SCAudioManager::getExistsEmitter(const String& strEmitterName)
 	{
 		auto it = _mmapResourceEmitters.find(strEmitterName);
 		if (it == _mmapResourceEmitters.end())
@@ -423,15 +417,15 @@ namespace DC
 		return true;
 	}
 
-	CAudioEmitter* SCAudioManager::getEmitter(const std::string& strEmitterName)
+	CAudioEmitter* SCAudioManager::getEmitter(const String& strEmitterName)
 	{
 		auto it = _mmapResourceEmitters.find(strEmitterName);
 		if (it == _mmapResourceEmitters.end())
 		{
-			std::string strErr("SCAudioManager::getEmitter(");
+			String strErr(L"AudioManager::getEmitter(");
 			strErr += strEmitterName;
-			strErr += ") failed as the named emitter doesn't exist.";
-			ThrowIfTrue(1, strErr);
+			strErr += L") failed as the named emitter doesn't exist.";
+			ErrorIfTrue(1, strErr);
 		}
 		return it->second->pResource;
 	}

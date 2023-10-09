@@ -1,4 +1,30 @@
 #pragma once
+#include "../DCCommon/string.h"
+// XAudio2
+#ifdef _XBOX //Big-Endian
+#define fourccRIFF 'RIFF'
+#define fourccDATA 'data'
+#define fourccFMT 'fmt '
+#define fourccWAVE 'WAVE'
+#define fourccXWMA 'XWMA'
+#define fourccDPDS 'dpds'
+#endif
+#ifndef _XBOX //Little-Endian
+#define fourccRIFF 'FFIR'
+#define fourccDATA 'atad'
+#define fourccFMT ' tmf'
+#define fourccWAVE 'EVAW'
+#define fourccXWMA 'AMWX'
+#define fourccDPDS 'sdpd'
+#endif
+//#include <x3daudio.h>
+//#include <xapo.h>
+//#include <xapobase.h>
+//#include <xapofx.h>
+#include <xaudio2.h>
+//#include <xaudio2fx.h>
+//#include <hrtfapoapi.h>
+//#include <mmdeviceapi.h>
 
 namespace DC
 {
@@ -26,7 +52,7 @@ namespace DC
 		void unload(void);
 
 	private:
-		std::string _mstrAudioFilename;		// Holds the name of the file which holds the sample data
+		String _mstrAudioFilename;		// Holds the name of the file which holds the sample data
 
 		HRESULT _findChunk(HANDLE hFile, DWORD fourcc, DWORD& dwChunkSize, DWORD& dwChunkDataPosition);
 		HRESULT _readChunkData(HANDLE hFile, void* buffer, DWORD buffersize, DWORD bufferoffset);

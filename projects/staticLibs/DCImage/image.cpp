@@ -76,11 +76,11 @@ namespace DC
 		loadInfo(filename, iDims[0], iDims[1], iNumChannels);
 		STB::stbi_uc* pixels = 0;
 		if (4 == iNumChannels)
-			pixels = STB::stbi_load(filename.c_str(), &width, &height, &numberOfChannels, STB::STBI_rgb_alpha);
+			pixels = STB::stbi_load(filename.c_strn(), &width, &height, &numberOfChannels, STB::STBI_rgb_alpha);
 		else if (3 == iNumChannels)
-			pixels = STB::stbi_load(filename.c_str(), &width, &height, &numberOfChannels, STB::STBI_rgb);
+			pixels = STB::stbi_load(filename.c_strn(), &width, &height, &numberOfChannels, STB::STBI_rgb);
 		else if (1 == iNumChannels)
-			pixels = STB::stbi_load(filename.c_str(), &width, &height, &numberOfChannels, 1);
+			pixels = STB::stbi_load(filename.c_strn(), &width, &height, &numberOfChannels, 1);
 
 		if (!pixels)
 			return false;
@@ -121,7 +121,7 @@ namespace DC
 		//   ok = stbi_info(filename, &ix, &iy, &n);
 		//   // returns ok=1 and sets ix, iy, n if image is a supported format,
 		//   // 0 otherwise.
-		return (bool)STB::stbi_info(filename.c_str(), &widthPARAM, &heightPARAM, &numberOfChannelsPARAM);
+		return (bool)STB::stbi_info(filename.c_strn(), &widthPARAM, &heightPARAM, &numberOfChannelsPARAM);
 	}
 
 	void Image::saveAsBMP(const String& filename, bool flipOnSave) const
@@ -132,7 +132,7 @@ namespace DC
 		err += L"Image::saveAsBMP(\"";
 		err += filename;
 		err += L"\") failed.Image failed to be written.";
-		ErrorIfTrue(!STB::stbi_write_bmp(filename.c_str(), width, height, numberOfChannels, data), err);
+		ErrorIfTrue(!STB::stbi_write_bmp(filename.c_strn(), width, height, numberOfChannels, data), err);
 	}
 
 	void Image::saveAsJPG(const String& filename, bool flipOnSave, int quality) const
@@ -143,7 +143,7 @@ namespace DC
 		err += L"Image::saveAsJPG(\"";
 		err += filename;
 		err += L"\") failed.Image failed to be written.";
-		ErrorIfTrue(!STB::stbi_write_jpg(filename.c_str(), width, height, numberOfChannels, data, quality), err);
+		ErrorIfTrue(!STB::stbi_write_jpg(filename.c_strn(), width, height, numberOfChannels, data, quality), err);
 	}
 
 	void Image::saveAsPNG(const String& filename, bool flipOnSave) const
@@ -154,7 +154,7 @@ namespace DC
 		err += L"Image::saveAsPNG(\"";
 		err += filename;
 		err += L"\") failed.Image failed to be written.";
-		ErrorIfTrue(!STB::stbi_write_png(filename.c_str(), width, height, numberOfChannels, data, width * numberOfChannels), err);
+		ErrorIfTrue(!STB::stbi_write_png(filename.c_strn(), width, height, numberOfChannels, data, width * numberOfChannels), err);
 	}
 
 	void Image::saveAsTGA(const String& filename, bool flipOnSave) const
@@ -165,7 +165,7 @@ namespace DC
 		err += L"Image::saveAsTGA(\"";
 		err += filename;
 		err += L"\") failed.Image failed to be written.";
-		ErrorIfTrue(!STB::stbi_write_tga(filename.c_str(), width, height, numberOfChannels, data), err);
+		ErrorIfTrue(!STB::stbi_write_tga(filename.c_strn(), width, height, numberOfChannels, data), err);
 	}
 
 	void Image::fill(unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha)

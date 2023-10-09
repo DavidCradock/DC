@@ -6,6 +6,16 @@
 
 namespace DC
 {
+	String::String()
+	{
+
+	}
+
+	String::String(const wchar_t* string)
+	{
+		this->append(string);
+	}
+
 	void String::addFilenameExtension(const String& filenameExtension)
 	{
 		ErrorIfTrue(0 == filenameExtension.size(), L"String::addFilenameExtension() failed. Given extension name of zero length.");
@@ -25,6 +35,11 @@ namespace DC
 			erase(pos, size() - pos);
 		}
 		append(strExt);
+	}
+
+	void String::appendWChar(const wchar_t* string)
+	{
+		this->append(string);
 	}
 
 	void String::appendDouble(double value, unsigned int numDecimalPoints)
@@ -115,9 +130,15 @@ namespace DC
 		*this += std::to_wstring(value);
 	}
 
-	const char* String::c_str(void) const
+	const char* String::c_strn(void) const
 	{
-		return wideCharToMultiByte().c_str();
+		c_strTemp = wideCharToMultiByte();
+		return c_strTemp.c_str();
+	}
+
+	const wchar_t* String::c_strw(void)
+	{
+		return c_str();
 	}
 
 	void String::lowercase(void)
@@ -199,7 +220,7 @@ namespace DC
 		ErrorIfFalse(file.is_open(), L"String::ofstreamWrite() failed. The given ofstream is not open.");
 		size_t size = this->size();
 		file.write((char*)&size, sizeof(size));
-		file.write(c_str(), size);
+		file.write(c_strn(), size);
 		ErrorIfFalse(file.good(), L"String::ofstreamWrite() failed. The ofstream is not good.");
 	}
 

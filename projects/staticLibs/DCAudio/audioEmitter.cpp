@@ -1,11 +1,12 @@
 #include "audioEmitter.h"
 #include "audioManager.h"
+#include "../DCCommon/error.h"
 
 namespace DC
 {
 	CAudioEmitter::CAudioEmitter(WAVEFORMATEXTENSIBLE& wfx, unsigned int iMaxSimultaneousInstances)
 	{
-		ThrowIfTrue(0 == iMaxSimultaneousInstances, "CAudioEmitter::CAudioEmitter() given 0 iMaxSimultaneousInstances,");
+		ErrorIfTrue(0 == iMaxSimultaneousInstances, L"AudioEmitter::CAudioEmitter() given 0 iMaxSimultaneousInstances,");
 		_muiMaxSimultaneousInstances = iMaxSimultaneousInstances;
 		_muiVecVoicesIndex = 0;
 		// Create voices for the audio emitter
@@ -15,7 +16,7 @@ namespace DC
 			IXAudio2SourceVoice* pVoice;
 			// Create a source voice by calling the IXAudio2::CreateSourceVoice method on an instance of the XAudio2 engine.
 			// The format of the voice is specified by the values set in a WAVEFORMATEX structure.
-			ThrowIfTrue(FAILED(hr = SCAudioManager::getPointer()->_mpXAudio2->CreateSourceVoice(&pVoice, (WAVEFORMATEX*)&wfx)), "CAudioEmitter::CAudioEmitter() failed to create source voice.");
+			ErrorIfTrue(FAILED(hr = SCAudioManager::getPointer()->_mpXAudio2->CreateSourceVoice(&pVoice, (WAVEFORMATEX*)&wfx)), L"AudioEmitter::CAudioEmitter() failed to create source voice.");
 			_mvecVoices.push_back(pVoice);
 		}
 	}
@@ -32,14 +33,14 @@ namespace DC
 	void CAudioEmitter::play(float fVolume, float fPlaybackSpeed, bool bLoop)
 	{
 		// Find the sample which this emitter uses
-		if (!x->pAudio->getExistsSample(_mstrSampleName, _mstrSampleGroupname))
+		if (!SCAudioManager::getPointer()->getExistsSample(_mstrSampleName, _mstrSampleGroupname))
 		{
-			std::string strErr("CAudioEmitter::play() failed as it's set sample of ");
-			strErr += _mstrSampleName + " in group " + _mstrSampleGroupname + " doesn't exist in the audio manager.";
-			ThrowIfTrue(1, strErr);
+			String strErr(L"AudioEmitter::play() failed as it's set sample of ");
+			strErr += _mstrSampleName + L" in group " + _mstrSampleGroupname + L" doesn't exist in the audio manager.";
+			ErrorIfTrue(1, strErr);
 		}
 		// Make sure the audio sample is loaded
-		if (false == x->pAudio->getSampleLoaded(_mstrSampleName, _mstrSampleGroupname))
+		if (false == SCAudioManager::getPointer()->getSampleLoaded(_mstrSampleName, _mstrSampleGroupname))
 			return;
 
 		// Before playing from the current voice index, stop it from playing incase it is so
@@ -48,7 +49,7 @@ namespace DC
 		pSourceVoice->FlushSourceBuffers();
 
 		// Get pointer to the audio sample
-		CAudioSample* pAudioSample = x->pAudio->getSample(_mstrSampleName, _mstrSampleGroupname);
+		CAudioSample* pAudioSample = SCAudioManager::getPointer()->getSample(_mstrSampleName, _mstrSampleGroupname);
 
 		// Set the sample's loop variables
 		if (bLoop)	// Loop the thing?
@@ -65,14 +66,14 @@ namespace DC
 		}
 		HRESULT hr;
 		hr = pSourceVoice->SubmitSourceBuffer(&pAudioSample->buffer);
-		ThrowIfTrue(FAILED(hr), "CAudioEmitter::play() failed. Error submitting source buffer.");
+		ErrorIfTrue(FAILED(hr), L"AudioEmitter::play() failed. Error submitting source buffer.");
 
 		// Set voice volume, pan and frequency
 		pSourceVoice->SetVolume(fVolume);
 		pSourceVoice->SetFrequencyRatio(fPlaybackSpeed);
 
 		hr = pSourceVoice->Start(0);
-		ThrowIfTrue(FAILED(hr), "CAudioEmitter::play() failed during call to pSourceVoice->Start()");
+		ErrorIfTrue(FAILED(hr), L"AudioEmitter::play() failed during call to pSourceVoice->Start()");
 
 		// Deal with voice index
 		_muiVecVoicesIndex++;
@@ -86,9 +87,9 @@ namespace DC
 		for (int iVoice = 0; iVoice < _mvecVoices.size(); iVoice++)
 		{
 			hr = _mvecVoices[iVoice]->Stop();	// Stop playback of this voice
-			ThrowIfTrue(FAILED(hr), "CAudioEmitter::stopAll() failed. Error calling IXAudio2SourceVoice->Stop().");
+			ErrorIfTrue(FAILED(hr), L"AudioEmitter::stopAll() failed. Error calling IXAudio2SourceVoice->Stop().");
 			hr = _mvecVoices[iVoice]->FlushSourceBuffers();
-			ThrowIfTrue(FAILED(hr), "CAudioEmitter::stopAll() failed. Error calling IXAudio2SourceVoice->FlushSourceBuffers().");
+			ErrorIfTrue(FAILED(hr), L"AudioEmitter::stopAll() failed. Error calling IXAudio2SourceVoice->FlushSourceBuffers().");
 		}
 	}
 
@@ -97,18 +98,18 @@ namespace DC
 		// Make sure valid index is given
 		if (uiIndex >= _muiMaxSimultaneousInstances)
 		{
-			std::string strErr("CAudioEmitter::stop(");
-			strErr += std::to_string(uiIndex);
-			strErr += ") failed as given index has to be less than ";
-			strErr += std::to_string(_muiMaxSimultaneousInstances);
-			ThrowIfTrue(1, strErr);
+			String strErr(L"AudioEmitter::stop(");
+			strErr.appendUnsignedInt(uiIndex);
+			strErr += L") failed as given index has to be less than ";
+			strErr.appendUnsignedInt(_muiMaxSimultaneousInstances);
+			ErrorIfTrue(1, strErr);
 		}
 
 		HRESULT hr;
 		hr = _mvecVoices[uiIndex]->Stop();	// Stop playback of this voice
-		ThrowIfTrue(FAILED(hr), "CAudioEmitter::stop() failed. Error calling IXAudio2SourceVoice->Stop().");
+		ErrorIfTrue(FAILED(hr), L"AudioEmitter::stop() failed. Error calling IXAudio2SourceVoice->Stop().");
 		hr = _mvecVoices[uiIndex]->FlushSourceBuffers();
-		ThrowIfTrue(FAILED(hr), "CAudioEmitter::stop() failed. Error calling IXAudio2SourceVoice->FlushSourceBuffers().");
+		ErrorIfTrue(FAILED(hr), L"AudioEmitter::stop() failed. Error calling IXAudio2SourceVoice->FlushSourceBuffers().");
 	}
 
 	unsigned int CAudioEmitter::getNumVoicesPlaying(void) const
@@ -129,11 +130,11 @@ namespace DC
 		// Make sure valid index is given
 		if (uiIndex >= _muiMaxSimultaneousInstances)
 		{
-			std::string strErr("CAudioEmitter::setVolume(");
-			strErr += std::to_string(uiIndex);
-			strErr += ") failed as given index has to be less than ";
-			strErr += std::to_string(_muiMaxSimultaneousInstances);
-			ThrowIfTrue(1, strErr);
+			String strErr(L"AudioEmitter::setVolume(");
+			strErr.appendUnsignedInt(uiIndex);
+			strErr += L") failed as given index has to be less than ";
+			strErr.appendUnsignedInt(_muiMaxSimultaneousInstances);
+			ErrorIfTrue(1, strErr);
 		}
 		_mvecVoices[uiIndex]->SetVolume(fVolume);
 	}
@@ -143,11 +144,11 @@ namespace DC
 		// Make sure valid index is given
 		if (uiIndex >= _muiMaxSimultaneousInstances)
 		{
-			std::string strErr("CAudioEmitter::getVolume(");
-			strErr += std::to_string(uiIndex);
-			strErr += ") failed as given index has to be less than ";
-			strErr += std::to_string(_muiMaxSimultaneousInstances);
-			ThrowIfTrue(1, strErr);
+			String strErr(L"AudioEmitter::getVolume(");
+			strErr.appendUnsignedInt(uiIndex);
+			strErr += L") failed as given index has to be less than ";
+			strErr.appendUnsignedInt(_muiMaxSimultaneousInstances);
+			ErrorIfTrue(1, strErr);
 		}
 		float fVolume = 0.0f;
 		_mvecVoices[uiIndex]->GetVolume(&fVolume);
@@ -159,11 +160,11 @@ namespace DC
 		// Make sure valid index is given
 		if (uiIndex >= _muiMaxSimultaneousInstances)
 		{
-			std::string strErr("CAudioEmitter::setFrequency(");
-			strErr += std::to_string(uiIndex);
-			strErr += ") failed as given index has to be less than ";
-			strErr += std::to_string(_muiMaxSimultaneousInstances);
-			ThrowIfTrue(1, strErr);
+			String strErr(L"AudioEmitter::setFrequency(");
+			strErr.appendUnsignedInt(uiIndex);
+			strErr += L") failed as given index has to be less than ";
+			strErr.appendUnsignedInt(_muiMaxSimultaneousInstances);
+			ErrorIfTrue(1, strErr);
 		}
 		_mvecVoices[uiIndex]->SetFrequencyRatio(fFrequency);
 	}
@@ -173,11 +174,11 @@ namespace DC
 		// Make sure valid index is given
 		if (uiIndex >= _muiMaxSimultaneousInstances)
 		{
-			std::string strErr("CAudioEmitter::getFrequency(");
-			strErr += std::to_string(uiIndex);
-			strErr += ") failed as given index has to be less than ";
-			strErr += std::to_string(_muiMaxSimultaneousInstances);
-			ThrowIfTrue(1, strErr);
+			String strErr(L"AudioEmitter::getFrequency(");
+			strErr.appendUnsignedInt(uiIndex);
+			strErr += L") failed as given index has to be less than ";
+			strErr.appendUnsignedInt(_muiMaxSimultaneousInstances);
+			ErrorIfTrue(1, strErr);
 		}
 		float fFrequency = 0.0f;
 		_mvecVoices[uiIndex]->GetFrequencyRatio(&fFrequency);

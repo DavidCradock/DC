@@ -79,6 +79,7 @@
     <ClInclude Include="colour.h" />
     <ClInclude Include="DCCommon.h" />
     <ClInclude Include="profiler.h" />
+    <ClInclude Include="singleton.h" />
     <ClInclude Include="string.h" />
     <ClInclude Include="error.h" />
     <ClInclude Include="timer.h" />

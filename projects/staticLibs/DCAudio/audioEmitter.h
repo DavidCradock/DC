@@ -1,4 +1,33 @@
 #pragma once
+#include <vector>
+
+// XAudio2
+#ifdef _XBOX //Big-Endian
+#define fourccRIFF 'RIFF'
+#define fourccDATA 'data'
+#define fourccFMT 'fmt '
+#define fourccWAVE 'WAVE'
+#define fourccXWMA 'XWMA'
+#define fourccDPDS 'dpds'
+#endif
+#ifndef _XBOX //Little-Endian
+#define fourccRIFF 'FFIR'
+#define fourccDATA 'atad'
+#define fourccFMT ' tmf'
+#define fourccWAVE 'EVAW'
+#define fourccXWMA 'AMWX'
+#define fourccDPDS 'sdpd'
+#endif
+//#include <x3daudio.h>
+//#include <xapo.h>
+//#include <xapobase.h>
+//#include <xapofx.h>
+#include <xaudio2.h>
+//#include <xaudio2fx.h>
+//#include <hrtfapoapi.h>
+//#include <mmdeviceapi.h>
+
+#include "../DCCommon/string.h"
 
 namespace DC
 {
@@ -45,8 +74,8 @@ namespace DC
 		unsigned int _muiMaxSimultaneousInstances;		// Maximum number of sounds which can be played back simultaneously
 		std::vector<IXAudio2SourceVoice*> _mvecVoices;	// Multiple instances playback
 		unsigned int _muiVecVoicesIndex;				// Which voice index to play next
-		std::string _mstrSampleName;					// The named sample which this emitter uses for playback
-		std::string _mstrSampleGroupname;				// The named sample's groupname which it is located within.
+		String _mstrSampleName;					// The named sample which this emitter uses for playback
+		String _mstrSampleGroupname;				// The named sample's groupname which it is located within.
 	};
 
 

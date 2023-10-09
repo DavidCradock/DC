@@ -15,6 +15,7 @@
     <ClInclude Include="profiler.h" />
     <ClInclude Include="colour.h" />
     <ClInclude Include="utilities.h" />
+    <ClInclude Include="singleton.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DCCommon.cpp" />

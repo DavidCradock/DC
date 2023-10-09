@@ -21,11 +21,18 @@ namespace DC
 	class String : public std::wstring
 	{
 	public:
+		String();
+
+		String(const wchar_t* string);
+
 		// Assumes that this string already contains a filename and then appends the given filename extension to the end of this string.
 		// If this string already has an extension, it is removed and replaced with the new one.
 		// The filename extension may or may not have the "." at the beginning. If it doesn't exist, it is added.
 		// If the filename extension is of zero length, an exception occurs.
 		void addFilenameExtension(const String& filenameExtension);
+
+		// Append a wchar_t* to the end of this string
+		void appendWChar(const wchar_t* string);
 
 		// Append a double to the end of this string with the given number of digits after the decimal point.
 		// numDecimalPoints can be from 0 to 9, if outside this range, then 2 is used.
@@ -41,8 +48,13 @@ namespace DC
 		// Append an unsigned integer to the end of this string
 		void appendUnsignedInt(unsigned int value);
 
-		// Return a pointer to a narror c_string
-		const char* c_str(void) const;
+		// Return a pointer to a narrow c_string
+		// NOTE: Uses c_strTemp as a temp member variable so the returned pointer is valid and non-dangling.
+		// TODO While at work, think of a better way to do this.
+		const char* c_strn(void) const;
+
+		// Return a pointer to a c_string
+		const wchar_t* c_strw(void);
 
 		// Converts this string to lowercase
 		void lowercase(void);
@@ -73,5 +85,9 @@ namespace DC
 		// This reads in the size of the string, resizes it to make room and then loads it in
 		// If the file is not open or there was an error during reading, an exception occurs.
 		void ifstreamRead(std::ifstream& file);
+	private:
+
+		// Used by c_str() to return a pointer
+		mutable std::string c_strTemp;
 	};
 }
