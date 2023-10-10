@@ -14,13 +14,13 @@ namespace DC
 	};
 
 	// A message object used by a messaging system and message user
-	class CMessage
+	class Message
 	{
 	public:
-		friend class CMessageUser;
+		friend class MessageUser;
 
 		// Constructor, preparing the message
-		CMessage(const String& strMessageContents, EMessageType eMessageType = EMessageType::UNKNOWN);
+		Message(const String& messageContents, EMessageType messageType = EMessageType::UNKNOWN);
 
 		// Returns a string holding the message
 		const String& getMessageContents(void) const;
@@ -31,9 +31,9 @@ namespace DC
 		// Returns the type of this message
 		EMessageType getMessageType(void) const;
 	private:
-		String _mstrContents;		// String holding the message, given to constructor.
-		String _mstrSenderName;	// String holding the message's sender's name, given to constructor.
-		EMessageType _meType;			// The type of message this is
+		String contents;		// String holding the message, given to constructor.
+		String senderName;		// String holding the message's sender's name.
+		EMessageType type;		// The type of message this is, given to constructor.
 	};
 
 }

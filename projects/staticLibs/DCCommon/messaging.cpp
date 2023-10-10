@@ -6,99 +6,99 @@ namespace DC
 	{
 	}
 
-	CMessageService* SCMessageSystem::serviceAdd(const String& strServiceName)
+	MessageService* SCMessageSystem::serviceAdd(const String& serviceName)
 	{
-		ErrorIfTrue(services.exists(strServiceName), L"MessageSystem::serviceAdd(\"" + strServiceName + L"\") failed. The named service already exists.");
-		return services.add(strServiceName);
+		ErrorIfTrue(services.exists(serviceName), L"MessageSystem::serviceAdd(\"" + serviceName + L"\") failed. The named service already exists.");
+		return services.add(serviceName);
 	}
 
-	void SCMessageSystem::serviceRemove(const String& strServiceName)
+	void SCMessageSystem::serviceRemove(const String& serviceName)
 	{
-		ErrorIfFalse(services.exists(strServiceName), L"MessageSystem::serviceRemove(\"" + strServiceName + L"\") failed. The named service does not exist.");
+		ErrorIfFalse(services.exists(serviceName), L"MessageSystem::serviceRemove(\"" + serviceName + L"\") failed. The named service does not exist.");
 
 		// Remove service from each user's subscription list
 		for (size_t i = 0; i < users.getNumber(); i++)
 		{
-			users.get(i)->_mlstSubscribedServiceNames.remove(strServiceName);
+			users.get(i)->subscribedServiceNames.remove(serviceName);
 		}
 
-		services.remove(strServiceName);
+		services.remove(serviceName);
 	}
 
-	bool SCMessageSystem::serviceExists(const String& strServiceName)
+	bool SCMessageSystem::serviceExists(const String& serviceName)
 	{
-		return services.exists(strServiceName);
+		return services.exists(serviceName);
 	}
 
-	CMessageService* SCMessageSystem::serviceGet(const String& strServiceName)
+	MessageService* SCMessageSystem::serviceGet(const String& serviceName)
 	{
-		ErrorIfFalse(services.exists(strServiceName), L"MessageSystem::serviceGet(\"" + strServiceName + L"\") failed. The named service does not exist.");
-		return services.get(strServiceName);
+		ErrorIfFalse(services.exists(serviceName), L"MessageSystem::serviceGet(\"" + serviceName + L"\") failed. The named service does not exist.");
+		return services.get(serviceName);
 	}
 
-	CMessageUser* SCMessageSystem::userAdd(const String& strUserName)
+	MessageUser* SCMessageSystem::userAdd(const String& userName)
 	{
-		ErrorIfTrue(users.exists(strUserName), L"MessageSystem::userAdd(\"" + strUserName + L"\") failed. The named user already exists.");
-		CMessageUser* pUser = users.add(strUserName);
-		pUser->_mstrName = strUserName;
+		ErrorIfTrue(users.exists(userName), L"MessageSystem::userAdd(\"" + userName + L"\") failed. The named user already exists.");
+		MessageUser* pUser = users.add(userName);
+		pUser->name = userName;
 		return pUser;
 	}
 
-	void SCMessageSystem::userRemove(const String& strUserName)
+	void SCMessageSystem::userRemove(const String& userName)
 	{
-		ErrorIfFalse(users.exists(strUserName), L"MessageSystem::userRemove(\"" + strUserName + L"\") failed. The named user does not exist.");
+		ErrorIfFalse(users.exists(userName), L"MessageSystem::userRemove(\"" + userName + L"\") failed. The named user does not exist.");
 
 		// Remove user from each service's subscription list
 		for (size_t i = 0; i < services.getNumber(); i++)
 		{
-			services.get(i)->_mlstSubscribedUserNames.remove(strUserName);
+			services.get(i)->subscribedUserNames.remove(userName);
 		}
 
-		users.remove(strUserName);
+		users.remove(userName);
 	}
 
-	bool SCMessageSystem::userExists(const String& strUserName)
+	bool SCMessageSystem::userExists(const String& userName)
 	{
-		return users.exists(strUserName);
+		return users.exists(userName);
 	}
 
-	CMessageUser* SCMessageSystem::userGet(const String& strUserName)
+	MessageUser* SCMessageSystem::userGet(const String& userName)
 	{
-		ErrorIfFalse(users.exists(strUserName), L"MessageSystem::userGet(\"" + strUserName + L"\") failed. The named user does not exist.");
-		return users.get(strUserName);
+		ErrorIfFalse(users.exists(userName), L"MessageSystem::userGet(\"" + userName + L"\") failed. The named user does not exist.");
+		return users.get(userName);
 	}
 
-	void SCMessageSystem::subscribeUserToService(const String& strUserName, const String& strServiceName)
+	void SCMessageSystem::subscribeUserToService(const String& userName, const String& serviceName)
 	{
 		// Make sure both the user and service exist
-		ErrorIfFalse(users.exists(strUserName), L"MessageSystem::subscribeUserToService(\"" + strUserName + L", " + strServiceName + L"\") failed. The named user does not exist.");
-		ErrorIfFalse(services.exists(strServiceName), L"MessageSystem::subscribeUserToService(\"" + strUserName + L", " + strServiceName + L"\") failed. The named service does not exist.");
+		ErrorIfFalse(users.exists(userName), L"MessageSystem::subscribeUserToService(\"" + userName + L", " + serviceName + L"\") failed. The named user does not exist.");
+		ErrorIfFalse(services.exists(serviceName), L"MessageSystem::subscribeUserToService(\"" + userName + L", " + serviceName + L"\") failed. The named service does not exist.");
 
 		// Add service to the user's subscribed service list
-		CMessageUser* pUser = users.get(strUserName);
-		if (!pUser->isSubscribedToService(strServiceName))
-			pUser->_mlstSubscribedServiceNames.push_back(strServiceName);
+		MessageUser* pUser = users.get(userName);
+		if (!pUser->isSubscribedToService(serviceName))
+			pUser->subscribedServiceNames.push_back(serviceName);
 
 		// Add the user to the service's subscribed user list
-		CMessageService* pService = services.get(strServiceName);
-		if (!pService->isSubscribedToService(strUserName))
-			pService->_mlstSubscribedUserNames.push_back(strUserName);
+		MessageService* pService = services.get(serviceName);
+		if (!pService->isSubscribedToService(userName))
+			pService->subscribedUserNames.push_back(userName);
 	}
 
-	void SCMessageSystem::unsubscribeUserFromService(const String& strUserName, const String& strServiceName)
+	void SCMessageSystem::unsubscribeUserFromService(const String& userName, const String& serviceName)
 	{
 		// Make sure both the user and service exist
-		ErrorIfFalse(users.exists(strUserName), L"MessageSystem::unsubscribeUserFromService(\"" + strUserName + L", " + strServiceName + L"\") failed. The named user does not exist.");
-		ErrorIfFalse(services.exists(strServiceName), L"MessageSystem::unsubscribeUserFromService(\"" + strUserName + L", " + strServiceName + L"\") failed. The named service does not exist.");
+		ErrorIfFalse(users.exists(userName), L"MessageSystem::unsubscribeUserFromService(\"" + userName + L", " + serviceName + L"\") failed. The named user does not exist.");
+		ErrorIfFalse(services.exists(serviceName), L"MessageSystem::unsubscribeUserFromService(\"" + userName + L", " + serviceName + L"\") failed. The named service does not exist.");
 
 		// Remove service from the user's subscribed service list
-		CMessageUser* pUser = users.get(strUserName);
-		if (pUser->isSubscribedToService(strServiceName))
-			pUser->_mlstSubscribedServiceNames.remove(strServiceName);
+		MessageUser* pUser = users.get(userName);
+		if (pUser->isSubscribedToService(serviceName))
+			pUser->subscribedServiceNames.remove(serviceName);
 
 		// Remove the user from the service's subscribed user list
-		CMessageService* pService = services.get(strServiceName);
-		if (pService->isSubscribedToService(strUserName))
-			pService->_mlstSubscribedUserNames.remove(strUserName);
+		MessageService* pService = services.get(serviceName);
+		if (pService->isSubscribedToService(userName))
+			pService->subscribedUserNames.remove(userName);
 	}
 }

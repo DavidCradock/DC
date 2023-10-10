@@ -3,51 +3,51 @@
 
 namespace DC
 {
-	CMessageService::CMessageService()
+	MessageService::MessageService()
 	{
 
 	}
 
-	CMessageService::~CMessageService()
+	MessageService::~MessageService()
 	{
 
 	}
 
-	bool CMessageService::isSubscribedToService(const String& strUserName)
+	bool MessageService::isSubscribedToService(const String& userName)
 	{
-		auto it = _mlstSubscribedUserNames.begin();
-		while (it != _mlstSubscribedUserNames.end())
+		auto it = subscribedUserNames.begin();
+		while (it != subscribedUserNames.end())
 		{
-			if (*it == strUserName)
+			if (*it == userName)
 				return true;
 			it++;
 		}
 		return false;
 	}
 
-	void CMessageService::_receiveMessageFromUser(const CMessage& message)
+	void MessageService::_receiveMessageFromUser(const Message& message)
 	{
-		_mvecMessageStorage.push_back(message);
+		messageStorage.push_back(message);
 	}
 
-	void CMessageService::dispatch(void)
+	void MessageService::dispatch(void)
 	{
 		SCMessageSystem* pMessageSystem = SCMessageSystem::getPointer();
 		// For each message in message storage
-		for (size_t iMessage = 0; iMessage < _mvecMessageStorage.size(); iMessage++)
+		for (size_t iMessage = 0; iMessage < messageStorage.size(); iMessage++)
 		{
 			// For each subscribed user name
-			auto it = _mlstSubscribedUserNames.begin();
-			while (it != _mlstSubscribedUserNames.end())
+			auto it = subscribedUserNames.begin();
+			while (it != subscribedUserNames.end())
 			{
 				// Get user and send message to it's inbox
-				CMessageUser* pUser = pMessageSystem->userGet(*it);
-				pUser->_receiveMessageFromService(_mvecMessageStorage[iMessage]);
+				MessageUser* pUser = pMessageSystem->userGet(*it);
+				pUser->receiveMessageFromService(messageStorage[iMessage]);
 				it++;
 			}
 		}
 
 		// Empty message storage of service as all messages are now sent
-		_mvecMessageStorage.clear();
+		messageStorage.clear();
 	}
 }

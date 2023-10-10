@@ -2,25 +2,25 @@
 
 namespace DC
 {
-	CMessage::CMessage(const String& strMessageContents, EMessageType eMessageType)
+	Message::Message(const String& messageContents, EMessageType messageType)
 	{
-		_mstrContents = strMessageContents;
-		_mstrSenderName = L"UNKNOWN";
-		_meType = eMessageType;
+		contents = messageContents;
+		senderName = L"UNKNOWN";
+		type = messageType;
 	}
 
-	const String& CMessage::getMessageContents(void) const
+	const String& Message::getMessageContents(void) const
 	{
-		return _mstrContents;
+		return contents;
 	}
 
-	const String& CMessage::getMessageSender(void) const
+	const String& Message::getMessageSender(void) const
 	{
-		return _mstrSenderName;
+		return senderName;
 	}
 
-	EMessageType CMessage::getMessageType(void) const
+	EMessageType Message::getMessageType(void) const
 	{
-		return _meType;
+		return type;
 	}
 }
