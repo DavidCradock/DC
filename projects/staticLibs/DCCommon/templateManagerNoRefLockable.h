@@ -25,7 +25,7 @@ namespace DC
 
 		// Adds a new uniquely named object.
 		// If the named object already exists, this simply returns the object's pointer
-		// If locked is set to true, this affects the various remove method's behaviour.
+		// If locked is set to true, this affects the various remove method's behaviours.
 		// If calling a remove method on a named object which is set as locked, it will not
 		// be removed unless that remove method is passed true to it's forceRemoveLocked parameter.
 		// Objects can later be unlocked with a call to setLocked().

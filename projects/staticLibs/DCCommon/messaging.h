@@ -17,14 +17,14 @@ namespace DC
 	/* Example usage :
 		// Setup messaging system
 		// Create a message service which handles sending and receiving of messages to/from message users
-		MessageService* pMsgService = x->pMessageSystem->serviceAdd("service");	// Create a messaging service
-		MessageUser* pUserDavid = x->pMessageSystem->userAdd("David");				// Add a user
-		MessageUser* pUserMojo = x->pMessageSystem->userAdd("Mojo");				// Add another user
-		x->pMessageSystem->subscribeUserToService("David", "service");				// Subscribe "David" user to "service" service.
-		Message msg("ThisIsMessageContents", EMessageType::UNKNOWN);				// Create a message for some user to send to the service
-		pUserMojo->postNewMessage(msg, "service");									// Let user "Mojo" send the message to the "service" service
-		pMsgService->dispatch();													// Get the service to dispatch all received messages to all subscribed users
-		while (pUserMojo->doesInboxContainMessages())								// Get Mojo user to check to see if their inbox contains any messages
+		MessageService* pMsgService = pMessageSystem->serviceAdd("service");	// Create a messaging service
+		MessageUser* pUserDavid = pMessageSystem->userAdd("David");				// Add a user
+		MessageUser* pUserMojo = pMessageSystem->userAdd("Mojo");				// Add another user
+		pMessageSystem->subscribeUserToService("David", "service");				// Subscribe "David" user to "service" service.
+		Message msg("ThisIsMessageContents", EMessageType::UNKNOWN);			// Create a message for some user to send to the service
+		pUserMojo->postNewMessage(msg, "service");								// Let user "Mojo" send the message to the "service" service
+		pMsgService->dispatch();												// Get the service to dispatch all received messages to all subscribed users
+		while (pUserMojo->doesInboxContainMessages())							// Get Mojo user to check to see if their inbox contains any messages
 			Message message = pUserMojo->getMessageFromInbox();					// If there's a message, remove it from the user's inbox and then we can read the message
 		// There won't be any messages as user Mojo is not subscribed to any service.
 		if (pUserDavid->doesInboxContainMessages())									// Get David user to check to see if their inbox contains any messages

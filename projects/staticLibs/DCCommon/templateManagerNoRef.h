@@ -6,6 +6,9 @@
 namespace DC
 {
 	// Template class to manage pointers to objects of a class of the given type.
+	// This is the simplest of the manager templates.
+	// An object has no reference counts unlike the Manager class
+	// An object is not lockable unlike the ManagerNoRefLockable class.
 	template <typename T> class ManagerNoRef
 	{
 	public:

@@ -9,7 +9,9 @@
 - Load the X.sln file into Visual studio, hit compile, done.
 
 # TODO
+Implement renderer
 Check String class
+Add 2D and UI stuff from X project codebase.
 
 # Notes...
 
