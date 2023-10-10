@@ -8,8 +8,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DCRenderer.h" />
+    <ClInclude Include="rendererManager.h" />
+    <ClInclude Include="rendererBase.h" />
+    <ClInclude Include="rendererOpenGL.h" />
+    <ClInclude Include="rendererVulkan.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DCRenderer.cpp" />
+    <ClCompile Include="rendererManager.cpp" />
+    <ClCompile Include="rendererBase.cpp" />
+    <ClCompile Include="rendererOpenGL.cpp" />
+    <ClCompile Include="rendererVulkan.cpp" />
   </ItemGroup>
 </Project>

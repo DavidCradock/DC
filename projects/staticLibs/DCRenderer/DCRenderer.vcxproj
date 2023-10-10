@@ -77,9 +77,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DCRenderer.cpp" />
+    <ClCompile Include="rendererBase.cpp" />
+    <ClCompile Include="rendererManager.cpp" />
+    <ClCompile Include="rendererOpenGL.cpp" />
+    <ClCompile Include="rendererVulkan.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DCRenderer.h" />
+    <ClInclude Include="rendererBase.h" />
+    <ClInclude Include="rendererManager.h" />
+    <ClInclude Include="rendererOpenGL.h" />
+    <ClInclude Include="rendererVulkan.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
