@@ -29,13 +29,13 @@
 namespace DC
 {
 	// An audio sample containing sample data used for playback via audio emitters
-	class CAudioSample
+	class AudioSample
 	{
 		friend class SCAudioManager;
-		friend class CAudioEmitter;
+		friend class AudioEmitter;
 	public:
-		CAudioSample();
-		~CAudioSample();
+		AudioSample();
+		~AudioSample();
 
 		// Loads the resource so it's ready for use.
 		// Used by the manager
@@ -52,10 +52,10 @@ namespace DC
 		void unload(void);
 
 	private:
-		String _mstrAudioFilename;		// Holds the name of the file which holds the sample data
+		String audioFilename;		// Holds the name of the file which holds the sample data
 
-		HRESULT _findChunk(HANDLE hFile, DWORD fourcc, DWORD& dwChunkSize, DWORD& dwChunkDataPosition);
-		HRESULT _readChunkData(HANDLE hFile, void* buffer, DWORD buffersize, DWORD bufferoffset);
+		HRESULT findChunk(HANDLE file, DWORD fourcc, DWORD& chunkSize, DWORD& chunkDataPosition);
+		HRESULT readChunkData(HANDLE file, void* buffer, DWORD buffersize, DWORD bufferoffset);
 		XAUDIO2_BUFFER buffer = { 0 };		// Holds the sample data once the object is loaded
 		WAVEFORMATEXTENSIBLE wfx = { 0 };	// Holds the information about the sample data once loadFormat() has been called
 	};

@@ -32,16 +32,16 @@
 namespace DC
 {
 	// An audio emitter which emits sounds from loaded audio samples
-	class CAudioEmitter
+	class AudioEmitter
 	{
 		friend class SCAudioManager;
 	public:
-		CAudioEmitter(WAVEFORMATEXTENSIBLE& wfx, unsigned int iMaxSimultaneousInstances = 8);
-		~CAudioEmitter();
+		AudioEmitter(WAVEFORMATEXTENSIBLE& wfx, unsigned int maxSimultaneousInstances = 8);
+		~AudioEmitter();
 
 		// Plays an instance for this emitter using given values
 		// If the sample isn't currently loaded, this silently fails
-		void play(float fVolume = 1.0f, float fPlaybackSpeed = 1.0f, bool bLoop = false);
+		void play(float volume = 1.0f, float playbackSpeed = 1.0f, bool loop = false);
 
 		// Stops playback of all voices for this emitter
 		void stopAll(void);
@@ -49,33 +49,33 @@ namespace DC
 		// Stops playback of a voice at the specified index.
 		// The index can be in the range of 0 to maximum number of simultaneous instances, minus one.
 		// If an invalid index is given, an exception occurs.
-		void stop(unsigned int uiIndex);
+		void stop(unsigned int index);
 
 		// Returns the number of voices which are currently playing for this emitter
 		unsigned int getNumVoicesPlaying(void) const;
 
 		// Sets a voice's volume whilst it's playing
 		// If an invalid index is given, an exception occurs
-		void setVolume(unsigned int uiIndex, float fVolume);
+		void setVolume(unsigned int index, float volume);
 
 		// Retrieves a voice's currently set volume
 		// If an invalid index is given, an exception occurs
-		float getVolume(unsigned int uiIndex) const;
+		float getVolume(unsigned int index) const;
 
 		// Sets a voice's frequency whilst it's playing
 		// If an invalid index is given, an exception occurs
-		void setFrequency(unsigned int uiIndex, float fVolume);
+		void setFrequency(unsigned int index, float volume);
 
 		// Retrieves a voice's currently set frequency
 		// If an invalid index is given, an exception occurs
-		float getFrequency(unsigned int uiIndex) const;
+		float getFrequency(unsigned int index) const;
 
 	private:
-		unsigned int _muiMaxSimultaneousInstances;		// Maximum number of sounds which can be played back simultaneously
-		std::vector<IXAudio2SourceVoice*> _mvecVoices;	// Multiple instances playback
-		unsigned int _muiVecVoicesIndex;				// Which voice index to play next
-		String _mstrSampleName;					// The named sample which this emitter uses for playback
-		String _mstrSampleGroupname;				// The named sample's groupname which it is located within.
+		unsigned int maxSimultaneousInstances;		// Maximum number of sounds which can be played back simultaneously
+		std::vector<IXAudio2SourceVoice*> voices;	// Multiple instances playback
+		unsigned int voicesIndex;					// Which voice index to play next
+		String sampleName;							// The named sample which this emitter uses for playback
+		String sampleGroupname;						// The named sample's groupname which it is located within.
 	};
 
 

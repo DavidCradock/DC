@@ -17,18 +17,18 @@ namespace DC
 	// Audio sample data is stored inside groups
 	// By default, a group named "default" is created for storage of audio samples upon construction.
 	// Add a new sample to the "default" group
-	// x->pAudio->addSample("audio/fart.wav", "default");
+	// pAudioManager->addSample("audio/fart.wav", "default");
 	// // Add more samples if needed and then call..
-	// x->pAudio->loadSampleGroup("default");	// Load all audio data, so it's ready for use
+	// pAudioManager->loadSampleGroup("default");	// Load all audio data, so it's ready for use
 	// Create an emitter which will be used to playback a sample.
 	// Emitters are "linked" to a single sample, they can only play that one sample
-	// CAudioEmitter *pAudioEmitter = x->pAudio->addEmitter("MyBottomEmitter", "audio/fart.wav", 8, "default");
+	// AudioEmitter *pAudioEmitter = pAudioManager->addEmitter("MyBottomEmitter", "audio/fart.wav", 8, "default");
 	// Now we can playback the sample with...
 	// pAudioEmitter->play(1.0f, 1.0f, false);	// Where parameters are volume, playback speed and whether to loop the sample or not
 	class SCAudioManager : public Singleton<SCAudioManager>
 	{
 	public:
-		friend class CAudioEmitter;
+		friend class AudioEmitter;
 		SCAudioManager();
 
 		// Return the number of sample resource groups which currently exist in the manager
@@ -77,12 +77,12 @@ namespace DC
 		// If the resource name already exists, the resource's reference count is increased
 		// If the resource doesn't previously exist and it's newly created, it'll be in it's unloaded state
 		// strNewResourceName is used to refer to the sample data by name and is also the filename holding the sample's sample data
-		CAudioSample* addSample(const String& strNewResourceName, const String& strGroupName = L"default");
+		AudioSample* addSample(const String& strNewResourceName, const String& strGroupName = L"default");
 
 		// Returns a pointer to the named sample resource in it's named group
 		// If either the group given doesn't exist, or the named resource doesn't exist, an exception occurs
 		// Also, if the resource is in the unloaded state, it is loaded here
-		CAudioSample* getSample(const String& strResourceName, const String& strGroupName = L"default");
+		AudioSample* getSample(const String& strResourceName, const String& strGroupName = L"default");
 
 		// Returns true if the named sample resource exists in the named group, else false
 		bool getExistsSample(const String& strResourceName, const String& strGroupName = L"default");
@@ -102,7 +102,7 @@ namespace DC
 		// Adds an emitter which we use to playback the named sample.
 		// If the named sample doesn't exist, an exception occurs
 		// If the resource name already exists, the resource's reference count is increased
-		CAudioEmitter* addEmitter(const String& strEmitterName, const String& strSampleName, unsigned int iMaxSimultaneousInstances = 8, const String& strSampleGroupname = L"default");
+		AudioEmitter* addEmitter(const String& strEmitterName, const String& strSampleName, unsigned int iMaxSimultaneousInstances = 8, const String& strSampleGroupname = L"default");
 
 		// Removes the named emitter and stops playback
 		// If either the resource or the group that it's in doesn't exist, an exception occurs
@@ -114,32 +114,32 @@ namespace DC
 
 		// Returns a pointer to the named emitter
 		// If the named emitter doesn't exist, an exception occurs
-		CAudioEmitter* getEmitter(const String& strEmitterName);
+		AudioEmitter* getEmitter(const String& strEmitterName);
 	private:
 
 		// A resource and various variables needed by the manager for each resource
 		struct ResourceSample
 		{
-			CAudioSample* pResource;		// Pointer to the resource
-			unsigned int uiReferenceCount;	// How many times the resource has been added/removed
-			bool bLoaded;					// Whether the resource is loaded or not
+			AudioSample* resource;			// Pointer to the resource
+			unsigned int referenceCount;	// How many times the resource has been added/removed
+			bool loaded;					// Whether the resource is loaded or not
 		};
 		// An audio sample resource group holding each resource
 		struct Group
 		{
-			std::map<String, ResourceSample*> mmapResource;	// Hash map holding named resource
+			std::map<String, ResourceSample*> resources;	// Hash map holding named resource
 		};
-		std::map<String, Group*> _mmapGroup;					// Hash map holding named resource groups
+		std::map<String, Group*> groups;					// Hash map holding named resource groups
 
-		IXAudio2* _mpXAudio2;						// Main XAudio2 interface
-		IXAudio2MasteringVoice* _mpMasterVoice;		// Mastering voice
+		IXAudio2* XAudio2;							// Main XAudio2 interface
+		IXAudio2MasteringVoice* masteringVoice;
 
 		struct ResourceEmitter
 		{
-			CAudioEmitter* pResource;		// Pointer to the resource
-			unsigned int uiReferenceCount;	// How many times the resource has been added/removed
+			AudioEmitter* resource;			// Pointer to the resource
+			unsigned int referenceCount;	// How many times the resource has been added/removed
 		};
-		std::map<String, ResourceEmitter*> _mmapResourceEmitters;		// Holds each named emitter
+		std::map<String, ResourceEmitter*> resourceEmitters;		// Holds each named emitter
 	};
 
 }
