@@ -125,6 +125,11 @@ namespace DC
 		*this += std::to_wstring(value);
 	}
 
+	void String::appendSizet(size_t value)
+	{
+		*this += std::to_wstring(value);
+	}
+
 	void String::appendUnsignedInt(unsigned int value)
 	{
 		*this += std::to_wstring(value);
@@ -145,6 +150,13 @@ namespace DC
 	{
 		std::string str = wideCharToMultiByte();
 		std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::tolower(c); });
+		multiByteToWideChar(str);
+	}
+
+	void String::uppercase(void)
+	{
+		std::string str = wideCharToMultiByte();
+		std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) { return std::toupper(c); });
 		multiByteToWideChar(str);
 	}
 

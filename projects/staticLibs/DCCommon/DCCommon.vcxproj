@@ -78,10 +78,18 @@
   <ItemGroup>
     <ClInclude Include="colour.h" />
     <ClInclude Include="DCCommon.h" />
+    <ClInclude Include="fileUtilities.h" />
+    <ClInclude Include="messaging.h" />
+    <ClInclude Include="messagingMessage.h" />
+    <ClInclude Include="messagingService.h" />
+    <ClInclude Include="messagingUser.h" />
     <ClInclude Include="profiler.h" />
     <ClInclude Include="singleton.h" />
     <ClInclude Include="string.h" />
     <ClInclude Include="error.h" />
+    <ClInclude Include="templateManager.h" />
+    <ClInclude Include="templateManagerNoRef.h" />
+    <ClInclude Include="templateManagerNoRefLockable.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="timerMinimal.h" />
     <ClInclude Include="utilities.h" />
@@ -89,6 +97,11 @@
   <ItemGroup>
     <ClCompile Include="colour.cpp" />
     <ClCompile Include="DCCommon.cpp" />
+    <ClCompile Include="fileUtilities.cpp" />
+    <ClCompile Include="messaging.cpp" />
+    <ClCompile Include="messagingMessage.cpp" />
+    <ClCompile Include="messagingService.cpp" />
+    <ClCompile Include="messagingUser.cpp" />
     <ClCompile Include="profiler.cpp" />
     <ClCompile Include="string.cpp" />
     <ClCompile Include="error.cpp" />

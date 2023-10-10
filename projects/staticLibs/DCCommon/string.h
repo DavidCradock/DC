@@ -45,6 +45,9 @@ namespace DC
 		// Append an integer to the end of this string
 		void appendInt(int value);
 
+		// Append a size_t to the end of this string
+		void appendSizet(size_t value);
+
 		// Append an unsigned integer to the end of this string
 		void appendUnsignedInt(unsigned int value);
 
@@ -58,6 +61,9 @@ namespace DC
 
 		// Converts this string to lowercase
 		void lowercase(void);
+
+		// Converts this string to uppercase
+		void uppercase(void);
 
 		// Returns true if the string has nothing but digits
 		bool representsNumber(void) const;

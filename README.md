@@ -9,9 +9,7 @@
 - Load the X.sln file into Visual studio, hit compile, done.
 
 # TODO
-Add audio from old codebase and refactor
 Check String class
-Go through all source files and look for green.
 
 # Notes...
 

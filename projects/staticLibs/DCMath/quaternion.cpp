@@ -205,7 +205,8 @@ namespace DC
 
 	Vector3f Quaternion::getEuler(void) const
 	{
-		float fSq[4];
+		float fSq[4]{};
+
 		fSq[0] = q[0] * q[0];
 		fSq[1] = q[1] * q[1];
 		fSq[2] = q[2] * q[2];

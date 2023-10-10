@@ -83,7 +83,7 @@ namespace DC
 		// Once the state object has been added here, there's no need to keep it around for deletion later,
 		// as this class's removeState(), removeAllStates() and destructor will delete them for us.
 		// Also note that this method checks to see if the given state pointer is NULL and throws an exception if so.
-		void addState(const String& stateName, FiniteStateBase* pState);
+		void addState(const String& stateName, FiniteStateBase* state);
 
 		// Removes a previously added state
 		// If the named state doesn't exist, an exception occurs

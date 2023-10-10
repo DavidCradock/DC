@@ -36,7 +36,8 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 	String test;
 	test += L"\u2211";
 
-
+	Quaternion quaternion;
+	quaternion.getEuler();
 	
 	profiler.end(sectionMain);
 

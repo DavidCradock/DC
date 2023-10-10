@@ -34,12 +34,12 @@ namespace DC
 		currentStateName = stateName;
 	}
 
-	void FiniteStateMachine::addState(const String& stateName, FiniteStateBase* pState)
+	void FiniteStateMachine::addState(const String& stateName, FiniteStateBase* state)
 	{
 		auto it = states.find(stateName);
 		ErrorIfTrue(it != states.end(), L"FiniteStateMachine::addState(\"" + stateName + L"\") failed. State name already exists.");
-		ErrorIfFalse(pState, L"FiniteStateMachine::addState(\"" + stateName + L"\") failed. The given state pointer was 0.");
-		states[stateName] = pState;
+		ErrorIfFalse(state, L"FiniteStateMachine::addState(\"" + stateName + L"\") failed. The given state pointer was 0.");
+		states[stateName] = state;
 	}
 
 	void FiniteStateMachine::removeState(const String& stateName)
