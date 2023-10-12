@@ -1,5 +1,6 @@
 #include <Windows.h>
-#include "../../DCIncludes.h"
+#include "../../staticLibs/DavesCode/DavesCode.h"
+
 using namespace DC;
 
 int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
