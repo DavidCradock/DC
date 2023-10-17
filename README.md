@@ -14,8 +14,9 @@ Check String class
 Add 2D and UI stuff from X project codebase.
 
 # Notes...
-pre pimping build all time = 01:11.777 minutes
-DCCommon 25.1sec
+rebuild all time pre module usage for devapp and DavesCode lib...
+Before: 49.335 seconds
+After: 
 
 No logging because it's un-needed overhead and I usually implement logging, then never use it. The debugger is well suited for, surprise, debugging. The logs never help me.
 

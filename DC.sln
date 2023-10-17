@@ -3,26 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "projects", "projects", "{528A6620-C4F1-4027-8A8B-1A7F4BE6974A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "staticLibs", "staticLibs", "{1904F7A8-0A3C-48C1-9D30-A706A9F8B7EC}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "executables", "executables", "{CCCA168C-4AE0-4C51-9DD8-61ED9054CE58}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DCDevApp", "projects\executables\DCDevApp\DCDevApp.vcxproj", "{434E6CFE-4574-45FF-B891-117D8548C9B9}"
-	ProjectSection(ProjectDependencies) = postProject
-		{ED69C843-7DD9-4FE2-80B8-86D8DAAE6A71} = {ED69C843-7DD9-4FE2-80B8-86D8DAAE6A71}
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C23F85E9-E978-43E0-8174-81AD31419399}"
 	ProjectSection(SolutionItems) = preProject
 		new_project.txt = new_project.txt
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "third-party", "third-party", "{759FBF7D-25ED-4A55-B095-ABC3A209D93D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Application", "Application\Application.vcxproj", "{D519C8B0-FD7C-427D-899D-8BE01D44A19A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DavesCode", "projects\staticLibs\DavesCode\DavesCode.vcxproj", "{ED69C843-7DD9-4FE2-80B8-86D8DAAE6A71}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DavesCodeLib", "DavesCodeLib\DavesCodeLib.vcxproj", "{4E9F582C-A96C-4413-A937-35D32F76CDBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,24 +19,17 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{434E6CFE-4574-45FF-B891-117D8548C9B9}.Debug|x64.ActiveCfg = Debug|x64
-		{434E6CFE-4574-45FF-B891-117D8548C9B9}.Debug|x64.Build.0 = Debug|x64
-		{434E6CFE-4574-45FF-B891-117D8548C9B9}.Release|x64.ActiveCfg = Release|x64
-		{434E6CFE-4574-45FF-B891-117D8548C9B9}.Release|x64.Build.0 = Release|x64
-		{ED69C843-7DD9-4FE2-80B8-86D8DAAE6A71}.Debug|x64.ActiveCfg = Debug|x64
-		{ED69C843-7DD9-4FE2-80B8-86D8DAAE6A71}.Debug|x64.Build.0 = Debug|x64
-		{ED69C843-7DD9-4FE2-80B8-86D8DAAE6A71}.Release|x64.ActiveCfg = Release|x64
-		{ED69C843-7DD9-4FE2-80B8-86D8DAAE6A71}.Release|x64.Build.0 = Release|x64
+		{D519C8B0-FD7C-427D-899D-8BE01D44A19A}.Debug|x64.ActiveCfg = Debug|x64
+		{D519C8B0-FD7C-427D-899D-8BE01D44A19A}.Debug|x64.Build.0 = Debug|x64
+		{D519C8B0-FD7C-427D-899D-8BE01D44A19A}.Release|x64.ActiveCfg = Release|x64
+		{D519C8B0-FD7C-427D-899D-8BE01D44A19A}.Release|x64.Build.0 = Release|x64
+		{4E9F582C-A96C-4413-A937-35D32F76CDBC}.Debug|x64.ActiveCfg = Debug|x64
+		{4E9F582C-A96C-4413-A937-35D32F76CDBC}.Debug|x64.Build.0 = Debug|x64
+		{4E9F582C-A96C-4413-A937-35D32F76CDBC}.Release|x64.ActiveCfg = Release|x64
+		{4E9F582C-A96C-4413-A937-35D32F76CDBC}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{1904F7A8-0A3C-48C1-9D30-A706A9F8B7EC} = {528A6620-C4F1-4027-8A8B-1A7F4BE6974A}
-		{CCCA168C-4AE0-4C51-9DD8-61ED9054CE58} = {528A6620-C4F1-4027-8A8B-1A7F4BE6974A}
-		{434E6CFE-4574-45FF-B891-117D8548C9B9} = {CCCA168C-4AE0-4C51-9DD8-61ED9054CE58}
-		{759FBF7D-25ED-4A55-B095-ABC3A209D93D} = {528A6620-C4F1-4027-8A8B-1A7F4BE6974A}
-		{ED69C843-7DD9-4FE2-80B8-86D8DAAE6A71} = {1904F7A8-0A3C-48C1-9D30-A706A9F8B7EC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {79766D19-E146-49E6-8CAE-DE42935A463C}
