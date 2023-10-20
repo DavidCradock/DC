@@ -43,6 +43,14 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IntDir>$(SolutionDir)_build\DavesCodeLib\IntermediateDir\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)_build\DavesCodeLib\OutputDir\$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IntDir>$(SolutionDir)_build\DavesCodeLib\IntermediateDir\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)_build\DavesCodeLib\OutputDir\$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -106,6 +114,8 @@
     <ClInclude Include="Common\timerMinimal.h" />
     <ClInclude Include="Common\utilities.h" />
     <ClInclude Include="DavesCode.h" />
+    <ClInclude Include="Framework\applicationBase.h" />
+    <ClInclude Include="Framework\framework.h" />
     <ClInclude Include="Image\image.h" />
     <ClInclude Include="Image\image2D.h" />
     <ClInclude Include="Image\imageAtlas.h" />
@@ -128,11 +138,23 @@
     <ClInclude Include="Math\vector3f.h" />
     <ClInclude Include="Math\vector4f.h" />
     <ClInclude Include="Physics\physics.h" />
+    <ClInclude Include="Renderer\fragmentProgramBase.h" />
+    <ClInclude Include="Renderer\fragmentProgramOpenGL.h" />
+    <ClInclude Include="Renderer\fragmentProgramVulkan.h" />
     <ClInclude Include="Renderer\renderer.h" />
     <ClInclude Include="Renderer\rendererBase.h" />
     <ClInclude Include="Renderer\rendererManager.h" />
     <ClInclude Include="Renderer\rendererOpenGL.h" />
     <ClInclude Include="Renderer\rendererVulkan.h" />
+    <ClInclude Include="Renderer\texture2DBase.h" />
+    <ClInclude Include="Renderer\texture2DOpenGL.h" />
+    <ClInclude Include="Renderer\texture2DVulkan.h" />
+    <ClInclude Include="Renderer\vertexBufferBase.h" />
+    <ClInclude Include="Renderer\vertexBufferOpenGL.h" />
+    <ClInclude Include="Renderer\vertexBufferVulkan.h" />
+    <ClInclude Include="Renderer\vertexProgramBase.h" />
+    <ClInclude Include="Renderer\vertexProgramOpenGL.h" />
+    <ClInclude Include="Renderer\vertexProgramVulkan.h" />
     <ClInclude Include="SpatialPartitioning\octTree.h" />
     <ClInclude Include="SpatialPartitioning\octTreeEntity.h" />
     <ClInclude Include="SpatialPartitioning\octTreeNode.h" />
@@ -165,6 +187,8 @@
     <ClCompile Include="Common\timer.cpp" />
     <ClCompile Include="Common\timer_minimal.cpp" />
     <ClCompile Include="Common\utilities.cpp" />
+    <ClCompile Include="Framework\applicationBase.cpp" />
+    <ClCompile Include="Framework\framework.cpp" />
     <ClCompile Include="Image\image2D.cpp" />
     <ClCompile Include="Image\imageAtlas.cpp" />
     <ClCompile Include="Input\inputJoystick.cpp" />
@@ -181,10 +205,17 @@
     <ClCompile Include="Math\vector2f.cpp" />
     <ClCompile Include="Math\vector3f.cpp" />
     <ClCompile Include="Math\vector4f.cpp" />
-    <ClCompile Include="Renderer\rendererBase.cpp" />
+    <ClCompile Include="Renderer\fragmentProgramOpenGL.cpp" />
+    <ClCompile Include="Renderer\fragmentProgramVulkan.cpp" />
     <ClCompile Include="Renderer\rendererManager.cpp" />
     <ClCompile Include="Renderer\rendererOpenGL.cpp" />
     <ClCompile Include="Renderer\rendererVulkan.cpp" />
+    <ClCompile Include="Renderer\texture2DOpenGL.cpp" />
+    <ClCompile Include="Renderer\texture2DVulkan.cpp" />
+    <ClCompile Include="Renderer\vertexBufferOpenGL.cpp" />
+    <ClCompile Include="Renderer\vertexBufferVulkan.cpp" />
+    <ClCompile Include="Renderer\vertexProgramOpenGL.cpp" />
+    <ClCompile Include="Renderer\vertexProgramVulkan.cpp" />
     <ClCompile Include="SpatialPartitioning\octTree.cpp" />
     <ClCompile Include="SpatialPartitioning\octTreeEntity.cpp" />
     <ClCompile Include="SpatialPartitioning\octTreeNode.cpp" />

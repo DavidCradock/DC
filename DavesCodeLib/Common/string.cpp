@@ -135,6 +135,19 @@ namespace DC
 		*this += std::to_wstring(value);
 	}
 
+	void String::appendCharPointer(const char* pCharacters)
+	{
+		std::string strMB = pCharacters;
+		this->appendString(strMB);
+	}
+
+	void String::appendString(const std::string& stringToAppend)
+	{
+		String strTemp;
+		strTemp.multiByteToWideChar(stringToAppend);
+		this->append(strTemp);
+	}
+
 	const char* String::c_strn(void) const
 	{
 		c_strTemp = wideCharToMultiByte();

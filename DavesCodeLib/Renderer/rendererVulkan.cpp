@@ -1,11 +1,19 @@
 #include "rendererVulkan.h"
 #include "../Common/error.h"
+#include "../Common/templateManagerNoRefLockable.h"
 #include "../../third-party/SDL2-2.28.4/include/SDL.h"
+#include "fragmentProgramVulkan.h"
+#include "texture2DVulkan.h"
+#include "vertexBufferVulkan.h"
+#include "vertexProgramVulkan.h"
+#include <map>
 
 namespace DC
 {
 	class RendererVulkan::impl
 	{
+	public:
+		ManagerNoRefLockable<VertexBufferBase> vertexBuffers;
 	};
 
 	RendererVulkan::RendererVulkan()
@@ -29,6 +37,7 @@ namespace DC
 	{
 
 	}
+
 	void RendererVulkan::blendDisable(void)
 	{
 
@@ -104,4 +113,9 @@ namespace DC
 
 	}
 
+	VertexBufferBase* RendererVulkan::addVertexBuffer(const String& uniqueName, bool locked)
+	{
+		auto object = pimp->vertexBuffers.add(uniqueName, locked);
+		return object;
+	}
 }

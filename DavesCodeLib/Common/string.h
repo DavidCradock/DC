@@ -51,6 +51,12 @@ namespace DC
 		// Append an unsigned integer to the end of this string
 		void appendUnsignedInt(unsigned int value);
 
+		// Append a const char pointer
+		void appendCharPointer(const char* pCharacters);
+
+		// Append a std::string
+		void appendString(const std::string& stringToAppend);
+
 		// Return a pointer to a narrow c_string
 		// NOTE: Uses c_strTemp as a temp member variable so the returned pointer is valid and non-dangling.
 		// TODO While at work, think of a better way to do this.

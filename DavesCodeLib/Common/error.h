@@ -1,11 +1,10 @@
 #pragma once
 #include "string.h"
 
-namespace DC
-{
+
 	// Function pointer which gets called when a critical error occurs.
-	// By default, this points to a function which appends each of the given strings into a single string and shows that in a messagebox.
-	// To create an alternate function, create one with the same signature as below point errorFunc to the new function.
+	// By default, this points to a function which appends each of the given strings into a single string and shows that in a message box.
+	// To create an alternate function, create one with the same signature as below and point errorFunc to the new function.
 	extern void (*errorFunc)(const std::wstring& errorDescription, const std::wstring& errorSourceFileName, const std::wstring& errorSourceFileLine);
 
 #ifndef _DEBUG
@@ -15,9 +14,9 @@ namespace DC
 		{\
 		if(!x){\
 		std::string strFilename = __FILE__;\
-		String strFilenameWide;\
+		DC::String strFilenameWide;\
 		strFilenameWide.multiByteToWideChar(strFilename);\
-		String strLineNumber;\
+		DC::String strLineNumber;\
 		strLineNumber.appendInt(__LINE__);\
 		errorFunc(strErrorDescription, strFilenameWide, strLineNumber);}\
 		}
@@ -29,9 +28,9 @@ namespace DC
 		{\
 		if(x){\
 		std::string strFilename = __FILE__;\
-		String strFilenameWide;\
+		DC::String strFilenameWide;\
 		strFilenameWide.multiByteToWideChar(strFilename);\
-		String strLineNumber;\
+		DC::String strLineNumber;\
 		strLineNumber.appendInt(__LINE__);\
 		errorFunc(strErrorDescription, strFilenameWide, strLineNumber);}\
 		}
@@ -43,9 +42,9 @@ namespace DC
 		{\
 		if(!x){\
 		std::string strFilename = __FILE__;\
-		String strFilenameWide;\
+		DC::String strFilenameWide;\
 		strFilenameWide.multiByteToWideChar(strFilename);\
-		String strLineNumber;\
+		DC::String strLineNumber;\
 		strLineNumber.appendInt(__LINE__);\
 		errorFunc(L"Memory allocation error.", strFilenameWide, strLineNumber);}\
 		}
@@ -59,9 +58,9 @@ namespace DC
 		if(!x){\
 		__debugbreak();\
 		std::string strFilename = __FILE__;\
-		String strFilenameWide;\
+		DC::String strFilenameWide;\
 		strFilenameWide.multiByteToWideChar(strFilename);\
-		String strLineNumber;\
+		DC::String strLineNumber;\
 		strLineNumber.appendInt(__LINE__);\
 		errorFunc(strErrorDescription, strFilenameWide, strLineNumber);}\
 		}
@@ -74,9 +73,9 @@ namespace DC
 		if(x){\
 		__debugbreak();\
 		std::string strFilename = __FILE__;\
-		String strFilenameWide;\
+		DC::String strFilenameWide;\
 		strFilenameWide.multiByteToWideChar(strFilename);\
-		String strLineNumber;\
+		DC::String strLineNumber;\
 		strLineNumber.appendInt(__LINE__);\
 		errorFunc(strErrorDescription, strFilenameWide, strLineNumber);}\
 		}
@@ -89,12 +88,11 @@ namespace DC
 		if(!x){\
 		__debugbreak();\
 		std::string strFilename = __FILE__;\
-		String strFilenameWide;\
+		DC::String strFilenameWide;\
 		strFilenameWide.multiByteToWideChar(strFilename);\
-		String strLineNumber;\
+		DC::String strLineNumber;\
 		strLineNumber.appendInt(__LINE__);\
 		errorFunc(L"Memory allocation error.", strFilenameWide, strLineNumber);}\
 		}
 	#endif
 #endif
-}
