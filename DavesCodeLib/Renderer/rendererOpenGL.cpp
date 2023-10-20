@@ -113,9 +113,49 @@ namespace DC
 
 	}
 
-	VertexBufferBase* RendererOpenGL::addVertexBuffer(const String& uniqueName, bool locked)
+	VertexBufferBase* RendererOpenGL::vertexBufferAdd(const String& objectName, bool locked)
 	{
-		auto object = pimp->vertexBuffers.add(uniqueName, locked);
+		auto object = pimp->vertexBuffers.add(objectName, locked);
 		return object;
+	}
+
+	bool RendererOpenGL::vertexBufferExists(const String& objectName)
+	{
+		return pimp->vertexBuffers.exists(objectName);
+	}
+
+	VertexBufferBase* RendererOpenGL::vertexBufferGet(size_t index)
+	{
+		return pimp->vertexBuffers.get(index);
+	}
+
+	VertexBufferBase* RendererOpenGL::vertexBufferGet(const String& objectName)
+	{
+		return pimp->vertexBuffers.get(objectName);
+	}
+
+	String RendererOpenGL::vertexBufferGetName(size_t index)
+	{
+		return pimp->vertexBuffers.getName(index);
+	}
+
+	size_t RendererOpenGL::vertexBufferGetNumber(void)
+	{
+		return pimp->vertexBuffers.getNumber();
+	}
+
+	void RendererOpenGL::vertexBufferRemove(const String& objectName, bool forceRemoveLocked)
+	{
+		pimp->vertexBuffers.remove(objectName, forceRemoveLocked);
+	}
+
+	void RendererOpenGL::vertexBufferRemoveAll(bool forceRemoveLocked)
+	{
+		pimp->vertexBuffers.removeAll(forceRemoveLocked);
+	}
+
+	void RendererOpenGL::vertexBufferSetLocked(const String& objectName, bool locked)
+	{
+		pimp->vertexBuffers.setLocked(objectName, locked);
 	}
 }

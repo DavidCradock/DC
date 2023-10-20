@@ -113,9 +113,49 @@ namespace DC
 
 	}
 
-	VertexBufferBase* RendererVulkan::addVertexBuffer(const String& uniqueName, bool locked)
+	VertexBufferBase* RendererVulkan::vertexBufferAdd(const String& objectName, bool locked)
 	{
-		auto object = pimp->vertexBuffers.add(uniqueName, locked);
+		auto object = pimp->vertexBuffers.add(objectName, locked);
 		return object;
+	}
+
+	bool RendererVulkan::vertexBufferExists(const String& objectName)
+	{
+		return pimp->vertexBuffers.exists(objectName);
+	}
+
+	VertexBufferBase* RendererVulkan::vertexBufferGet(size_t index)
+	{
+		return pimp->vertexBuffers.get(index);
+	}
+
+	VertexBufferBase* RendererVulkan::vertexBufferGet(const String& objectName)
+	{
+		return pimp->vertexBuffers.get(objectName);
+	}
+
+	String RendererVulkan::vertexBufferGetName(size_t index)
+	{
+		return pimp->vertexBuffers.getName(index);
+	}
+
+	size_t RendererVulkan::vertexBufferGetNumber(void)
+	{
+		return pimp->vertexBuffers.getNumber();
+	}
+
+	void RendererVulkan::vertexBufferRemove(const String& objectName, bool forceRemoveLocked)
+	{
+		pimp->vertexBuffers.remove(objectName, forceRemoveLocked);
+	}
+
+	void RendererVulkan::vertexBufferRemoveAll(bool forceRemoveLocked)
+	{
+		pimp->vertexBuffers.removeAll(forceRemoveLocked);
+	}
+
+	void RendererVulkan::vertexBufferSetLocked(const String& objectName, bool locked)
+	{
+		pimp->vertexBuffers.setLocked(objectName, locked);
 	}
 }

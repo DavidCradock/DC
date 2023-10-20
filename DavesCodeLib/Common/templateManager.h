@@ -27,25 +27,8 @@ namespace DC
 		// If the named object already exists, it's reference count is increased.
 		T* add(const String& objectName);
 
-		// Attempts to remove the named object.
-		// If the named object does not exist, an exception occurs.
-		// If the named object exists and has been added multiple times, it's reference count is decreased and the object remains.
-		void remove(const String& objectName);
-
 		// Returns whether the named object exists or not
 		bool exists(const String& objectName);
-
-		// Removes all objects.
-		// forceRemoval, if true will remove objects regardless of their reference count, else only objects with a reference count of 0 will be removed.
-		void removeAll(bool forceRemoval = false);
-
-		// Returns the number of objects.
-		size_t getNumber(void);
-
-		// Attempts to find and return the name of the object at the specified index.
-		// If the given index is invalid, an exception occurs.
-		// Use getNumber() to determine valid index range.
-		String getName(size_t index);
 
 		// Returns a pointer to the object at the specified index.
 		// If the given index is invalid, an exception occurs.
@@ -56,6 +39,23 @@ namespace DC
 		// If the named object could not be found, an exception occurs.
 		// Use exists() to determine whether the object exists to prevent exception from occurring.
 		T* get(const String& objectName);
+
+		// Attempts to find and return the name of the object at the specified index.
+		// If the given index is invalid, an exception occurs.
+		// Use getNumber() to determine valid index range.
+		String getName(size_t index);
+
+		// Returns the number of objects.
+		size_t getNumber(void);
+
+		// Attempts to remove the named object.
+		// If the named object does not exist, an exception occurs.
+		// If the named object exists and has been added multiple times, it's reference count is decreased and the object remains.
+		void remove(const String& objectName);
+
+		// Removes all objects.
+		// forceRemoval, if true will remove objects regardless of their reference count, else only objects with a reference count of 0 will be removed.
+		void removeAll(bool forceRemoval = false);
 	private:
 		struct SObject
 		{
@@ -89,6 +89,65 @@ namespace DC
 	}
 
 	template <class T>
+	bool Manager<T>::exists(const String& objectName)
+	{
+		auto it = objects.find(objectName);
+		return (objects.end() != it);
+	}
+
+	template <class T>
+	T* Manager<T>::get(size_t index)
+	{
+		if (index < 0 || index >= objects.size())
+		{
+			String error = L"Manager::get(\"";
+			error.appendSizet(index);
+			error += L"\") failed. Invalid index value given.";
+			ErrorIfTrue(1, error);
+		}
+
+		auto it = objects.begin();
+		for (size_t i = 0; i < index; i++)
+		{
+			it++;
+		}
+		return it->second->object;
+	}
+
+	template <class T>
+	T* Manager<T>::get(const String& objectName)
+	{
+		auto it = objects.find(objectName);
+		ErrorIfTrue(objects.end() == it, L"Manager::get(\"" + objectName + L"\") failed. Object does not exist.");
+		return it->second->object;
+	}
+
+	template <class T>
+	String Manager<T>::getName(size_t index)
+	{
+		if (index < 0 || index >= objects.size())
+		{
+			String error = L"Manager::getName(\"";
+			error.appendSizet(index);
+			error += L"\") failed. Invalid index value given.";
+			ErrorIfTrue(1, error);
+		}
+
+		auto it = objects.begin();
+		for (size_t i = 0; i < index; i++)
+		{
+			it++;
+		}
+		return it->first;
+	}
+
+	template <class T>
+	size_t Manager<T>::getNumber(void)
+	{
+		return objects.size();
+	}
+
+	template <class T>
 	void Manager<T>::remove(const String& objectName)
 	{
 		// Find object
@@ -108,13 +167,6 @@ namespace DC
 		delete it->second->object;
 		delete it->second;
 		objects.erase(it);
-	}
-
-	template <class T>
-	bool Manager<T>::exists(const String& objectName)
-	{
-		auto it = objects.find(objectName);
-		return (objects.end() != it);
 	}
 
 	template <class T>
@@ -149,57 +201,5 @@ namespace DC
 		// Remove each object name found
 		for (size_t i = 0; i < vecstrObjectsToDelete.size(); i++)
 			remove(vecstrObjectsToDelete[i]);
-	}
-
-	template <class T>
-	size_t Manager<T>::getNumber(void)
-	{
-		return objects.size();
-	}
-
-	template <class T>
-	String Manager<T>::getName(size_t index)
-	{
-		if (index < 0 || index >= objects.size())
-		{
-			String error = L"Manager::getName(\"";
-			error.appendSizet(index);
-			error += L"\") failed. Invalid index value given.";
-			ErrorIfTrue(1, error);
-		}
-
-		auto it = objects.begin();
-		for (size_t i = 0; i < index; i++)
-		{
-			it++;
-		}
-		return it->first;
-	}
-
-	template <class T>
-	T* Manager<T>::get(size_t index)
-	{
-		if (index < 0 || index >= objects.size())
-		{
-			String error = L"Manager::get(\"";
-			error.appendSizet(index);
-			error += L"\") failed. Invalid index value given.";
-			ErrorIfTrue(1, error);
-		}
-
-		auto it = objects.begin();
-		for (size_t i = 0; i < index; i++)
-		{
-			it++;
-		}
-		return it->second->object;
-	}
-
-	template <class T>
-	T* Manager<T>::get(const String& objectName)
-	{
-		auto it = objects.find(objectName);
-		ErrorIfTrue(objects.end() == it, L"Manager::get(\"" + objectName + L"\") failed. Object does not exist.");
-		return it->second->object;
 	}
 }

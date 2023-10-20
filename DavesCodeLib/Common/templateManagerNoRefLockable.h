@@ -31,29 +31,8 @@ namespace DC
 		// Objects can later be unlocked with a call to setLocked().
 		T* add(const String& objectName, bool locked = false);
 
-		// Sets the locked status of the named object.
-		// If the named object doesn't exist, an exception occurs.
-		void setLocked(const String& objectName, bool locked);
-
-		// Attempts to remove the named object.
-		// If the named object does not exist, an exception occurs.
-		// If the named object is set as locked, it will not be removed unless forceRemoveLocked is true.
-		void remove(const String& objectName, bool forceRemoveLocked = false);
-
 		// Returns whether the named object exists or not
 		bool exists(const String& objectName);
-
-		// Removes all objects.
-		// forceRemoveLocked, if true will remove objects regardless of their locked status, else, only unlocked resources are removed.
-		void removeAll(bool forceRemoveLocked = false);
-
-		// Returns the number of objects.
-		size_t getNumber(void);
-
-		// Attempts to find and return the name of the object at the specified index.
-		// If the given index is invalid, an exception occurs.
-		// Use getNumber() to determine valid index range.
-		String getName(size_t index);
 
 		// Returns a pointer to the object at the specified index.
 		// If the given index is invalid, an exception occurs.
@@ -64,6 +43,27 @@ namespace DC
 		// If the named object could not be found, an exception occurs.
 		// Use exists() to determine whether the object exists to prevent exception from occurring.
 		T* get(const String& objectName);
+
+		// Attempts to find and return the name of the object at the specified index.
+		// If the given index is invalid, an exception occurs.
+		// Use getNumber() to determine valid index range.
+		String getName(size_t index);
+
+		// Returns the number of objects.
+		size_t getNumber(void);
+
+		// Attempts to remove the named object.
+		// If the named object does not exist, an exception occurs.
+		// If the named object is set as locked, it will not be removed unless forceRemoveLocked is true.
+		void remove(const String& objectName, bool forceRemoveLocked = false);
+
+		// Removes all objects.
+		// forceRemoveLocked, if true will remove objects regardless of their locked status, else, only unlocked resources are removed.
+		void removeAll(bool forceRemoveLocked = false);
+
+		// Sets the locked status of the named object.
+		// If the named object doesn't exist, an exception occurs.
+		void setLocked(const String& objectName, bool locked);
 	private:
 		struct SObject
 		{
@@ -96,12 +96,62 @@ namespace DC
 	}
 
 	template <class T>
-	void ManagerNoRefLockable<T>::setLocked(const String& objectName, bool locked)
+	bool ManagerNoRefLockable<T>::exists(const String& objectName)
 	{
-		// Find object and set locked status.
 		auto it = objects.find(objectName);
-		ErrorIfTrue(objects.end() == it, L"ManagerNoRefLockable::setLocked(\"" + objectName + L"\") failed. Named object does not exist.");
-		it->second->locked = locked;
+		return (objects.end() != it);
+	}
+
+	template <class T>
+	T* ManagerNoRefLockable<T>::get(size_t index)
+	{
+		if (index < 0 || index >= objects.size())
+		{
+			String error = L"ManagerNoRefLockable::get(\"";
+			error.appendSizet(index);
+			error += L"\") failed. Invalid index value given.";
+			ErrorIfTrue(1, error);
+		}
+
+		auto it = objects.begin();
+		for (size_t i = 0; i < index; i++)
+		{
+			it++;
+		}
+		return it->second->object;
+	}
+
+	template <class T>
+	T* ManagerNoRefLockable<T>::get(const String& objectName)
+	{
+		auto it = objects.find(objectName);
+		ErrorIfTrue(objects.end() == it, L"ManagerNoRefLockable::get(\"" + objectName + L"\") failed. Object does not exist.");
+		return it->second->object;
+	}
+
+	template <class T>
+	String ManagerNoRefLockable<T>::getName(size_t index)
+	{
+		if (index < 0 || index >= objects.size())
+		{
+			String error = L"ManagerNoRefLockable::getName(\"";
+			error.appendSizet(index);
+			error += L"\") failed. Invalid index value given.";
+			ErrorIfTrue(1, error);
+		}
+
+		auto it = objects.begin();
+		for (size_t i = 0; i < index; i++)
+		{
+			it++;
+		}
+		return it->first;
+	}
+
+	template <class T>
+	size_t ManagerNoRefLockable<T>::getNumber(void)
+	{
+		return objects.size();
 	}
 
 	template <class T>
@@ -121,13 +171,6 @@ namespace DC
 		delete it->second->object;
 		delete it->second;
 		objects.erase(it);
-	}
-
-	template <class T>
-	bool ManagerNoRefLockable<T>::exists(const String& objectName)
-	{
-		auto it = objects.find(objectName);
-		return (objects.end() != it);
 	}
 
 	template <class T>
@@ -165,54 +208,11 @@ namespace DC
 	}
 
 	template <class T>
-	size_t ManagerNoRefLockable<T>::getNumber(void)
+	void ManagerNoRefLockable<T>::setLocked(const String& objectName, bool locked)
 	{
-		return objects.size();
-	}
-
-	template <class T>
-	String ManagerNoRefLockable<T>::getName(size_t index)
-	{
-		if (index < 0 || index >= objects.size())
-		{
-			String error = L"ManagerNoRefLockable::getName(\"";
-			error.appendSizet(index);
-			error += L"\") failed. Invalid index value given.";
-			ErrorIfTrue(1, error);
-		}
-
-		auto it = objects.begin();
-		for (size_t i = 0; i < index; i++)
-		{
-			it++;
-		}
-		return it->first;
-	}
-
-	template <class T>
-	T* ManagerNoRefLockable<T>::get(size_t index)
-	{
-		if (index < 0 || index >= objects.size())
-		{
-			String error = L"ManagerNoRefLockable::get(\"";
-			error.appendSizet(index);
-			error += L"\") failed. Invalid index value given.";
-			ErrorIfTrue(1, error);
-		}
-
-		auto it = objects.begin();
-		for (size_t i = 0; i < index; i++)
-		{
-			it++;
-		}
-		return it->second->object;
-	}
-
-	template <class T>
-	T* ManagerNoRefLockable<T>::get(const String& objectName)
-	{
+		// Find object and set locked status.
 		auto it = objects.find(objectName);
-		ErrorIfTrue(objects.end() == it, L"ManagerNoRefLockable::get(\"" + objectName + L"\") failed. Object does not exist.");
-		return it->second->object;
+		ErrorIfTrue(objects.end() == it, L"ManagerNoRefLockable::setLocked(\"" + objectName + L"\") failed. Named object does not exist.");
+		it->second->locked = locked;
 	}
 }
