@@ -1,19 +1,19 @@
-#include "vertexBufferOpenGL.h"
+#include "vertexBuffer.h"
 #include "../Common/error.h"
 
 namespace DC
 {
-	class VertexBufferOpenGL::impl
+	class VertexBuffer::impl
 	{
 	};
 
-	VertexBufferOpenGL::VertexBufferOpenGL()
+	VertexBuffer::VertexBuffer()
 	{
 		pimp = new impl();
 		ErrorIfMemoryNotAllocated(pimp);
 	}
 
-	VertexBufferOpenGL::~VertexBufferOpenGL()
+	VertexBuffer::~VertexBuffer()
 	{
 		delete pimp;
 		pimp = 0;

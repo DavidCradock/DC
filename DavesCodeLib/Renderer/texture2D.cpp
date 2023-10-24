@@ -1,19 +1,19 @@
-#include "vertexBufferVulkan.h"
+#include "texture2D.h"
 #include "../Common/error.h"
 
 namespace DC
 {
-	class VertexBufferVulkan::impl
+	class Texture2D::impl
 	{
 	};
 
-	VertexBufferVulkan::VertexBufferVulkan()
+	Texture2D::Texture2D()
 	{
 		pimp = new impl();
 		ErrorIfMemoryNotAllocated(pimp);
 	}
 
-	VertexBufferVulkan::~VertexBufferVulkan()
+	Texture2D::~Texture2D()
 	{
 		delete pimp;
 		pimp = 0;

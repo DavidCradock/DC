@@ -1,7 +1,6 @@
 #include "rendererManager.h"
-#include "../Common/error.h"
-#include "rendererOpenGL.h"
-#include "rendererVulkan.h"
+#include "../../Common/error.h"
+#include "renderer.h"
 
 namespace DC
 {
@@ -22,18 +21,10 @@ namespace DC
 		pimp = 0;
 	}
 
-	Renderer* RendererManager::initOpenGL(void)
+	Renderer* RendererManager::init(void)
 	{
-		ErrorIfTrue(renderer, L"RendererManager::initOpenGL() failed. Renderer already initialised.");
-		renderer = new RendererOpenGL;
-		ErrorIfMemoryNotAllocated(renderer);
-		return renderer;
-	}
-
-	Renderer* RendererManager::initVulkan(void)
-	{
-		ErrorIfTrue(renderer, L"RendererManager::initVulkan() failed. Renderer already initialised.");
-		renderer = new RendererVulkan;
+		ErrorIfTrue(renderer, L"RendererManager::init() failed. Renderer already initialised.");
+		renderer = new Renderer;
 		ErrorIfMemoryNotAllocated(renderer);
 		return renderer;
 	}

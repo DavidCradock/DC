@@ -8,7 +8,7 @@ namespace DC
 	// Template class to manage pointers to objects of a class of the given type.
 	// An object has a reference count, so if it is added multiple times, it will not be removed with calls to remove() until the reference count has reached 0.
 	// That is unless removeAll() is passed true to it's forceRemoval parameter in which case, it is.
-	// If you do not wish to mess around with references, use the ManagerNoRef template class instead.
+	// If you do not wish to mess around with references, use the ManagerNoRef template classes instead.
 	template <typename T> class Manager
 	{
 	public:

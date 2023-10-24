@@ -1,9 +1,9 @@
 #pragma once
-#include "fragmentProgramBase.h"
+#include "fragmentProgram.h"
 
 namespace DC
 {
-	class FragmentProgramVulkan : public FragmentProgramBase
+	class FragmentProgramVulkan : public FragmentProgram
 	{
 	public:
 		FragmentProgramVulkan();

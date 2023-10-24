@@ -1,19 +1,19 @@
-#include "texture2DOpenGL.h"
+#include "vertexProgram.h"
 #include "../Common/error.h"
 
 namespace DC
 {
-	class Texture2DOpenGL::impl
+	class VertexProgram::impl
 	{
 	};
 
-	Texture2DOpenGL::Texture2DOpenGL()
+	VertexProgram::VertexProgram()
 	{
 		pimp = new impl();
 		ErrorIfMemoryNotAllocated(pimp);
 	}
 
-	Texture2DOpenGL::~Texture2DOpenGL()
+	VertexProgram::~VertexProgram()
 	{
 		delete pimp;
 		pimp = 0;

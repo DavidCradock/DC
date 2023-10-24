@@ -38,21 +38,6 @@
     <Filter Include="Framework">
       <UniqueIdentifier>{0f4d3914-a26b-49d5-b728-d86345003ac9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Renderer\fragmentProgram">
-      <UniqueIdentifier>{8dfa5f9a-88f8-4da5-87d6-4c2dcbcf9825}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Renderer\texture2D">
-      <UniqueIdentifier>{bc0c6d82-170c-4b0e-96bd-ba11dec2c9c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Renderer\vertexBuffer">
-      <UniqueIdentifier>{9256f773-d7f5-40b8-b9aa-7a337b78c15b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Renderer\vertexProgram">
-      <UniqueIdentifier>{83ce2602-6c23-4095-87d0-34152434a1ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Renderer\renderer">
-      <UniqueIdentifier>{8e707e81-7be7-4de7-a7f6-0e5bb67d22b2}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AI\AI.h">
@@ -208,12 +193,6 @@
     <ClInclude Include="Physics\physics.h">
       <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\renderer.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\rendererManager.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="SpatialPartitioning\octTree.h">
       <Filter>SpatialPartitioning</Filter>
     </ClInclude>
@@ -245,50 +224,35 @@
     <ClInclude Include="Framework\applicationBase.h">
       <Filter>Framework</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\fragmentProgramBase.h">
-      <Filter>Renderer\fragmentProgram</Filter>
+    <ClInclude Include="Renderer\fragmentProgram.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\fragmentProgramOpenGL.h">
-      <Filter>Renderer\fragmentProgram</Filter>
+    <ClInclude Include="Renderer\fragmentProgramManager.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\fragmentProgramVulkan.h">
-      <Filter>Renderer\fragmentProgram</Filter>
+    <ClInclude Include="Renderer\renderer.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\vertexProgramVulkan.h">
-      <Filter>Renderer\vertexProgram</Filter>
+    <ClInclude Include="Renderer\rendererManager.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\vertexProgramBase.h">
-      <Filter>Renderer\vertexProgram</Filter>
+    <ClInclude Include="Renderer\texture2D.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\vertexProgramOpenGL.h">
-      <Filter>Renderer\vertexProgram</Filter>
+    <ClInclude Include="Renderer\texture2DManager.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\texture2DBase.h">
-      <Filter>Renderer\texture2D</Filter>
+    <ClInclude Include="Renderer\vertexBuffer.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\texture2DOpenGL.h">
-      <Filter>Renderer\texture2D</Filter>
+    <ClInclude Include="Renderer\vertexBufferManager.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\texture2DVulkan.h">
-      <Filter>Renderer\texture2D</Filter>
+    <ClInclude Include="Renderer\vertexProgram.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\vertexBufferBase.h">
-      <Filter>Renderer\vertexBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\vertexBufferOpenGL.h">
-      <Filter>Renderer\vertexBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\vertexBufferVulkan.h">
-      <Filter>Renderer\vertexBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\rendererBase.h">
-      <Filter>Renderer\renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\rendererOpenGL.h">
-      <Filter>Renderer\renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\rendererVulkan.h">
-      <Filter>Renderer\renderer</Filter>
+    <ClInclude Include="Renderer\vertexProgramManager.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -406,9 +370,6 @@
     <ClCompile Include="Math\vector4f.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\rendererManager.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="SpatialPartitioning\octTree.cpp">
       <Filter>SpatialPartitioning</Filter>
     </ClCompile>
@@ -433,35 +394,35 @@
     <ClCompile Include="Framework\applicationBase.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\fragmentProgramOpenGL.cpp">
-      <Filter>Renderer\fragmentProgram</Filter>
+    <ClCompile Include="Renderer\fragmentProgram.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\fragmentProgramVulkan.cpp">
-      <Filter>Renderer\fragmentProgram</Filter>
+    <ClCompile Include="Renderer\fragmentProgramManager.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\vertexProgramOpenGL.cpp">
-      <Filter>Renderer\vertexProgram</Filter>
+    <ClCompile Include="Renderer\renderer.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\vertexProgramVulkan.cpp">
-      <Filter>Renderer\vertexProgram</Filter>
+    <ClCompile Include="Renderer\rendererManager.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\texture2DOpenGL.cpp">
-      <Filter>Renderer\texture2D</Filter>
+    <ClCompile Include="Renderer\texture2D.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\texture2DVulkan.cpp">
-      <Filter>Renderer\texture2D</Filter>
+    <ClCompile Include="Renderer\texture2DManager.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\vertexBufferOpenGL.cpp">
-      <Filter>Renderer\vertexBuffer</Filter>
+    <ClCompile Include="Renderer\vertexBuffer.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\vertexBufferVulkan.cpp">
-      <Filter>Renderer\vertexBuffer</Filter>
+    <ClCompile Include="Renderer\vertexBufferManager.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\rendererOpenGL.cpp">
-      <Filter>Renderer\renderer</Filter>
+    <ClCompile Include="Renderer\vertexProgram.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\rendererVulkan.cpp">
-      <Filter>Renderer\renderer</Filter>
+    <ClCompile Include="Renderer\vertexProgramManager.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
