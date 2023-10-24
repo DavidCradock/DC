@@ -2,6 +2,7 @@
 
 namespace DC
 {
+	// A Vulkan API 2D texture
 	class Texture2D
 	{
 	public:

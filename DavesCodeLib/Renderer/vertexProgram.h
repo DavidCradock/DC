@@ -2,6 +2,7 @@
 
 namespace DC
 {
+	// A Vulkan API GPU vertex program
 	class VertexProgram
 	{
 	public:

@@ -1,13 +1,14 @@
 #pragma once
-#include "fragmentProgram.h"
+#include "../Common/string.h"
 
 namespace DC
 {
-	class FragmentProgramVulkan : public FragmentProgram
+	// A Vulkan GPU fragment program
+	class FragmentProgram
 	{
 	public:
-		FragmentProgramVulkan();
-		~FragmentProgramVulkan();
+		FragmentProgram();
+		~FragmentProgram();
 
 	private:
 		class impl;

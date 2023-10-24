@@ -3,6 +3,7 @@
 
 namespace DC
 {
+	// Vulkan renderer
 	class Renderer
 	{
 	public:

@@ -1,19 +1,19 @@
-#include "fragmentProgramVulkan.h"
-#include "../../Common/error.h"
+#include "fragmentProgram.h"
+#include "../Common/error.h"
 
 namespace DC
 {
-	class FragmentProgramVulkan::impl
+	class FragmentProgram::impl
 	{
 	};
 
-	FragmentProgramVulkan::FragmentProgramVulkan()
+	FragmentProgram::FragmentProgram()
 	{
 		pimp = new impl();
 		ErrorIfMemoryNotAllocated(pimp);
 	}
 
-	FragmentProgramVulkan::~FragmentProgramVulkan()
+	FragmentProgram::~FragmentProgram()
 	{
 		delete pimp;
 		pimp = 0;

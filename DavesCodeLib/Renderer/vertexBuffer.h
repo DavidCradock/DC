@@ -3,6 +3,7 @@
 
 namespace DC
 {
+	// A Vulkan API GPU vertex buffer
 	class VertexBuffer
 	{
 	public:
