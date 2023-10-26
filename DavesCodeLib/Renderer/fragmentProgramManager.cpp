@@ -21,7 +21,6 @@ namespace DC
 			it->second->referenceCount++;
 			return it->second->object;
 		}
-
 		Object* pNewObject = new Object;
 		ErrorIfMemoryNotAllocated(pNewObject);
 		pNewObject->referenceCount = 1;
@@ -46,7 +45,6 @@ namespace DC
 			error += L"\") failed. Invalid index value given.";
 			ErrorIfTrue(1, error);
 		}
-
 		auto it = objects.begin();
 		for (size_t i = 0; i < index; i++)
 			it++;
@@ -69,7 +67,6 @@ namespace DC
 			error += L"\") failed. Invalid index value given.";
 			ErrorIfTrue(1, error);
 		}
-
 		auto it = objects.begin();
 		for (size_t i = 0; i < index; i++)
 			it++;
@@ -108,7 +105,6 @@ namespace DC
 			}
 			return;
 		}
-
 		std::vector<String> vecstrObjectsToDelete;
 		auto it = objects.begin();
 		while (objects.end() != it)
@@ -117,7 +113,6 @@ namespace DC
 				vecstrObjectsToDelete.push_back(it->first);
 			it++;
 		}
-
 		for (size_t i = 0; i < vecstrObjectsToDelete.size(); i++)
 			remove(vecstrObjectsToDelete[i]);
 	}

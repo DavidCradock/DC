@@ -141,7 +141,6 @@
     <ClInclude Include="Renderer\fragmentProgram.h" />
     <ClInclude Include="Renderer\fragmentProgramManager.h" />
     <ClInclude Include="Renderer\renderer.h" />
-    <ClInclude Include="Renderer\rendererManager.h" />
     <ClInclude Include="Renderer\texture2D.h" />
     <ClInclude Include="Renderer\texture2DManager.h" />
     <ClInclude Include="Renderer\vertexBuffer.h" />
@@ -201,7 +200,6 @@
     <ClCompile Include="Renderer\fragmentProgram.cpp" />
     <ClCompile Include="Renderer\fragmentProgramManager.cpp" />
     <ClCompile Include="Renderer\renderer.cpp" />
-    <ClCompile Include="Renderer\rendererManager.cpp" />
     <ClCompile Include="Renderer\texture2D.cpp" />
     <ClCompile Include="Renderer\texture2DManager.cpp" />
     <ClCompile Include="Renderer\vertexBuffer.cpp" />
