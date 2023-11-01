@@ -5,8 +5,10 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 {
 	MainApplication* pMyApp = new MainApplication;
 	ErrorIfMemoryNotAllocated(pMyApp);
-	DC::Framework* pFramework = new DC::Framework;
-	ErrorIfMemoryNotAllocated(pFramework);
-	pFramework->go(pMyApp);
+
+	DC::Engine* pEngine = new DC::Engine;
+	ErrorIfMemoryNotAllocated(pEngine);
+	
+	pEngine->go(pMyApp);
 	return 0;
 }

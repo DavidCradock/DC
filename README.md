@@ -6,7 +6,12 @@
 ** Build help **
 - Download the source as a zip and extract somewhere.
 - Download and install Visual studio
-- Load the X.sln file into Visual studio, hit compile, done.
+- Download and install the Vulkan SDK
+- Load the X.sln file into Visual studio
+- Right click on DavesCodeLib project in solution explorer, make sure all configurations is selected in top left, 
+- goto "C++/General/Additional Include Directories" and make sure the entry in there is pointing to wherever the VulkanSDK is installed,
+- for example "C:\VulkanSDK\1.3.261.1\Include"
+- Hit compile, done.
 
 # TODO
 Implement renderer
@@ -14,9 +19,6 @@ Check String class
 Add 2D and UI stuff from X project codebase.
 
 # Notes...
-rebuild all time pre module usage for devapp and DavesCode lib...
-Before: 49.335 seconds
-After: 
 
 No logging because it's un-needed overhead and I usually implement logging, then never use it. The debugger is well suited for, surprise, debugging. The logs never help me.
 

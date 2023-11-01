@@ -35,8 +35,14 @@
     <Filter Include="SpatialPartitioning">
       <UniqueIdentifier>{1f02aa17-54e6-4007-9178-2639225728aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework">
+    <Filter Include="Engine">
       <UniqueIdentifier>{0f4d3914-a26b-49d5-b728-d86345003ac9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{6748adf5-cd77-49bd-a316-bdcbc6058416}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\vkBootstrap">
+      <UniqueIdentifier>{cf880fbf-d230-4c19-b41c-90a5436ea304}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -218,12 +224,6 @@
       <Filter>UserInterface</Filter>
     </ClInclude>
     <ClInclude Include="DavesCode.h" />
-    <ClInclude Include="Framework\framework.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\applicationBase.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer\fragmentProgram.h">
       <Filter>Renderer</Filter>
     </ClInclude>
@@ -250,6 +250,18 @@
     </ClInclude>
     <ClInclude Include="Renderer\vertexProgramManager.h">
       <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\applicationBase.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\engine.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third-party\vk-bootstrap-main\src\VkBootstrap.h">
+      <Filter>ThirdParty\vkBootstrap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third-party\vk-bootstrap-main\src\VkBootstrapDispatch.h">
+      <Filter>ThirdParty\vkBootstrap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -385,12 +397,6 @@
     <ClCompile Include="SpatialPartitioning\quadTreeNode.cpp">
       <Filter>SpatialPartitioning</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\framework.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\applicationBase.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer\fragmentProgram.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
@@ -417,6 +423,15 @@
     </ClCompile>
     <ClCompile Include="Renderer\vertexProgramManager.cpp">
       <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\applicationBase.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\engine.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third-party\vk-bootstrap-main\src\VkBootstrap.cpp">
+      <Filter>ThirdParty\vkBootstrap</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,9 +1,9 @@
 #include "mainApplication.h"
 
 
-void MainApplication::onUpdate(double timeInSecondsSinceLastCall, DC::Framework* pFramework)
+void MainApplication::onUpdate(double timeInSecondsSinceLastCall, DC::Engine* pEngine)
 {
-//	pFramework->shutdown();
+//	pEngine->shutdown();
 }
 
 void MainApplication::onInit(void)

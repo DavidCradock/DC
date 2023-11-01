@@ -9,6 +9,7 @@ namespace DC
 	// Vulkan renderer.
 	// Creates and returns a graphics renderer used for creating a window, hooking
 	// up the Vulkan graphics API to it and performing rendering operations in that window.
+	// The application framework has an object of this class. See Framework/framework.h
 	class Renderer
 	{
 	public:
@@ -21,26 +22,9 @@ namespace DC
 		// Closes the window and cleans everything up
 		void shutdown(void);
 
-
-		void blendDisable(void);
-		void blendEnable(void);
-		void blendFunction_SrcAlpha_One(void);
-		void blendFunction_SrcAlpha_OneMinusSrcAlpha(void);
-
-		void cullFaceAntiClockwise(void);
-		void cullFaceClockwise(void);
-		void cullFaceDisable(void);
-		void cullFaceEnable(void);
-
-		void depthTestDisable(void);
-		void depthTestEnable(void);
-
-		void pixelsRead(int positionX, int positionY, int width, int height, void* pixels);
-		void pixelsWrite(int positionX, int positionY, int width, int height, void* pixels);
-
-		void scissorTest(int positionX, int positionY, int width, int height);
-		void scissorTestDisable(void);
-		void scissorTestEnable(void);
+		// Called each program loop updating the window etc.
+		// Returns false if the window has been asked to close or alt+F4 has been pressed
+		bool update(void);
 
 		// The fragment program manager.
 		FragmentProgramManager fragmentProgramManager;

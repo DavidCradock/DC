@@ -4,7 +4,7 @@
 class MainApplication : public DC::ApplicationBase
 {
 public:
-	void onUpdate(double timeInSecondsSinceLastCall, DC::Framework* pFramework);
+	void onUpdate(double timeInSecondsSinceLastCall, DC::Engine* pEngine);
 
 	void onInit(void);
 
