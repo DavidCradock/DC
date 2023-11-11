@@ -11,7 +11,5 @@ namespace DC
 		~VertexBuffer();
 
 	private:
-		class impl;
-		impl* pimp;
 	};
 }

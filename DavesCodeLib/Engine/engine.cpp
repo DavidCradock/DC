@@ -15,6 +15,8 @@ namespace DC
 		ErrorIfTrue(application, L"Engine::go() failed. go already called as existing application pointer is not 0.");
 		application = pApplication;
 
+		settings.load();
+
 		if (0 != SDL_InitSubSystem(SDL_INIT_EVERYTHING))
 		{
 			String error;
@@ -22,7 +24,7 @@ namespace DC
 			ErrorIfTrue(1, error);
 		}
 
-		renderer.init();
+		renderer.init(settings);
 
 		application->onInit();
 

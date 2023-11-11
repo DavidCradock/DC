@@ -9,8 +9,11 @@
 - Download and install the Vulkan SDK
 - Load the X.sln file into Visual studio
 - Right click on DavesCodeLib project in solution explorer, make sure all configurations is selected in top left, 
-- goto "C++/General/Additional Include Directories" and make sure the entry in there is pointing to wherever the VulkanSDK is installed,
+- Goto "C++/General/Additional Include Directories" and make sure the entry in there is pointing to wherever the VulkanSDK is installed,
 - for example "C:\VulkanSDK\1.3.261.1\Include"
+- Also do this for Application project and any other application projects added to the DC solution.
+- Goto "Librarian/General/Additional Library Directories" and make sure the entry in there is pointing to wherever the VulkanSDK is installed,
+- for example "C:\VulkanSDK\1.3.261.1\Lib"
 - Hit compile, done.
 
 # TODO

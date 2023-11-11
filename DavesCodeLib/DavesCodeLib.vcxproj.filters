@@ -263,6 +263,12 @@
     <ClInclude Include="..\third-party\vk-bootstrap-main\src\VkBootstrapDispatch.h">
       <Filter>ThirdParty\vkBootstrap</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\settings.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\vkError.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AI\aStarPathfinding.cpp">
@@ -432,6 +438,9 @@
     </ClCompile>
     <ClCompile Include="..\third-party\vk-bootstrap-main\src\VkBootstrap.cpp">
       <Filter>ThirdParty\vkBootstrap</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\settings.cpp">
+      <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -11,7 +11,5 @@ namespace DC
 		~VertexProgram();
 
 	private:
-		class impl;
-		impl* pimp;
 	};
 }

@@ -17,7 +17,7 @@ General / "C Language Standard" = ISO C17 (2018) Standard (/std:c17)
 Debugging / "Working Directory" = $(SolutionDir)
 Linker / System / SubSystem = Windows
 Manifest Tool / Input and Output / DPI Awareness = High DPI Aware
-
+"C++/General/Additional Include Directories" and make sure the entry in there is pointing to wherever the VulkanSDK is installed, for example "C:\VulkanSDK\1.3.261.1\Include"
 Click on Build menu, Configuration Manager, Active Solution Platform, click edit.
 Select "x86" platform, hilight the "Remove deleted platforms" check box and click delete
 Click on the project's platform dropdown and "edit" and remove the Win32 platform.

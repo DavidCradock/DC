@@ -3,19 +3,11 @@
 
 namespace DC
 {
-	class VertexBuffer::impl
-	{
-	};
-
 	VertexBuffer::VertexBuffer()
 	{
-		pimp = new impl();
-		ErrorIfMemoryNotAllocated(pimp);
 	}
 
 	VertexBuffer::~VertexBuffer()
 	{
-		delete pimp;
-		pimp = 0;
 	}
 }

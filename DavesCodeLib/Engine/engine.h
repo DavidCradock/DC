@@ -2,6 +2,7 @@
 #include "applicationBase.h"
 #include "../Common/timer.h"
 #include "../Renderer/renderer.h"
+#include "settings.h"
 
 namespace DC
 {
@@ -26,6 +27,10 @@ namespace DC
 		// Set to true via shutdown()
 		bool shutdownCalled;
 
+		// The Vulkan renderer
 		Renderer renderer;
+
+		// All engine related settings
+		Settings settings;
 	};
 }

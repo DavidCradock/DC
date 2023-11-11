@@ -1,8 +1,8 @@
 #include "renderer.h"
 #include "../Common/error.h"
-#include "../../third-party/SDL2-2.28.4/include/SDL.h"
-#include "../../third-party/SDL2-2.28.4/include/SDL_vulkan.h"
-#include <vulkan/vulkan.h>
+#include "vkError.h"
+#include "../../third-party/vk-bootstrap-main/src/VkBootstrap.h"
+
 /*
 Vulkan main objects and their use.
 
@@ -51,52 +51,109 @@ semaphore to make the presentation of the image to the screen wait until renderi
 */
 namespace DC
 {
-	class Renderer::impl
-	{
-	public:
-		// The SDL window handle
-		SDL_Window* SDL_window{ nullptr };
-
-		// Whether init() has been called
-		bool initialised{ false };
-
-		// Width and height of the renderer's window's dimensions
-		VkExtent2D windowExtent{ 1920, 1080 };
-	};
-
 	Renderer::Renderer()
 	{
-		pimp = new impl();
-		ErrorIfMemoryNotAllocated(pimp);
 	}
 
 	Renderer::~Renderer()
 	{
-		delete pimp;
-		pimp = 0;
 	}
 
-	void Renderer::init(void)
+	void Renderer::init(const Settings& settings)
 	{
+		windowExtent.width = settings.getWindowWidthWhenWindowed();
+		windowExtent.height = settings.getWindowHeightWhenWindowed();
+
 		SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_VULKAN);
-		pimp->SDL_window = SDL_CreateWindow(
+		SDL_window = SDL_CreateWindow(
 			"Dave's Code: Vulkan Engine",
 			SDL_WINDOWPOS_UNDEFINED, // Window position x (don't care)
 			SDL_WINDOWPOS_UNDEFINED, // Window position y (don't care)
-			pimp->windowExtent.width, // Window width in pixels
-			pimp->windowExtent.height, // Window height in pixels
+			windowExtent.width, // Window width in pixels
+			windowExtent.height, // Window height in pixels
 			window_flags
 		);
-		pimp->initialised = true;
+
+		// Create Vulkan instance
+		vkb::InstanceBuilder builder;
+		// Make the Vulkan instance, with basic debug features
+		auto inst_ret = builder.set_app_name("Example Vulkan Application")
+			.request_validation_layers(true)
+			.require_api_version(1, 1, 0)
+			.use_default_debug_messenger()
+			.build();
+
+		vkb::Instance vkb_inst = inst_ret.value();
+
+		// Store the instance
+		vkInstance = vkb_inst.instance;
+
+		// Store the debug messenger
+		vkDebugMessenger = vkb_inst.debug_messenger;
+
+		// Get the surface of the window we opened with SDL
+		SDL_Vulkan_CreateSurface(SDL_window, vkInstance, &vkSurface);
+
+		// Use vkbootstrap to select a GPU.
+		// We want a GPU that can write to the SDL surface and supports Vulkan 1.1
+		vkb::PhysicalDeviceSelector selector{ vkb_inst };
+		vkb::PhysicalDevice physicalDevice = selector
+			.set_minimum_version(1, 1)
+			.set_surface(vkSurface)
+			.select()
+			.value();
+
+		// Create the final Vulkan device
+		vkb::DeviceBuilder deviceBuilder{ physicalDevice };
+
+		vkb::Device vkbDevice = deviceBuilder.build().value();
+
+		// Get the VkDevice handle used in the rest of a Vulkan application
+		vkDevice = vkbDevice.device;
+		vkPhysicalDevice = physicalDevice.physical_device;
+
+		// Build swap chain
+		vkb::SwapchainBuilder swapchainBuilder{vkPhysicalDevice, vkDevice, vkSurface };
+
+		vkb::Swapchain vkbSwapchain = swapchainBuilder
+			.use_default_format_selection()
+			// Use vsync present mode
+			.set_desired_present_mode(VK_PRESENT_MODE_FIFO_KHR)
+			.set_desired_extent(windowExtent.width, windowExtent.height)
+			.build()
+			.value();
+
+		// Store swapchain and its related images
+		vkSwapchain = vkbSwapchain.swapchain;
+		vkSwapchainImages = vkbSwapchain.get_images().value();
+		vkSwapchainImageViews = vkbSwapchain.get_image_views().value();
+		vkSwapchainImageFormat = vkbSwapchain.image_format;
+
+
+
+		initialised = true;
 	}
 
 	void Renderer::shutdown(void)
 	{
-		if (pimp->initialised)
+		if (initialised)
 		{
-			SDL_DestroyWindow(pimp->SDL_window);
-			pimp->SDL_window = nullptr;
-			pimp->initialised = false;
+			vkDestroySwapchainKHR(vkDevice, vkSwapchain, nullptr);
+
+			// Destroy swapchain resources
+			for (int i = 0; i < vkSwapchainImageViews.size(); i++) {
+
+				vkDestroyImageView(vkDevice, vkSwapchainImageViews[i], nullptr);
+			}
+
+			vkDestroyDevice(vkDevice, nullptr);
+			vkDestroySurfaceKHR(vkInstance, vkSurface, nullptr);
+			vkb::destroy_debug_utils_messenger(vkInstance, vkDebugMessenger);
+			vkDestroyInstance(vkInstance, nullptr);
+			SDL_DestroyWindow(SDL_window);
+			SDL_window = nullptr;
+
+			initialised = false;
 		}
 	}
 

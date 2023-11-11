@@ -11,7 +11,6 @@ namespace DC
 		~FragmentProgram();
 
 	private:
-		class impl;
-		impl* pimp;
+
 	};
 }

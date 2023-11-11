@@ -11,7 +11,5 @@ namespace DC
 		~Texture2D();
 
 	private:
-		class impl;
-		impl* pimp;
 	};
 }
