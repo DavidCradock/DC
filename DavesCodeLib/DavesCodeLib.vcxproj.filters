@@ -269,6 +269,9 @@
     <ClInclude Include="Renderer\vkError.h">
       <Filter>Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer\vk_initializers.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AI\aStarPathfinding.cpp">
@@ -441,6 +444,9 @@
     </ClCompile>
     <ClCompile Include="Engine\settings.cpp">
       <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\vk_initializers.cpp">
+      <Filter>Renderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

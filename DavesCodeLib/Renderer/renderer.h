@@ -42,6 +42,20 @@ namespace DC
 		// The vertex program manager.
 		VertexProgramManager vertexProgramManager;
 	private:
+		// Called from init() to initialise Vulkan
+		void initVulkan(void);
+
+		// Called from init() to initialise the Vulkan swap chain
+		void initSwapchain(void);
+
+		// Called from init() to initialise the Vulkan command pool and buffer
+		void initCommands(void);
+
+		// Called from init() to initialise the Vulkan default render pass
+		void initDefaultRenderpass(void);
+
+		// Called from init() to initialise the Vulkan frame buffers
+		void initFramebuffers(void);
 
 		// The SDL window handle
 		SDL_Window* SDL_window{ nullptr };
@@ -78,5 +92,21 @@ namespace DC
 
 		// Array of image-views from the swapchain
 		std::vector<VkImageView> vkSwapchainImageViews;
+
+		// Queue we will submit to
+		VkQueue _graphicsQueue;
+		
+		// Family of that queue
+		uint32_t _graphicsQueueFamily;
+
+		// The command pool for our commands
+		VkCommandPool _commandPool;
+
+		// The buffer we will record into
+		VkCommandBuffer _mainCommandBuffer;
+
+		VkRenderPass _renderPass;
+
+		std::vector<VkFramebuffer> _framebuffers;
 	};
 }

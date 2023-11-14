@@ -161,6 +161,7 @@
     <ClInclude Include="Renderer\vertexProgram.h" />
     <ClInclude Include="Renderer\vertexProgramManager.h" />
     <ClInclude Include="Renderer\vkError.h" />
+    <ClInclude Include="Renderer\vk_initializers.h" />
     <ClInclude Include="SpatialPartitioning\octTree.h" />
     <ClInclude Include="SpatialPartitioning\octTreeEntity.h" />
     <ClInclude Include="SpatialPartitioning\octTreeNode.h" />
@@ -222,6 +223,7 @@
     <ClCompile Include="Renderer\vertexBufferManager.cpp" />
     <ClCompile Include="Renderer\vertexProgram.cpp" />
     <ClCompile Include="Renderer\vertexProgramManager.cpp" />
+    <ClCompile Include="Renderer\vk_initializers.cpp" />
     <ClCompile Include="SpatialPartitioning\octTree.cpp" />
     <ClCompile Include="SpatialPartitioning\octTreeEntity.cpp" />
     <ClCompile Include="SpatialPartitioning\octTreeNode.cpp" />

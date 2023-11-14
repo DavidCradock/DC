@@ -2,6 +2,7 @@
 #include "../Common/error.h"
 #include "vkError.h"
 #include "../../third-party/vk-bootstrap-main/src/VkBootstrap.h"
+#include "vk_initializers.h"
 
 /*
 Vulkan main objects and their use.
@@ -74,6 +75,17 @@ namespace DC
 			window_flags
 		);
 
+		initVulkan();
+		initSwapchain();
+		initCommands();
+		initDefaultRenderpass();
+		initFramebuffers();
+
+		initialised = true;
+	}
+
+	void Renderer::initVulkan(void)
+	{
 		// Create Vulkan instance
 		vkb::InstanceBuilder builder;
 		// Make the Vulkan instance, with basic debug features
@@ -112,8 +124,15 @@ namespace DC
 		vkDevice = vkbDevice.device;
 		vkPhysicalDevice = physicalDevice.physical_device;
 
+		// Use vkbootstrap to get a Graphics queue
+		_graphicsQueue = vkbDevice.get_queue(vkb::QueueType::graphics).value();
+		_graphicsQueueFamily = vkbDevice.get_queue_index(vkb::QueueType::graphics).value();
+	}
+
+	void Renderer::initSwapchain(void)
+	{
 		// Build swap chain
-		vkb::SwapchainBuilder swapchainBuilder{vkPhysicalDevice, vkDevice, vkSurface };
+		vkb::SwapchainBuilder swapchainBuilder{ vkPhysicalDevice, vkDevice, vkSurface };
 
 		vkb::Swapchain vkbSwapchain = swapchainBuilder
 			.use_default_format_selection()
@@ -128,16 +147,117 @@ namespace DC
 		vkSwapchainImages = vkbSwapchain.get_images().value();
 		vkSwapchainImageViews = vkbSwapchain.get_image_views().value();
 		vkSwapchainImageFormat = vkbSwapchain.image_format;
+	}
 
+	void Renderer::initCommands(void)
+	{
+		// Create a command pool for commands submitted to the graphics queue.
+		// We also want the pool to allow for resetting of individual command buffers
+		VkCommandPoolCreateInfo commandPoolInfo = vkinit::command_pool_create_info(_graphicsQueueFamily, VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT);
+		vkError(vkCreateCommandPool(vkDevice, &commandPoolInfo, nullptr, &_commandPool));
 
+		// Allocate the default command buffer that we will use for rendering
+		VkCommandBufferAllocateInfo cmdAllocInfo = vkinit::command_buffer_allocate_info(_commandPool, 1);
+		vkError(vkAllocateCommandBuffers(vkDevice, &cmdAllocInfo, &_mainCommandBuffer));
+	}
 
-		initialised = true;
+	void Renderer::initDefaultRenderpass(void)
+	{
+		// The renderpass will use this colour attachment.
+		VkAttachmentDescription colour_attachment = {};
+		
+		// The attachment will have the format needed by the swapchain
+		colour_attachment.format = vkSwapchainImageFormat;
+
+		// 1 sample, we won't be doing MSAA
+		colour_attachment.samples = VK_SAMPLE_COUNT_1_BIT;
+		
+		// We Clear when this attachment is loaded
+		colour_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+
+		// We keep the attachment stored when the renderpass ends
+		colour_attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+
+		// We don't care about stencil
+		colour_attachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+		colour_attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+
+		// We don't know or care about the starting layout of the attachment
+		colour_attachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+
+		// After the renderpass ends, the image has to be on a layout ready for display
+		colour_attachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+
+		// Now that our main image target is defined, we need to add a subpass that will render into it.
+		VkAttachmentReference colour_attachment_ref = {};
+
+		// Attachment number will index into the pAttachments array in the parent renderpass itself
+		colour_attachment_ref.attachment = 0;
+		colour_attachment_ref.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+		// We are going to create 1 subpass, which is the minimum you can do
+		VkSubpassDescription subpass = {};
+		subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+		subpass.colorAttachmentCount = 1;
+		subpass.pColorAttachments = &colour_attachment_ref;
+
+		// Create render pass
+		VkRenderPassCreateInfo render_pass_info = {};
+		render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+
+		// Connect the color attachment to the info
+		render_pass_info.attachmentCount = 1;
+		render_pass_info.pAttachments = &colour_attachment;
+		// Connect the subpass to the info
+		render_pass_info.subpassCount = 1;
+		render_pass_info.pSubpasses = &subpass;
+		vkError(vkCreateRenderPass(vkDevice, &render_pass_info, nullptr, &_renderPass));
+	}
+
+	void Renderer::initFramebuffers(void)
+	{
+		// Create the framebuffers for the swapchain images.
+		// This will connect the render-pass to the images for rendering
+		VkFramebufferCreateInfo fb_info = {};
+		fb_info.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+		fb_info.pNext = nullptr;
+
+		fb_info.renderPass = _renderPass;
+		fb_info.attachmentCount = 1;
+		fb_info.width = windowExtent.width;
+		fb_info.height = windowExtent.height;
+		fb_info.layers = 1;
+
+		// Grab how many images we have in the swapchain
+		const size_t swapchain_imagecount = vkSwapchainImages.size();
+		_framebuffers = std::vector<VkFramebuffer>(swapchain_imagecount);
+
+		// Create framebuffers for each of the swapchain image views
+		for (size_t i = 0; i < swapchain_imagecount; i++) {
+
+			fb_info.pAttachments = &vkSwapchainImageViews[i];
+			vkError(vkCreateFramebuffer(vkDevice, &fb_info, nullptr, &_framebuffers[i]));
+		}
 	}
 
 	void Renderer::shutdown(void)
 	{
 		if (initialised)
 		{
+			vkDestroySwapchainKHR(vkDevice, vkSwapchain, nullptr);
+
+			// Destroy the main renderpass
+			vkDestroyRenderPass(vkDevice, _renderPass, nullptr);
+
+			// Destroy swapchain resources
+			for (size_t i = 0; i < _framebuffers.size(); i++) {
+				vkDestroyFramebuffer(vkDevice, _framebuffers[i], nullptr);
+
+				vkDestroyImageView(vkDevice, vkSwapchainImageViews[i], nullptr);
+			}
+
+			vkDestroyCommandPool(vkDevice, _commandPool, nullptr);
+
 			vkDestroySwapchainKHR(vkDevice, vkSwapchain, nullptr);
 
 			// Destroy swapchain resources
