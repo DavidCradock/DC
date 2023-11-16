@@ -31,16 +31,16 @@ namespace DC
 		bool update(void);
 
 		// The fragment program manager.
-		FragmentProgramManager fragmentProgramManager;
+		FragmentProgramManager managerFragmentProgram;
 
 		// The texture2D manager.
-		Texture2DManager texture2DManager;
+		Texture2DManager managerTexture2D;
 
 		// The vertex buffer manager.
-		VertexBufferManager vertexBufferManager;
+		VertexBufferManager managerVertexBuffer;
 
 		// The vertex program manager.
-		VertexProgramManager vertexProgramManager;
+		VertexProgramManager managerVertexProgram;
 	private:
 		// Called from init() to initialise Vulkan
 		void initVulkan(void);
@@ -57,6 +57,12 @@ namespace DC
 		// Called from init() to initialise the Vulkan frame buffers
 		void initFramebuffers(void);
 
+		// Called from init() to initialise the Vulkan synchronization structures
+		void initSyncStructures(void);
+
+		// ?
+		void draw(void);
+
 		// The SDL window handle
 		SDL_Window* SDL_window{ nullptr };
 
@@ -64,7 +70,7 @@ namespace DC
 		bool initialised{ false };
 
 		// Width and height of the renderer's window's dimensions
-		VkExtent2D windowExtent{ 1920, 1080 };
+		VkExtent2D vkWindowExtent{ 1920, 1080 };
 
 		// The Vulkan context, used to access drivers.
 		VkInstance vkInstance;
@@ -94,19 +100,30 @@ namespace DC
 		std::vector<VkImageView> vkSwapchainImageViews;
 
 		// Queue we will submit to
-		VkQueue _graphicsQueue;
+		VkQueue vkGraphicsQueue;
 		
 		// Family of that queue
-		uint32_t _graphicsQueueFamily;
+		uint32_t vkGraphicsQueueFamily;
 
 		// The command pool for our commands
-		VkCommandPool _commandPool;
+		VkCommandPool vkCommandPool;
 
 		// The buffer we will record into
-		VkCommandBuffer _mainCommandBuffer;
+		VkCommandBuffer vkMainCommandBuffer;
 
-		VkRenderPass _renderPass;
+		// Vulkan render pass
+		VkRenderPass vkRenderPass;
 
-		std::vector<VkFramebuffer> _framebuffers;
+		// Vulkan frame buffers
+		std::vector<VkFramebuffer> vkFramebuffers;
+
+		// Vulkan synchronization
+		VkSemaphore vkPresentSemaphore, vkRenderSemaphore;
+		
+		// Vulkan synchronization
+		VkFence vkRenderFence;
+
+		// ?
+		int _frameNumber{ 0 };
 	};
 }
