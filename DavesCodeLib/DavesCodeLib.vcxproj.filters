@@ -44,6 +44,12 @@
     <Filter Include="ThirdParty\vkBootstrap">
       <UniqueIdentifier>{cf880fbf-d230-4c19-b41c-90a5436ea304}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data">
+      <UniqueIdentifier>{09958b57-1fc5-4b44-9bc0-a6682518dca6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\shaders">
+      <UniqueIdentifier>{af703769-3f0e-495d-aa01-e79df75dc046}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AI\AI.h">
@@ -448,5 +454,13 @@
     <ClCompile Include="Renderer\vk_initializers.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\data\shaders\default.frag">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="..\data\shaders\default.vert">
+      <Filter>data\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

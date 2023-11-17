@@ -342,7 +342,7 @@ namespace DC
 
 		// Make a clear-color from frame number. This will flash with a 120*pi frame period.
 		VkClearValue clearValue;
-		float flash = abs(sin(_frameNumber / 120.f));
+		float flash = abs(sin(_frameNumber / 60.f));
 		clearValue.color = { { 0.0f, 0.0f, flash, 1.0f } };
 
 		// Start the main renderpass.
