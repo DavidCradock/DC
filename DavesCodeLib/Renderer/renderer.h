@@ -63,6 +63,12 @@ namespace DC
 		// ?
 		void draw(void);
 
+		// Loads a shader module from a spir-v file. Returns false if it errors
+		bool load_shader_module(const char* filePath, VkShaderModule* outShaderModule);
+
+		// ?
+		void initPipelines(void);
+
 		// The SDL window handle
 		SDL_Window* SDL_window{ nullptr };
 
@@ -125,5 +131,9 @@ namespace DC
 
 		// ?
 		int _frameNumber{ 0 };
+
+		VkPipelineLayout _trianglePipelineLayout;
+
+		VkPipeline _trianglePipeline;
 	};
 }

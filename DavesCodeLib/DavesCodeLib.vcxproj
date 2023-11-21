@@ -153,6 +153,7 @@
     <ClInclude Include="Physics\physics.h" />
     <ClInclude Include="Renderer\fragmentProgram.h" />
     <ClInclude Include="Renderer\fragmentProgramManager.h" />
+    <ClInclude Include="Renderer\pipelineBuilder.h" />
     <ClInclude Include="Renderer\renderer.h" />
     <ClInclude Include="Renderer\texture2D.h" />
     <ClInclude Include="Renderer\texture2DManager.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="Math\vector4f.cpp" />
     <ClCompile Include="Renderer\fragmentProgram.cpp" />
     <ClCompile Include="Renderer\fragmentProgramManager.cpp" />
+    <ClCompile Include="Renderer\pipelineBuilder.cpp" />
     <ClCompile Include="Renderer\renderer.cpp" />
     <ClCompile Include="Renderer\texture2D.cpp" />
     <ClCompile Include="Renderer\texture2DManager.cpp" />

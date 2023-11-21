@@ -278,6 +278,9 @@
     <ClInclude Include="Renderer\vk_initializers.h">
       <Filter>Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer\pipelineBuilder.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AI\aStarPathfinding.cpp">
@@ -452,6 +455,9 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\vk_initializers.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\pipelineBuilder.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
   </ItemGroup>

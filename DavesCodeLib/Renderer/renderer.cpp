@@ -3,6 +3,7 @@
 #include "vkError.h"
 #include "../../third-party/vk-bootstrap-main/src/VkBootstrap.h"
 #include "vk_initializers.h"
+#include "pipelineBuilder.h"
 
 /*
 Vulkan main objects and their use.
@@ -81,6 +82,8 @@ namespace DC
 		initDefaultRenderpass();
 		initFramebuffers();
 		initSyncStructures();
+		initPipelines();
+
 		initialised = true;
 	}
 
@@ -363,6 +366,10 @@ namespace DC
 
 		vkCmdBeginRenderPass(cmd, &rpInfo, VK_SUBPASS_CONTENTS_INLINE);
 
+		//once we start adding rendering commands, they will go here
+		vkCmdBindPipeline(cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, _trianglePipeline);
+		vkCmdDraw(cmd, 3, 1, 0, 0);
+
 		// Finalize the render pass
 		vkCmdEndRenderPass(cmd);
 		// Finalize the command buffer (we can no longer add commands, but it can now be executed)
@@ -414,4 +421,108 @@ namespace DC
 		// Increase the number of frames drawn
 		_frameNumber++;
 	}
+
+	bool Renderer::load_shader_module(const char* filePath, VkShaderModule* outShaderModule)
+	{
+		// Open the file. With cursor at the end
+		std::ifstream file(filePath, std::ios::ate | std::ios::binary);
+
+		if (!file.is_open()) {
+			return false;
+		}
+
+
+		// Find what the size of the file is by looking up the location of the cursor
+		// because the cursor is at the end, it gives the size directly in bytes
+		size_t fileSize = (size_t)file.tellg();
+
+		// Spirv expects the buffer to be on uint32, so make sure to reserve an int vector big enough for the entire file
+		std::vector<uint32_t> buffer(fileSize / sizeof(uint32_t));
+
+		// Put file cursor at beginning
+		file.seekg(0);
+
+		// Load the entire file into the buffer
+		file.read((char*)buffer.data(), fileSize);
+
+		// Now that the file is loaded into the buffer, we can close it
+		file.close();
+
+		// Create a new shader module, using the buffer we loaded
+		VkShaderModuleCreateInfo createInfo = {};
+		createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+		createInfo.pNext = nullptr;
+
+		// codeSize has to be in bytes, so multiply the ints in the buffer by size of int to know the real size of the buffer
+		createInfo.codeSize = buffer.size() * sizeof(uint32_t);
+		createInfo.pCode = buffer.data();
+
+		// Check that the creation goes well.
+		VkShaderModule shaderModule;
+		if (vkCreateShaderModule(vkDevice, &createInfo, nullptr, &shaderModule) != VK_SUCCESS)
+		{
+			return false;
+		}
+		*outShaderModule = shaderModule;
+		return true;
+	}
+
+	void Renderer::initPipelines(void)
+	{
+		VkShaderModule triangleFragShader;
+		ErrorIfFalse(load_shader_module("data/shaders/default.frag.spv", &triangleFragShader), L"Error when building the triangle fragment shader module.");
+
+		VkShaderModule triangleVertexShader;
+		ErrorIfFalse(load_shader_module("data/shaders/default.vert.spv", &triangleVertexShader), L"Error when building the triangle vertex shader module.");
+
+		// Build the pipeline layout that controls the inputs/outputs of the shader
+		// We are not using descriptor sets or other systems yet, so no need to use anything other than empty default
+		VkPipelineLayoutCreateInfo pipeline_layout_info = vkinit::pipeline_layout_create_info();
+
+		vkError(vkCreatePipelineLayout(vkDevice, &pipeline_layout_info, nullptr, &_trianglePipelineLayout));
+
+		//build the stage-create-info for both vertex and fragment stages. This lets the pipeline know the shader modules per stage
+		PipelineBuilder pipelineBuilder;
+
+		pipelineBuilder._shaderStages.push_back(
+			vkinit::pipeline_shader_stage_create_info(VK_SHADER_STAGE_VERTEX_BIT, triangleVertexShader));
+
+		pipelineBuilder._shaderStages.push_back(
+			vkinit::pipeline_shader_stage_create_info(VK_SHADER_STAGE_FRAGMENT_BIT, triangleFragShader));
+
+
+		//vertex input controls how to read vertices from vertex buffers. We aren't using it yet
+		pipelineBuilder._vertexInputInfo = vkinit::vertex_input_state_create_info();
+
+		//input assembly is the configuration for drawing triangle lists, strips, or individual points.
+		//we are just going to draw triangle list
+		pipelineBuilder._inputAssembly = vkinit::input_assembly_create_info(VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
+
+		//build viewport and scissor from the swapchain extents
+		pipelineBuilder._viewport.x = 0.0f;
+		pipelineBuilder._viewport.y = 0.0f;
+		pipelineBuilder._viewport.width = (float)vkWindowExtent.width;
+		pipelineBuilder._viewport.height = (float)vkWindowExtent.height;
+		pipelineBuilder._viewport.minDepth = 0.0f;
+		pipelineBuilder._viewport.maxDepth = 1.0f;
+
+		pipelineBuilder._scissor.offset = { 0, 0 };
+		pipelineBuilder._scissor.extent = vkWindowExtent;
+
+		//configure the rasterizer to draw filled triangles
+		pipelineBuilder._rasterizer = vkinit::rasterization_state_create_info(VK_POLYGON_MODE_FILL);
+
+		//we don't use multisampling, so just run the default one
+		pipelineBuilder._multisampling = vkinit::multisampling_state_create_info();
+
+		//a single blend attachment with no blending and writing to RGBA
+		pipelineBuilder._colorBlendAttachment = vkinit::color_blend_attachment_state();
+
+		//use the triangle layout we created
+		pipelineBuilder._pipelineLayout = _trianglePipelineLayout;
+
+		//finally build the pipeline
+		_trianglePipeline = pipelineBuilder.build_pipeline(vkDevice, vkRenderPass);
+	}
+
 }
