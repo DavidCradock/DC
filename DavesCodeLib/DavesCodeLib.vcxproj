@@ -94,8 +94,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\third-party\vk-bootstrap-main\src\VkBootstrap.h" />
-    <ClInclude Include="..\third-party\vk-bootstrap-main\src\VkBootstrapDispatch.h" />
     <ClInclude Include="AI\AI.h" />
     <ClInclude Include="AI\aStarPathfinding.h" />
     <ClInclude Include="AI\finiteStateMachine.h" />
@@ -151,18 +149,16 @@
     <ClInclude Include="Math\vector3f.h" />
     <ClInclude Include="Math\vector4f.h" />
     <ClInclude Include="Physics\physics.h" />
-    <ClInclude Include="Renderer\fragmentProgram.h" />
-    <ClInclude Include="Renderer\fragmentProgramManager.h" />
-    <ClInclude Include="Renderer\pipelineBuilder.h" />
+    <ClInclude Include="Renderer\Managers\fragmentProgram.h" />
+    <ClInclude Include="Renderer\Managers\fragmentProgramManager.h" />
+    <ClInclude Include="Renderer\Managers\texture2D.h" />
+    <ClInclude Include="Renderer\Managers\texture2DManager.h" />
+    <ClInclude Include="Renderer\Managers\vertexBuffer.h" />
+    <ClInclude Include="Renderer\Managers\vertexBufferManager.h" />
+    <ClInclude Include="Renderer\Managers\vertexProgram.h" />
+    <ClInclude Include="Renderer\Managers\vertexProgramManager.h" />
     <ClInclude Include="Renderer\renderer.h" />
-    <ClInclude Include="Renderer\texture2D.h" />
-    <ClInclude Include="Renderer\texture2DManager.h" />
-    <ClInclude Include="Renderer\vertexBuffer.h" />
-    <ClInclude Include="Renderer\vertexBufferManager.h" />
-    <ClInclude Include="Renderer\vertexProgram.h" />
-    <ClInclude Include="Renderer\vertexProgramManager.h" />
     <ClInclude Include="Renderer\vkError.h" />
-    <ClInclude Include="Renderer\vk_initializers.h" />
     <ClInclude Include="SpatialPartitioning\octTree.h" />
     <ClInclude Include="SpatialPartitioning\octTreeEntity.h" />
     <ClInclude Include="SpatialPartitioning\octTreeNode.h" />
@@ -173,7 +169,6 @@
     <ClInclude Include="UserInterface\userInterface.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\third-party\vk-bootstrap-main\src\VkBootstrap.cpp" />
     <ClCompile Include="AI\aStarPathfinding.cpp" />
     <ClCompile Include="AI\finiteStateMachine.cpp" />
     <ClCompile Include="AI\geneticTraining.cpp" />
@@ -215,17 +210,15 @@
     <ClCompile Include="Math\vector2f.cpp" />
     <ClCompile Include="Math\vector3f.cpp" />
     <ClCompile Include="Math\vector4f.cpp" />
-    <ClCompile Include="Renderer\fragmentProgram.cpp" />
-    <ClCompile Include="Renderer\fragmentProgramManager.cpp" />
-    <ClCompile Include="Renderer\pipelineBuilder.cpp" />
+    <ClCompile Include="Renderer\Managers\fragmentProgram.cpp" />
+    <ClCompile Include="Renderer\Managers\fragmentProgramManager.cpp" />
+    <ClCompile Include="Renderer\Managers\texture2D.cpp" />
+    <ClCompile Include="Renderer\Managers\texture2DManager.cpp" />
+    <ClCompile Include="Renderer\Managers\vertexBuffer.cpp" />
+    <ClCompile Include="Renderer\Managers\vertexBufferManager.cpp" />
+    <ClCompile Include="Renderer\Managers\vertexProgram.cpp" />
+    <ClCompile Include="Renderer\Managers\vertexProgramManager.cpp" />
     <ClCompile Include="Renderer\renderer.cpp" />
-    <ClCompile Include="Renderer\texture2D.cpp" />
-    <ClCompile Include="Renderer\texture2DManager.cpp" />
-    <ClCompile Include="Renderer\vertexBuffer.cpp" />
-    <ClCompile Include="Renderer\vertexBufferManager.cpp" />
-    <ClCompile Include="Renderer\vertexProgram.cpp" />
-    <ClCompile Include="Renderer\vertexProgramManager.cpp" />
-    <ClCompile Include="Renderer\vk_initializers.cpp" />
     <ClCompile Include="SpatialPartitioning\octTree.cpp" />
     <ClCompile Include="SpatialPartitioning\octTreeEntity.cpp" />
     <ClCompile Include="SpatialPartitioning\octTreeNode.cpp" />
@@ -234,8 +227,10 @@
     <ClCompile Include="SpatialPartitioning\quadTreeNode.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\data\shaders\default.frag" />
-    <None Include="..\data\shaders\default.vert" />
+    <None Include="..\data\shaders\old_coloured_triangle.frag" />
+    <None Include="..\data\shaders\old_coloured_triangle.vert" />
+    <None Include="..\data\shaders\old_default.frag" />
+    <None Include="..\data\shaders\old_default.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

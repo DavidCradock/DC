@@ -4,6 +4,7 @@
 namespace DC
 {
 #ifndef vkError
+	// Checks return code from Vulkan and if not 0, creates an error.
 #define vkError(x)\
 		{\
 		if(x){\

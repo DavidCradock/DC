@@ -41,14 +41,14 @@
     <Filter Include="ThirdParty">
       <UniqueIdentifier>{6748adf5-cd77-49bd-a316-bdcbc6058416}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ThirdParty\vkBootstrap">
-      <UniqueIdentifier>{cf880fbf-d230-4c19-b41c-90a5436ea304}</UniqueIdentifier>
-    </Filter>
     <Filter Include="data">
       <UniqueIdentifier>{09958b57-1fc5-4b44-9bc0-a6682518dca6}</UniqueIdentifier>
     </Filter>
     <Filter Include="data\shaders">
       <UniqueIdentifier>{af703769-3f0e-495d-aa01-e79df75dc046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Managers">
+      <UniqueIdentifier>{47b88140-f6d1-4e73-aaad-32b5558c67e7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -230,31 +230,7 @@
       <Filter>UserInterface</Filter>
     </ClInclude>
     <ClInclude Include="DavesCode.h" />
-    <ClInclude Include="Renderer\fragmentProgram.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\fragmentProgramManager.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer\renderer.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\texture2D.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\texture2DManager.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\vertexBuffer.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\vertexBufferManager.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\vertexProgram.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\vertexProgramManager.h">
       <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Engine\applicationBase.h">
@@ -263,23 +239,35 @@
     <ClInclude Include="Engine\engine.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\third-party\vk-bootstrap-main\src\VkBootstrap.h">
-      <Filter>ThirdParty\vkBootstrap</Filter>
-    </ClInclude>
-    <ClInclude Include="..\third-party\vk-bootstrap-main\src\VkBootstrapDispatch.h">
-      <Filter>ThirdParty\vkBootstrap</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\settings.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\vkError.h">
       <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\vk_initializers.h">
-      <Filter>Renderer</Filter>
+    <ClInclude Include="Renderer\Managers\fragmentProgram.h">
+      <Filter>Renderer\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\pipelineBuilder.h">
-      <Filter>Renderer</Filter>
+    <ClInclude Include="Renderer\Managers\fragmentProgramManager.h">
+      <Filter>Renderer\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Managers\texture2D.h">
+      <Filter>Renderer\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Managers\texture2DManager.h">
+      <Filter>Renderer\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Managers\vertexBuffer.h">
+      <Filter>Renderer\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Managers\vertexBufferManager.h">
+      <Filter>Renderer\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Managers\vertexProgram.h">
+      <Filter>Renderer\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Managers\vertexProgramManager.h">
+      <Filter>Renderer\Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -415,31 +403,7 @@
     <ClCompile Include="SpatialPartitioning\quadTreeNode.cpp">
       <Filter>SpatialPartitioning</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\fragmentProgram.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\fragmentProgramManager.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer\renderer.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\texture2D.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\texture2DManager.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\vertexBuffer.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\vertexBufferManager.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\vertexProgram.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\vertexProgramManager.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Engine\applicationBase.cpp">
@@ -448,24 +412,45 @@
     <ClCompile Include="Engine\engine.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="..\third-party\vk-bootstrap-main\src\VkBootstrap.cpp">
-      <Filter>ThirdParty\vkBootstrap</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\settings.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\vk_initializers.cpp">
-      <Filter>Renderer</Filter>
+    <ClCompile Include="Renderer\Managers\fragmentProgram.cpp">
+      <Filter>Renderer\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\pipelineBuilder.cpp">
-      <Filter>Renderer</Filter>
+    <ClCompile Include="Renderer\Managers\fragmentProgramManager.cpp">
+      <Filter>Renderer\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Managers\texture2D.cpp">
+      <Filter>Renderer\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Managers\texture2DManager.cpp">
+      <Filter>Renderer\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Managers\vertexBuffer.cpp">
+      <Filter>Renderer\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Managers\vertexBufferManager.cpp">
+      <Filter>Renderer\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Managers\vertexProgram.cpp">
+      <Filter>Renderer\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Managers\vertexProgramManager.cpp">
+      <Filter>Renderer\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\data\shaders\default.frag">
+    <None Include="..\data\shaders\old_default.frag">
       <Filter>data\shaders</Filter>
     </None>
-    <None Include="..\data\shaders\default.vert">
+    <None Include="..\data\shaders\old_default.vert">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="..\data\shaders\old_coloured_triangle.frag">
+      <Filter>data\shaders</Filter>
+    </None>
+    <None Include="..\data\shaders\old_coloured_triangle.vert">
       <Filter>data\shaders</Filter>
     </None>
   </ItemGroup>

@@ -20,4 +20,4 @@
 #endif
 
 // Third party libs
-#pragma comment(lib, "../third-party/SDL2-2.28.4/lib/x64/SDL2.lib")
+

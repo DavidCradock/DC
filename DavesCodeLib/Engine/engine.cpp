@@ -1,6 +1,5 @@
 #include "engine.h"
 #include "../Common/error.h"
-#include "../../third-party/SDL2-2.28.4/include/SDL.h"
 
 namespace DC
 {
@@ -16,13 +15,6 @@ namespace DC
 		application = pApplication;
 
 		settings.load();
-
-		if (0 != SDL_InitSubSystem(SDL_INIT_EVERYTHING))
-		{
-			String error;
-			error.appendCharPointer(SDL_GetError());
-			ErrorIfTrue(1, error);
-		}
 
 		renderer.init(settings);
 
