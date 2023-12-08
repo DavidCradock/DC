@@ -1,6 +1,5 @@
 #pragma once
 #include "../Engine/settings.h"
-#include <vulkan/vulkan.h>
 
 namespace DC
 {
@@ -25,7 +24,8 @@ namespace DC
 		bool update(void);
 
 	private:
-
+		class Pimpl;	// Private implementation holding glfw stuff which we do not wish to expose when including this header file.
+		Pimpl* pimp;	// Pointer holding private implementation.
 
 	};
 }

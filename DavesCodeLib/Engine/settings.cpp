@@ -147,8 +147,8 @@ namespace DC
 		backbufferScale = 1.0f;
 		windowFullscreen = false;
 		windowVSync = true;
-		windowWidthWindowed = 1920 / 2;
-		windowHeightWindowed = 1080 / 2;
+		windowWidthWindowed = 1920;
+		windowHeightWindowed = 1080;
 		UIVolume = 1.0f;
 		UITooltipDelaySeconds = 1.0f;
 	}
