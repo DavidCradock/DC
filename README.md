@@ -18,6 +18,7 @@
 
 # TODO
 Implement renderer
+Remove GLFW
 Check String class
 Add 2D and UI stuff from X project codebase.
 

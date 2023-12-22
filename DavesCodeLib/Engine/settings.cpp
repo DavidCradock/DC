@@ -56,6 +56,12 @@ namespace DC
 		file >> strWord;	space = file.get();	// Setting name, then space
 		file >> UITooltipDelaySeconds;
 
+		// applicationName
+		file >> strWord;	space = file.get();	// Setting name, then space
+		getline(file, strLine);
+		applicationName.clear();
+		applicationName.appendString(strLine);
+
 		// If an error occurred
 		if (file.fail())
 		{
@@ -131,6 +137,12 @@ namespace DC
 		str += L"\n";
 		file << str.c_strn();
 
+		// applicationName
+		str = L"ApplicationName: ";
+		str.appendString(applicationName.c_strn());
+		str += L"\n";
+		file << str.c_strn();
+
 		// Make sure there were no errors
 		if (file.fail())
 		{
@@ -151,6 +163,7 @@ namespace DC
 		windowHeightWindowed = 1080;
 		UIVolume = 1.0f;
 		UITooltipDelaySeconds = 1.0f;
+		applicationName = L"DC Development Application.";
 	}
 
 	void Settings::setBackbufferScale(float fBackbufferScale)
@@ -230,5 +243,15 @@ namespace DC
 	float Settings::getUITooltipDelaySeconds(void) const
 	{
 		return UITooltipDelaySeconds;
+	}
+
+	void Settings::setApplicationName(const String& applicationNamePARAM)
+	{
+		applicationName = applicationNamePARAM;
+	}
+
+	String Settings::getApplicationName(void)
+	{
+		return applicationName;
 	}
 }

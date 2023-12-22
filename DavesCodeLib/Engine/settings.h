@@ -80,6 +80,11 @@ namespace DC
 		// before the widget's tooltip will start to appear.
 		float getUITooltipDelaySeconds(void) const;
 
+		// Sets the application name used when creating the application window
+		void setApplicationName(const String& applicationNamePARAM);
+
+		// Returns the application name used when creating the application window
+		String getApplicationName(void);
 	private:
 
 		// Sets all settings to default values
@@ -108,5 +113,8 @@ namespace DC
 		// This is the amount of time in seconds which the mouse cursor has to be over a widget,
 		// before the widget's tooltip will start to appear.
 		float UITooltipDelaySeconds;
+
+		// The application name used when creating the application window
+		String applicationName;
 	};
 }

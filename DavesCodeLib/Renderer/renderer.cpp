@@ -1,9 +1,8 @@
 #include "renderer.h"
 #include "../Common/error.h"
 #include "vkError.h"
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
 #include <vulkan/vulkan.h>
+#include <SDL.h>
 
 /*
 Vulkan main objects and their use.
@@ -53,89 +52,64 @@ semaphore to make the presentation of the image to the screen wait until renderi
 */
 namespace DC
 {
+
+	// Private implementation class which holds all Vulkan objects etc and has various methods which we keep in here
+	// instead of in the Renderer class, to keep that class nice and tidy.
 	class Renderer::Pimpl
 	{
 	public:
 		Pimpl();
 
-		// GLFW Window pointer
-		GLFWwindow* glfwWindow;
+		// Called from Renderer::init()
+		void init(const Settings& settings);
 
-		// Vulkan instance.
-		// The Vulkan context, used to access drivers.
-		// It's the first thing in Vulkan that's created.
-		VkInstance vulkanInstance;
+		// Called from Renderer::update()
+		// Returns false if the window/application has been asked to close/shutdown
+		bool update(void);
 
-		// Create the Vulkan instance
-		void createVulkanInstance(void);
+		// Called from Renderer::shutdown()
+		void shutdown(void);
 
-		// Cleanup Vulkan objects
-		void cleanupVulkan(void);
+	private:
+		// Called from init to initialise Vulkan
+		void initVulkan(void);
+
+		// Called from init to initialise the application's window
+		void initWindow(const Settings& settings);
 	};
 
 	Renderer::Pimpl::Pimpl()
 	{
-		glfwWindow = 0;
 	}
 
-	void Renderer::Pimpl::createVulkanInstance(void)
+	void Renderer::Pimpl::init(const Settings& settings)
 	{
-		VkApplicationInfo appInfo{};
-		appInfo.apiVersion = VK_API_VERSION_1_0;
-		appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
-		appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
-		appInfo.pApplicationName = "Hello Triangle";
-		appInfo.pEngineName = "No Engine";
-		appInfo.pNext = nullptr;
-		appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+		initWindow(settings);
+		initVulkan();
 
-		// Get required extensions by glfw
-		uint32_t glfwExtensionCount = 0;
-		const char** glfwExtensions;
-		glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
-
-		// Get number of extensions which exist and their names
-		uint32_t extensionCount = 0;
-		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
-		std::vector<VkExtensionProperties> extensions(extensionCount);
-		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
-
-		// Make sure required extensions exist
-		uint32_t extensionsFound = 0;
-		for (uint32_t i = 0; i < glfwExtensionCount; i++)
-		{
-			for (uint32_t j = 0; j < extensionCount; j++)
-			{
-				if (strcmp(extensions[j].extensionName, glfwExtensions[i]) == 0)
-				{
-					extensionsFound++;
-					break;
-				}
-			}
-		}
-		ErrorIfFalse(extensionsFound == glfwExtensionCount, L"Required extensions not found.");
-
-		VkInstanceCreateInfo createInfo{};
-		createInfo.enabledExtensionCount = glfwExtensionCount;
-		createInfo.enabledLayerCount = 0;
-//		createInfo.flags;
-		createInfo.pApplicationInfo = &appInfo;
-//		createInfo.pNext;
-		createInfo.ppEnabledExtensionNames = glfwExtensions;
-//		createInfo.ppEnabledLayerNames;
-		createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-
-
-
-		VkResult result = vkCreateInstance(&createInfo, nullptr, &vulkanInstance);
-		vkError(result);
 	}
 
-	void Renderer::Pimpl::cleanupVulkan(void)
+	void Renderer::Pimpl::initWindow(const Settings& settings)
 	{
-		vkDestroyInstance(vulkanInstance, nullptr);
+
 	}
 
+	void Renderer::Pimpl::initVulkan(void)
+	{
+
+	}
+
+	bool Renderer::Pimpl::update(void)
+	{
+		// Return false if window has been asked to close.
+		return false;
+	}
+
+	void Renderer::Pimpl::shutdown(void)
+	{
+
+	}
+	
 	Renderer::Renderer()
 	{
 		pimp = new Renderer::Pimpl();
@@ -150,31 +124,16 @@ namespace DC
 
 	void Renderer::init(const Settings& settings)
 	{	
-		glfwInit();
-		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-		pimp->glfwWindow = glfwCreateWindow(settings.getWindowWidthWhenWindowed(), settings.getWindowHeightWhenWindowed(), "Vulkan window", nullptr, nullptr);
-		ErrorIfFalse(pimp->glfwWindow, L"Unable to create application window.");
-
-		pimp->createVulkanInstance();
-
-		
-		
+		pimp->init(settings);
 	}
 
 	void Renderer::shutdown(void)
 	{
-		pimp->cleanupVulkan();
-
-		glfwDestroyWindow(pimp->glfwWindow);
-		glfwTerminate();
+		pimp->shutdown();
 	}
 
 	bool Renderer::update(void)
 	{
-		bool bQuit = false;
-		glfwPollEvents();
-		if (glfwWindowShouldClose(pimp->glfwWindow))
-			bQuit = true;
-		return !bQuit;
+		return pimp->update();
 	}
 }

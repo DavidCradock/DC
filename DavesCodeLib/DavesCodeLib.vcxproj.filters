@@ -439,6 +439,9 @@
     <ClCompile Include="Renderer\Managers\vertexProgramManager.cpp">
       <Filter>Renderer\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Renderer\DELETEME_OLD_CODE_FOR_RENDERER.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\shaders\old_default.frag">
