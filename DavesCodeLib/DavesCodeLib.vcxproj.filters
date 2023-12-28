@@ -50,6 +50,24 @@
     <Filter Include="Renderer\Managers">
       <UniqueIdentifier>{47b88140-f6d1-4e73-aaad-32b5558c67e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParty\glm">
+      <UniqueIdentifier>{021baef1-0fca-476c-8318-b5a00ea8d158}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\imgui">
+      <UniqueIdentifier>{65bfa9a8-49ce-4807-9873-7bb80119af4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\stb">
+      <UniqueIdentifier>{25b15fd0-7c14-44e8-b72e-98b98f69044f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\TinyObjLoader">
+      <UniqueIdentifier>{1ca2c712-28cb-4caa-ab53-aca16c8e4926}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\vk-bootstrap">
+      <UniqueIdentifier>{5c425469-ede2-43bc-9815-9386d1294613}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\VulkanMemoryAllocator">
+      <UniqueIdentifier>{130b88c4-c69c-4b8c-8090-ec06e0d966e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AI\AI.h">
@@ -146,12 +164,6 @@
       <Filter>Image</Filter>
     </ClInclude>
     <ClInclude Include="Image\imageAtlas.h">
-      <Filter>Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\stb_image.h">
-      <Filter>Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\stb_image_write.h">
       <Filter>Image</Filter>
     </ClInclude>
     <ClInclude Include="Input\input.h">
@@ -456,5 +468,10 @@
     <None Include="..\data\shaders\old_coloured_triangle.vert">
       <Filter>data\shaders</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ThirdParty\readme.txt">
+      <Filter>ThirdParty</Filter>
+    </Text>
   </ItemGroup>
 </Project>

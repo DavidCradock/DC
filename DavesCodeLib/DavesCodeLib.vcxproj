@@ -130,8 +130,6 @@
     <ClInclude Include="Image\image.h" />
     <ClInclude Include="Image\image2D.h" />
     <ClInclude Include="Image\imageAtlas.h" />
-    <ClInclude Include="Image\stb_image.h" />
-    <ClInclude Include="Image\stb_image_write.h" />
     <ClInclude Include="Input\input.h" />
     <ClInclude Include="Input\inputJoystick.h" />
     <ClInclude Include="Input\inputKeyboard.h" />
@@ -232,6 +230,9 @@
     <None Include="..\data\shaders\old_coloured_triangle.vert" />
     <None Include="..\data\shaders\old_default.frag" />
     <None Include="..\data\shaders\old_default.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ThirdParty\readme.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
