@@ -5,10 +5,11 @@
 #include "../Math/mathUtilities.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "../ThirdParty/stb/stb_image.h"
+#include "../../ThirdPartyLibs/stb/stb_image.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "../ThirdParty/stb/stb_image_write.h"
+#define __STDC_LIB_EXT1__
+#include "../../ThirdPartyLibs/stb/stb_image_write.h"
 
 namespace DC
 {
@@ -68,19 +69,19 @@ namespace DC
 	bool Image2D::load(const String& filename, bool flipForOpenGL)
 	{
 		free();
-		STB::stbi_set_flip_vertically_on_load(flipForOpenGL);
+		stbi_set_flip_vertically_on_load(flipForOpenGL);
 
 		// Get number of channels in the image file
 		int iDims[2];
 		int iNumChannels = 3;
 		loadInfo(filename, iDims[0], iDims[1], iNumChannels);
-		STB::stbi_uc* pixels = 0;
+		stbi_uc* pixels = 0;
 		if (4 == iNumChannels)
-			pixels = STB::stbi_load(filename.c_strn(), &width, &height, &numberOfChannels, STB::STBI_rgb_alpha);
+			pixels = stbi_load(filename.c_strn(), &width, &height, &numberOfChannels, STBI_rgb_alpha);
 		else if (3 == iNumChannels)
-			pixels = STB::stbi_load(filename.c_strn(), &width, &height, &numberOfChannels, STB::STBI_rgb);
+			pixels = stbi_load(filename.c_strn(), &width, &height, &numberOfChannels, STBI_rgb);
 		else if (1 == iNumChannels)
-			pixels = STB::stbi_load(filename.c_strn(), &width, &height, &numberOfChannels, 1);
+			pixels = stbi_load(filename.c_strn(), &width, &height, &numberOfChannels, 1);
 
 		if (!pixels)
 			return false;
@@ -108,7 +109,7 @@ namespace DC
 				iPixelIndex++;
 			}
 		}
-		STB::stbi_image_free(pixels);
+		stbi_image_free(pixels);
 		return true;
 	}
 
@@ -121,51 +122,51 @@ namespace DC
 		//   ok = stbi_info(filename, &ix, &iy, &n);
 		//   // returns ok=1 and sets ix, iy, n if image is a supported format,
 		//   // 0 otherwise.
-		return (bool)STB::stbi_info(filename.c_strn(), &widthPARAM, &heightPARAM, &numberOfChannelsPARAM);
+		return (bool)stbi_info(filename.c_strn(), &widthPARAM, &heightPARAM, &numberOfChannelsPARAM);
 	}
 
 	void Image2D::saveAsBMP(const String& filename, bool flipOnSave) const
 	{
 		ErrorIfTrue(!data, L"Image2D::saveAsBMP() failed. Image2D not yet created.");
-		STB::stbi_flip_vertically_on_write(flipOnSave); // flag is non-zero to flip data vertically
+		stbi_flip_vertically_on_write(flipOnSave); // flag is non-zero to flip data vertically
 		String err;
 		err += L"Image2D::saveAsBMP(\"";
 		err += filename;
 		err += L"\") failed.Image2D failed to be written.";
-		ErrorIfTrue(!STB::stbi_write_bmp(filename.c_strn(), width, height, numberOfChannels, data), err);
+		ErrorIfTrue(!stbi_write_bmp(filename.c_strn(), width, height, numberOfChannels, data), err);
 	}
 
 	void Image2D::saveAsJPG(const String& filename, bool flipOnSave, int quality) const
 	{
 		ErrorIfTrue(!data, L"Image2D::saveAsJPG() failed. Image2D not yet created.");
-		STB::stbi_flip_vertically_on_write(flipOnSave); // flag is non-zero to flip data vertically
+		stbi_flip_vertically_on_write(flipOnSave); // flag is non-zero to flip data vertically
 		String err;
 		err += L"Image2D::saveAsJPG(\"";
 		err += filename;
 		err += L"\") failed.Image2D failed to be written.";
-		ErrorIfTrue(!STB::stbi_write_jpg(filename.c_strn(), width, height, numberOfChannels, data, quality), err);
+		ErrorIfTrue(!stbi_write_jpg(filename.c_strn(), width, height, numberOfChannels, data, quality), err);
 	}
 
 	void Image2D::saveAsPNG(const String& filename, bool flipOnSave) const
 	{
 		ErrorIfTrue(!data, L"Image2D::saveAsPNG() failed. Image2D not yet created.");
-		STB::stbi_flip_vertically_on_write(flipOnSave); // flag is non-zero to flip data vertically
+		stbi_flip_vertically_on_write(flipOnSave); // flag is non-zero to flip data vertically
 		String err;
 		err += L"Image2D::saveAsPNG(\"";
 		err += filename;
 		err += L"\") failed. Image2D failed to be written.";
-		ErrorIfTrue(!STB::stbi_write_png(filename.c_strn(), width, height, numberOfChannels, data, width * numberOfChannels), err);
+		ErrorIfTrue(!stbi_write_png(filename.c_strn(), width, height, numberOfChannels, data, width * numberOfChannels), err);
 	}
 
 	void Image2D::saveAsTGA(const String& filename, bool flipOnSave) const
 	{
 		ErrorIfTrue(!data, L"Image2D::saveAsTGA() failed. Image2D not yet created.");
-		STB::stbi_flip_vertically_on_write(flipOnSave); // flag is non-zero to flip data vertically
+		stbi_flip_vertically_on_write(flipOnSave); // flag is non-zero to flip data vertically
 		String err;
 		err += L"Image2D::saveAsTGA(\"";
 		err += filename;
 		err += L"\") failed.Image2D failed to be written.";
-		ErrorIfTrue(!STB::stbi_write_tga(filename.c_strn(), width, height, numberOfChannels, data), err);
+		ErrorIfTrue(!stbi_write_tga(filename.c_strn(), width, height, numberOfChannels, data), err);
 	}
 
 	void Image2D::fill(unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha)
