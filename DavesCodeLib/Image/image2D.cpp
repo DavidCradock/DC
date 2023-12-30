@@ -5,11 +5,11 @@
 #include "../Math/mathUtilities.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "../../ThirdPartyLibs/stb/stb_image.h"
+#include "../ThirdParty/stb/stb_image.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #define __STDC_LIB_EXT1__
-#include "../../ThirdPartyLibs/stb/stb_image_write.h"
+#include "../ThirdParty/stb/stb_image_write.h"
 
 namespace DC
 {

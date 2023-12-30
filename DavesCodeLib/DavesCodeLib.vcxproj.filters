@@ -47,6 +47,18 @@
     <Filter Include="Renderer\Managers">
       <UniqueIdentifier>{47b88140-f6d1-4e73-aaad-32b5558c67e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{07177314-7168-439a-bfae-dc93db51beec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\DearImGUI">
+      <UniqueIdentifier>{4fb8cee3-8982-4ef3-a171-0f5bee367227}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\TinyObjLoader">
+      <UniqueIdentifier>{e24013f0-867b-4257-b0ce-e5d72333ee4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\vk-bootstrap">
+      <UniqueIdentifier>{54acad62-d77b-45cd-90da-cbde4da15184}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AI\AI.h">
@@ -260,6 +272,30 @@
     <ClInclude Include="Renderer\Managers\vertexProgramManager.h">
       <Filter>Renderer\Managers</Filter>
     </ClInclude>
+    <ClInclude Include="ThirdParty\DearImGUI\imconfig.h">
+      <Filter>ThirdParty\DearImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\DearImGUI\imgui.h">
+      <Filter>ThirdParty\DearImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\DearImGUI\imgui_internal.h">
+      <Filter>ThirdParty\DearImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\DearImGUI\imstb_rectpack.h">
+      <Filter>ThirdParty\DearImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\DearImGUI\imstb_textedit.h">
+      <Filter>ThirdParty\DearImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\DearImGUI\imstb_truetype.h">
+      <Filter>ThirdParty\DearImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\TinyObjLoader\tiny_obj_loader.h">
+      <Filter>ThirdParty\TinyObjLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\vk-bootstrap\src\VkBootstrap.h">
+      <Filter>ThirdParty\vk-bootstrap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AI\aStarPathfinding.cpp">
@@ -433,6 +469,27 @@
     <ClCompile Include="Renderer\DELETEME_OLD_CODE_FOR_RENDERER.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="ThirdParty\DearImGUI\imgui.cpp">
+      <Filter>ThirdParty\DearImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\DearImGUI\imgui_demo.cpp">
+      <Filter>ThirdParty\DearImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\DearImGUI\imgui_draw.cpp">
+      <Filter>ThirdParty\DearImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\DearImGUI\imgui_tables.cpp">
+      <Filter>ThirdParty\DearImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\DearImGUI\imgui_widgets.cpp">
+      <Filter>ThirdParty\DearImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\TinyObjLoader\tiny_obj_loader.cc">
+      <Filter>ThirdParty\TinyObjLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\vk-bootstrap\src\VkBootstrap.cpp">
+      <Filter>ThirdParty\vk-bootstrap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\shaders\old_default.frag">
@@ -447,5 +504,10 @@
     <None Include="..\data\shaders\old_coloured_triangle.vert">
       <Filter>data\shaders</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ThirdParty\readme.txt">
+      <Filter>ThirdParty</Filter>
+    </Text>
   </ItemGroup>
 </Project>

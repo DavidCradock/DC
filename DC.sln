@@ -15,22 +15,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Application", "Application\
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DavesCodeLib", "DavesCodeLib\DavesCodeLib.vcxproj", "{4E9F582C-A96C-4413-A937-35D32F76CDBC}"
-	ProjectSection(ProjectDependencies) = postProject
-		{92090FDF-0990-45CE-8F49-6C7BE64FE830} = {92090FDF-0990-45CE-8F49-6C7BE64FE830}
-		{E5066AFB-E2A4-466B-8A6B-7E79A439724D} = {E5066AFB-E2A4-466B-8A6B-7E79A439724D}
-		{E6456D39-FC64-4AA2-A890-6F4C8AB6F6F8} = {E6456D39-FC64-4AA2-A890-6F4C8AB6F6F8}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DearImGUI", "ThirdPartyLibs\DearImGUI\DearImGUI.vcxproj", "{92090FDF-0990-45CE-8F49-6C7BE64FE830}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThirdPartyLibs", "ThirdPartyLibs", "{4341D6B0-0E26-4200-AD57-AE1B79A8A5BB}"
-	ProjectSection(SolutionItems) = preProject
-		ThirdPartyLibs\readme.txt = ThirdPartyLibs\readme.txt
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TinyObjLoader", "ThirdPartyLibs\TinyObjLoader\TinyObjLoader.vcxproj", "{E6456D39-FC64-4AA2-A890-6F4C8AB6F6F8}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VK-bootstrap", "ThirdPartyLibs\vk-bootstrap\VK-bootstrap.vcxproj", "{E5066AFB-E2A4-466B-8A6B-7E79A439724D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,26 +30,9 @@ Global
 		{4E9F582C-A96C-4413-A937-35D32F76CDBC}.Debug|x64.Build.0 = Debug|x64
 		{4E9F582C-A96C-4413-A937-35D32F76CDBC}.Release|x64.ActiveCfg = Release|x64
 		{4E9F582C-A96C-4413-A937-35D32F76CDBC}.Release|x64.Build.0 = Release|x64
-		{92090FDF-0990-45CE-8F49-6C7BE64FE830}.Debug|x64.ActiveCfg = Debug|x64
-		{92090FDF-0990-45CE-8F49-6C7BE64FE830}.Debug|x64.Build.0 = Debug|x64
-		{92090FDF-0990-45CE-8F49-6C7BE64FE830}.Release|x64.ActiveCfg = Release|x64
-		{92090FDF-0990-45CE-8F49-6C7BE64FE830}.Release|x64.Build.0 = Release|x64
-		{E6456D39-FC64-4AA2-A890-6F4C8AB6F6F8}.Debug|x64.ActiveCfg = Debug|x64
-		{E6456D39-FC64-4AA2-A890-6F4C8AB6F6F8}.Debug|x64.Build.0 = Debug|x64
-		{E6456D39-FC64-4AA2-A890-6F4C8AB6F6F8}.Release|x64.ActiveCfg = Release|x64
-		{E6456D39-FC64-4AA2-A890-6F4C8AB6F6F8}.Release|x64.Build.0 = Release|x64
-		{E5066AFB-E2A4-466B-8A6B-7E79A439724D}.Debug|x64.ActiveCfg = Debug|x64
-		{E5066AFB-E2A4-466B-8A6B-7E79A439724D}.Debug|x64.Build.0 = Debug|x64
-		{E5066AFB-E2A4-466B-8A6B-7E79A439724D}.Release|x64.ActiveCfg = Release|x64
-		{E5066AFB-E2A4-466B-8A6B-7E79A439724D}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{92090FDF-0990-45CE-8F49-6C7BE64FE830} = {4341D6B0-0E26-4200-AD57-AE1B79A8A5BB}
-		{E6456D39-FC64-4AA2-A890-6F4C8AB6F6F8} = {4341D6B0-0E26-4200-AD57-AE1B79A8A5BB}
-		{E5066AFB-E2A4-466B-8A6B-7E79A439724D} = {4341D6B0-0E26-4200-AD57-AE1B79A8A5BB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {79766D19-E146-49E6-8CAE-DE42935A463C}
