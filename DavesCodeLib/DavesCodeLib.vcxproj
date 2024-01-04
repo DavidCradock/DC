@@ -147,6 +147,11 @@
     <ClInclude Include="Math\vector3f.h" />
     <ClInclude Include="Math\vector4f.h" />
     <ClInclude Include="Physics\physics.h" />
+    <ClInclude Include="Renderer\Helpers\vkDescriptors.h" />
+    <ClInclude Include="Renderer\Helpers\vkError.h" />
+    <ClInclude Include="Renderer\Helpers\vkInitializers.h" />
+    <ClInclude Include="Renderer\Helpers\vkPipelines.h" />
+    <ClInclude Include="Renderer\Helpers\vkTypes.h" />
     <ClInclude Include="Renderer\Managers\fragmentProgram.h" />
     <ClInclude Include="Renderer\Managers\fragmentProgramManager.h" />
     <ClInclude Include="Renderer\Managers\texture2D.h" />
@@ -156,7 +161,6 @@
     <ClInclude Include="Renderer\Managers\vertexProgram.h" />
     <ClInclude Include="Renderer\Managers\vertexProgramManager.h" />
     <ClInclude Include="Renderer\renderer.h" />
-    <ClInclude Include="Renderer\vkError.h" />
     <ClInclude Include="SpatialPartitioning\octTree.h" />
     <ClInclude Include="SpatialPartitioning\octTreeEntity.h" />
     <ClInclude Include="SpatialPartitioning\octTreeNode.h" />
@@ -217,6 +221,10 @@
     <ClCompile Include="Math\vector3f.cpp" />
     <ClCompile Include="Math\vector4f.cpp" />
     <ClCompile Include="Renderer\DELETEME_OLD_CODE_FOR_RENDERER.cpp" />
+    <ClCompile Include="Renderer\Helpers\vkDescriptors.cpp" />
+    <ClCompile Include="Renderer\Helpers\vkInitializers.cpp" />
+    <ClCompile Include="Renderer\Helpers\vkPipelines.cpp" />
+    <ClCompile Include="Renderer\Helpers\vkTypes.cpp" />
     <ClCompile Include="Renderer\Managers\fragmentProgram.cpp" />
     <ClCompile Include="Renderer\Managers\fragmentProgramManager.cpp" />
     <ClCompile Include="Renderer\Managers\texture2D.cpp" />

@@ -44,9 +44,6 @@
     <Filter Include="data\shaders">
       <UniqueIdentifier>{af703769-3f0e-495d-aa01-e79df75dc046}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Renderer\Managers">
-      <UniqueIdentifier>{47b88140-f6d1-4e73-aaad-32b5558c67e7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ThirdParty">
       <UniqueIdentifier>{07177314-7168-439a-bfae-dc93db51beec}</UniqueIdentifier>
     </Filter>
@@ -58,6 +55,21 @@
     </Filter>
     <Filter Include="ThirdParty\vk-bootstrap">
       <UniqueIdentifier>{54acad62-d77b-45cd-90da-cbde4da15184}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\VulkanMemoryAllocator">
+      <UniqueIdentifier>{f3f2c772-a085-4388-8bb4-5e7e82df0d82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\glm">
+      <UniqueIdentifier>{ae702bf6-4df3-4e42-bfee-2e0fef2dad22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\stb">
+      <UniqueIdentifier>{6ce85e11-2153-43ba-b058-0eea5bc95dc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Managers_UNUSED_FOR_NOW">
+      <UniqueIdentifier>{47b88140-f6d1-4e73-aaad-32b5558c67e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Helpers">
+      <UniqueIdentifier>{c0d33919-9564-47db-ba6e-2c82988b88ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -245,32 +257,29 @@
     <ClInclude Include="Engine\settings.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\vkError.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer\Managers\fragmentProgram.h">
-      <Filter>Renderer\Managers</Filter>
+      <Filter>Renderer\Managers_UNUSED_FOR_NOW</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\Managers\fragmentProgramManager.h">
-      <Filter>Renderer\Managers</Filter>
+      <Filter>Renderer\Managers_UNUSED_FOR_NOW</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\Managers\texture2D.h">
-      <Filter>Renderer\Managers</Filter>
+      <Filter>Renderer\Managers_UNUSED_FOR_NOW</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\Managers\texture2DManager.h">
-      <Filter>Renderer\Managers</Filter>
+      <Filter>Renderer\Managers_UNUSED_FOR_NOW</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\Managers\vertexBuffer.h">
-      <Filter>Renderer\Managers</Filter>
+      <Filter>Renderer\Managers_UNUSED_FOR_NOW</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\Managers\vertexBufferManager.h">
-      <Filter>Renderer\Managers</Filter>
+      <Filter>Renderer\Managers_UNUSED_FOR_NOW</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\Managers\vertexProgram.h">
-      <Filter>Renderer\Managers</Filter>
+      <Filter>Renderer\Managers_UNUSED_FOR_NOW</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\Managers\vertexProgramManager.h">
-      <Filter>Renderer\Managers</Filter>
+      <Filter>Renderer\Managers_UNUSED_FOR_NOW</Filter>
     </ClInclude>
     <ClInclude Include="ThirdParty\DearImGUI\imconfig.h">
       <Filter>ThirdParty\DearImGUI</Filter>
@@ -295,6 +304,21 @@
     </ClInclude>
     <ClInclude Include="ThirdParty\vk-bootstrap\src\VkBootstrap.h">
       <Filter>ThirdParty\vk-bootstrap</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Helpers\vkDescriptors.h">
+      <Filter>Renderer\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Helpers\vkError.h">
+      <Filter>Renderer\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Helpers\vkInitializers.h">
+      <Filter>Renderer\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Helpers\vkPipelines.h">
+      <Filter>Renderer\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Helpers\vkTypes.h">
+      <Filter>Renderer\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -443,28 +467,28 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\Managers\fragmentProgram.cpp">
-      <Filter>Renderer\Managers</Filter>
+      <Filter>Renderer\Managers_UNUSED_FOR_NOW</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\Managers\fragmentProgramManager.cpp">
-      <Filter>Renderer\Managers</Filter>
+      <Filter>Renderer\Managers_UNUSED_FOR_NOW</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\Managers\texture2D.cpp">
-      <Filter>Renderer\Managers</Filter>
+      <Filter>Renderer\Managers_UNUSED_FOR_NOW</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\Managers\texture2DManager.cpp">
-      <Filter>Renderer\Managers</Filter>
+      <Filter>Renderer\Managers_UNUSED_FOR_NOW</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\Managers\vertexBuffer.cpp">
-      <Filter>Renderer\Managers</Filter>
+      <Filter>Renderer\Managers_UNUSED_FOR_NOW</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\Managers\vertexBufferManager.cpp">
-      <Filter>Renderer\Managers</Filter>
+      <Filter>Renderer\Managers_UNUSED_FOR_NOW</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\Managers\vertexProgram.cpp">
-      <Filter>Renderer\Managers</Filter>
+      <Filter>Renderer\Managers_UNUSED_FOR_NOW</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\Managers\vertexProgramManager.cpp">
-      <Filter>Renderer\Managers</Filter>
+      <Filter>Renderer\Managers_UNUSED_FOR_NOW</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\DELETEME_OLD_CODE_FOR_RENDERER.cpp">
       <Filter>Renderer</Filter>
@@ -489,6 +513,18 @@
     </ClCompile>
     <ClCompile Include="ThirdParty\vk-bootstrap\src\VkBootstrap.cpp">
       <Filter>ThirdParty\vk-bootstrap</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Helpers\vkDescriptors.cpp">
+      <Filter>Renderer\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Helpers\vkInitializers.cpp">
+      <Filter>Renderer\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Helpers\vkPipelines.cpp">
+      <Filter>Renderer\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Helpers\vkTypes.cpp">
+      <Filter>Renderer\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
