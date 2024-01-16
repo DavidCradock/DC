@@ -1,6 +1,6 @@
 #include "renderer.h"
 #include "../Common/error.h"
-#include "Helpers/vkError.h"
+#include "vkError.h"
 #include <vulkan/vulkan.h>
 #include <map>
 

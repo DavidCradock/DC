@@ -1,6 +1,7 @@
 #include "settings.h"
 #include "../Common/error.h"
 #include "../Common/utilities.h"
+#include "../Common/logging.h"
 
 namespace DC
 {
@@ -12,11 +13,17 @@ namespace DC
 
 	bool Settings::load(const String& strFilename)
 	{
+		String logEntry(L"Settings::load(\"");
+		logEntry.append(strFilename);
+		logEntry.append(L"\") called.");
+		log.addEntryINFO(logEntry);
+
 		// Open file in text mode
 		std::ifstream file;
 		file.open(strFilename, std::ifstream::in);
 		if (!file.is_open())
 		{
+			log.addEntryWARN(L"Settings::load() unable to load settings file.");
 			_setAllToDefault();
 			return false;
 		}
@@ -31,23 +38,23 @@ namespace DC
 		file >> strWord;	space = file.get();	// Setting name, then space
 		//getline(file, strLine);
 		file >> backbufferScale;
-
+		
 		// windowFullscreen
 		file >> strWord;	space = file.get();	// Setting name, then space
 		file >> windowFullscreen;
-
+		
 		// windowVSync
 		file >> strWord;	space = file.get();	// Setting name, then space
 		file >> windowVSync;
-
+		
 		// windowWidthWindowed
 		file >> strWord;	space = file.get();	// Setting name, then space
 		file >> windowWidthWindowed;
-
+		
 		// windowHeightWindowed
 		file >> strWord;	space = file.get();	// Setting name, then space
 		file >> windowHeightWindowed;
-
+		
 		// UIVolume
 		file >> strWord;	space = file.get();	// Setting name, then space
 		file >> UIVolume;
@@ -55,7 +62,7 @@ namespace DC
 		// UITooltipDelaySeconds
 		file >> strWord;	space = file.get();	// Setting name, then space
 		file >> UITooltipDelaySeconds;
-
+		
 		// applicationName
 		file >> strWord;	space = file.get();	// Setting name, then space
 		getline(file, strLine);
@@ -65,18 +72,23 @@ namespace DC
 		// If an error occurred
 		if (file.fail())
 		{
+			log.addEntryWARN(L"Failure occurred whilst reading in settings from file.");
 			_setAllToDefault();
 			file.close();
 			save();
 			return false;
 		}
 
+		log.addEntryPASS(L"Settings loading complete.");
+		_logCurrentSettings();
 		file.close();
 		return true;
 	}
 
 	void Settings::save(const String& strFilename)
 	{
+		log.addEntryINFO(L"Settings::save() called.");
+
 		// Open file in text mode, deleting contents if existed before
 		std::ofstream file;
 		file.open(strFilename, std::ofstream::out | std::ofstream::trunc);
@@ -152,10 +164,14 @@ namespace DC
 			ErrorIfTrue(1, err);
 		}
 		file.close();
+
+		_logCurrentSettings();
 	}
 
 	void Settings::_setAllToDefault(void)
 	{
+		log.addEntryINFO(L"Settings::_setAllToDefault() called.");
+
 		backbufferScale = 1.0f;
 		windowFullscreen = false;
 		windowVSync = true;
@@ -164,6 +180,8 @@ namespace DC
 		UIVolume = 1.0f;
 		UITooltipDelaySeconds = 1.0f;
 		applicationName = L"DC Development Application.";
+
+		_logCurrentSettings();
 	}
 
 	void Settings::setBackbufferScale(float fBackbufferScale)
@@ -253,5 +271,42 @@ namespace DC
 	String Settings::getApplicationName(void)
 	{
 		return applicationName;
+	}
+
+	void Settings::_logCurrentSettings(void)
+	{
+		log.addEntryINFO(L"Listing settings...");
+		String logEntry;
+		logEntry = L"backbufferScale: ";
+		logEntry.appendFloat(backbufferScale);
+		log.addEntryINFO(logEntry);
+
+		logEntry = L"windowFullscreen: ";
+		logEntry.appendInt((int)windowFullscreen);
+		log.addEntryINFO(logEntry);
+
+		logEntry = L"windowVSync: ";
+		logEntry.appendInt((int)windowVSync);
+		log.addEntryINFO(logEntry);
+
+		logEntry = L"windowWidthWindowed: ";
+		logEntry.appendInt(windowWidthWindowed);
+		log.addEntryINFO(logEntry);
+
+		logEntry = L"windowHeightWindowed: ";
+		logEntry.appendInt(windowHeightWindowed);
+		log.addEntryINFO(logEntry);
+
+		logEntry = L"UIVolume: ";
+		logEntry.appendFloat(UIVolume);
+		log.addEntryINFO(logEntry);
+
+		logEntry = L"UITooltipDelaySeconds: ";
+		logEntry.appendFloat(UITooltipDelaySeconds);
+		log.addEntryINFO(logEntry);
+
+		logEntry = L"applicationName: ";
+		logEntry.append(applicationName);
+		log.addEntryINFO(logEntry);
 	}
 }

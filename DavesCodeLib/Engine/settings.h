@@ -90,6 +90,9 @@ namespace DC
 		// Sets all settings to default values
 		void _setAllToDefault(void);
 
+		// Logs current settings
+		void _logCurrentSettings(void);
+
 		// Multiplies the dimensions of the application's window and is used to set the scale of the
 		// backbuffer frame buffer which alot of things are rendered to.
 		float backbufferScale;

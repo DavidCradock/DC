@@ -18,8 +18,6 @@ Add 2D and UI stuff from X project codebase.
 
 # Notes...
 
-No logging because it's un-needed overhead and I usually implement logging, then never use it. The debugger is well suited for, surprise, debugging. The logs never help me.
-
 # Changes to coding style
 
 Do not use _m for members as it's bloody obvious that the member is a member.

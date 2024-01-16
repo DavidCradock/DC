@@ -68,9 +68,6 @@
     <Filter Include="Renderer\Managers_UNUSED_FOR_NOW">
       <UniqueIdentifier>{47b88140-f6d1-4e73-aaad-32b5558c67e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Renderer\Helpers">
-      <UniqueIdentifier>{c0d33919-9564-47db-ba6e-2c82988b88ea}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AI\AI.h">
@@ -305,20 +302,17 @@
     <ClInclude Include="ThirdParty\vk-bootstrap\src\VkBootstrap.h">
       <Filter>ThirdParty\vk-bootstrap</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\Helpers\vkDescriptors.h">
-      <Filter>Renderer\Helpers</Filter>
+    <ClInclude Include="Renderer\vkError.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\Helpers\vkError.h">
-      <Filter>Renderer\Helpers</Filter>
+    <ClInclude Include="Renderer\rendererPimp.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\Helpers\vkInitializers.h">
-      <Filter>Renderer\Helpers</Filter>
+    <ClInclude Include="Common\logging.h">
+      <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\Helpers\vkPipelines.h">
-      <Filter>Renderer\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Helpers\vkTypes.h">
-      <Filter>Renderer\Helpers</Filter>
+    <ClInclude Include="Common\multithreading.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -514,17 +508,11 @@
     <ClCompile Include="ThirdParty\vk-bootstrap\src\VkBootstrap.cpp">
       <Filter>ThirdParty\vk-bootstrap</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\Helpers\vkDescriptors.cpp">
-      <Filter>Renderer\Helpers</Filter>
+    <ClCompile Include="Common\logging.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\Helpers\vkInitializers.cpp">
-      <Filter>Renderer\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Helpers\vkPipelines.cpp">
-      <Filter>Renderer\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Helpers\vkTypes.cpp">
-      <Filter>Renderer\Helpers</Filter>
+    <ClCompile Include="Common\multithreading.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

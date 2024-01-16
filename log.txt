@@ -1,0 +1,25 @@
+log.txt
+Settings::load("settings.cfg") called.
+Settings loading complete.
+Listing settings...
+backbufferScale: 1.00
+windowFullscreen: 0
+windowVSync: 1
+windowWidthWindowed: 1920
+windowHeightWindowed: 1080
+UIVolume: 1.00
+UITooltipDelaySeconds: 1.00
+applicationName: DC Development Application.
+--------------------------------------------------------------------------------
+Engine::go() called.
+--------------------------------------------------------------------------------
+Renderer::init() called.
+MainApplication::onInit() called.
+--------------------------------------------------------------------------------
+Entering main loop.
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Engine::go() main application loop has ended.
+--------------------------------------------------------------------------------
+MainApplication::onShutdown() called.
+Renderer::shutdown() called.

@@ -1,5 +1,8 @@
 #include "engine.h"
 #include "../Common/error.h"
+#include "../Common/logging.h"
+
+
 
 namespace DC
 {
@@ -11,15 +14,20 @@ namespace DC
 
 	void Engine::go(ApplicationBase* pApplication)
 	{
+		log.addEntrySeperator();
+		log.addEntryINFO(L"Engine::go() called.");
+		log.addEntrySeperator();
+
 		ErrorIfTrue(application, L"Engine::go() failed. go already called as existing application pointer is not 0.");
 		application = pApplication;
-
-		settings.load();
 
 		renderer.init(settings);
 
 		application->onInit();
-
+		
+		log.addEntrySeperator();
+		log.addEntryINFO(L"Entering main loop.");
+		log.addEntrySeperator();
 		while (!shutdownCalled)
 		{
 			timer.update();
@@ -28,15 +36,18 @@ namespace DC
 				shutdownCalled = true;
 		}
 
+		log.addEntrySeperator();
+		log.addEntryINFO(L"Engine::go() main application loop has ended.");
+		log.addEntrySeperator();
+
 		application->onShutdown();
 
 		renderer.shutdown();
-
-
 	}
 
 	void Engine::shutdown(void)
 	{
+		log.addEntryINFO(L"Engine::shutdown() called.");
 		shutdownCalled = true;
 	}
 
