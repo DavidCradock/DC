@@ -24,6 +24,29 @@ namespace DC
 		file.close();
 	}
 	
+	void Logging::addEntryFAIL(const String& logEntryText, bool addNewlineToEnd)
+	{
+		String output = logEntryText;
+		if (addNewlineToEnd)
+			output.append(L"\n");
+		_addEntryToFile(output);
+
+		output.clear();
+		appendConsoleColourForDefault(output);
+		output.append(L"[");
+		appendConsoleColourForRed(output);
+		output.append(L"FAIL");
+		appendConsoleColourForDefault(output);
+		output.append(L"] ");
+		output.append(logEntryText);
+		if (addNewlineToEnd)
+			output.append(L"\n");
+		_addEntryToConsole(output);
+
+		if (functionPointer)
+			functionPointer(logEntryText, EntryStatus::FAIL);
+	}
+
 	void Logging::addEntryINFO(const String& logEntryText, bool addNewlineToEnd)
 	{
 		String output = logEntryText;
@@ -38,6 +61,9 @@ namespace DC
 		if (addNewlineToEnd)
 			output.append(L"\n");
 		_addEntryToConsole(output);
+
+		if (functionPointer)
+			functionPointer(logEntryText, EntryStatus::INFO);
 	}
 
 	void Logging::addEntryNOSTAT(const String& logEntryText, bool addNewlineToEnd)
@@ -54,6 +80,9 @@ namespace DC
 		if (addNewlineToEnd)
 			output.append(L"\n");
 		_addEntryToConsole(output);
+
+		if (functionPointer)
+			functionPointer(logEntryText, EntryStatus::NOSTAT);
 	}
 
 	void Logging::addEntryPASS(const String& logEntryText, bool addNewlineToEnd)
@@ -74,26 +103,9 @@ namespace DC
 		if (addNewlineToEnd)
 			output.append(L"\n");
 		_addEntryToConsole(output);
-	}
 
-	void Logging::addEntryFAIL(const String& logEntryText, bool addNewlineToEnd)
-	{
-		String output = logEntryText;
-		if (addNewlineToEnd)
-			output.append(L"\n");
-		_addEntryToFile(output);
-
-		output.clear();
-		appendConsoleColourForDefault(output);
-		output.append(L"[");
-		appendConsoleColourForRed(output);
-		output.append(L"FAIL");
-		appendConsoleColourForDefault(output);
-		output.append(L"] ");
-		output.append(logEntryText);
-		if (addNewlineToEnd)
-			output.append(L"\n");
-		_addEntryToConsole(output);
+		if (functionPointer)
+			functionPointer(logEntryText, EntryStatus::PASS);
 	}
 
 	void Logging::addEntryWARN(const String& logEntryText, bool addNewlineToEnd)
@@ -114,6 +126,9 @@ namespace DC
 		if (addNewlineToEnd)
 			output.append(L"\n");
 		_addEntryToConsole(output);
+
+		if (functionPointer)
+			functionPointer(logEntryText, EntryStatus::WARN);
 	}
 
 	void Logging::addEntrySeperator(void)
@@ -121,6 +136,9 @@ namespace DC
 		static const String output = L"--------------------------------------------------------------------------------\n";
 		_addEntryToFile(output);
 		_addEntryToConsole(output);
+
+		if (functionPointer)
+			functionPointer(output, EntryStatus::SEPERATOR);
 	}
 
 	void Logging::appendConsoleColourForRed(String& string)

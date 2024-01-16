@@ -1,6 +1,7 @@
 #pragma once
 #include "string.h"
 #include <list>
+#include <functional>	// For the function pointer using std::function
 
 namespace DC
 {
@@ -10,9 +11,24 @@ namespace DC
 	class Logging
 	{
 	public:
+		// Enum to specify the status type
+		enum EntryStatus
+		{
+			FAIL,		// [FAIL] entry
+			INFO,		// [INFO] entry
+			NOSTAT,		// [    ] entry
+			PASS,		// [PASS] entry
+			WARN,		// [WARN] entry
+			SEPERATOR	// Seperator text which 80 "-" characters
+		};
 		// Constructor to create the logging object
 		// logFilenameParam is the name of the file where the log entries are saved to.
 		Logging(const String& logFilenameParam = L"log.txt");
+
+		// Adds a new log entry.
+		// If the debug console is available, [FAIL] is output with the red colour before the log entry text
+		// If addNewlineToEnd is true, will add "\n" to the end of the string before outputting.
+		void addEntryFAIL(const String& logEntryText, bool addNewlineToEnd = true);
 
 		// Adds a new log entry.
 		// If the debug console is available, [INFO] is output with the default colour before the log entry text
@@ -30,11 +46,6 @@ namespace DC
 		void addEntryPASS(const String& logEntryText, bool addNewlineToEnd = true);
 
 		// Adds a new log entry.
-		// If the debug console is available, [FAIL] is output with the red colour before the log entry text
-		// If addNewlineToEnd is true, will add "\n" to the end of the string before outputting.
-		void addEntryFAIL(const String& logEntryText, bool addNewlineToEnd = true);
-
-		// Adds a new log entry.
 		// If the debug console is available, [WARN] is output with the yellow colour before the log entry text
 		// If addNewlineToEnd is true, will add "\n" to the end of the string before outputting.
 		void addEntryWARN(const String& logEntryText, bool addNewlineToEnd = true);
@@ -44,7 +55,7 @@ namespace DC
 		void addEntrySeperator(void);
 
 		// Appends the ANSI escape code to the given String which sets the console to render the characters afterwards, red.
-		void appendConsoleColourForRed(String &string);
+		void appendConsoleColourForRed(String& string);
 
 		// Appends the ANSI escape code to the given String which sets the console to render the characters afterwards, green.
 		void appendConsoleColourForGreen(String& string);
@@ -54,6 +65,20 @@ namespace DC
 
 		// Appends the ANSI escape code to the given String which sets the console to render the characters afterwards, the default colour of the console/terminal.
 		void appendConsoleColourForDefault(String& string);
+
+		// Sets a function to be called whenever an addEntry??? method is called.
+		// The function should have void as it's return and a const String& containing the entry's text
+		// Example usage...
+		// // Create a function to be called...
+		// void someTest(const DC::String& string, DC::Logging::EntryStatus status)
+		// {
+		//	// Do stuff with the parsed data
+		// }
+		// Then somewhere in our code call setFunctionToCallOnAddEntry(someTest);
+		void setFunctionToCallOnAddEntry(std::function<void(const String&, EntryStatus) > functionPointer)
+		{
+			this->functionPointer = functionPointer;
+		}
 	private:
 		// Holds the name given to the constructor which holds the log filename which the log entries are written to.
 		String logFilename;
@@ -63,6 +88,10 @@ namespace DC
 
 		// Adds the given text to the debug console
 		void _addEntryToConsole(const String& logEntryText);
+
+		// Function pointer which can be set with setFunctionToCallOnAddedEntry()
+		// It is called from within the various addEntrySTATUS() methods.
+		std::function<void(const String&, EntryStatus)> functionPointer;
 	};
 
 	// Globally accessible log object of Logging class used throughout all code.
