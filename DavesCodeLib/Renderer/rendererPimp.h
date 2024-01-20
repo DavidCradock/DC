@@ -1,4 +1,9 @@
 #pragma once
+#include <SDL.h>
+#include <SDL_vulkan.h>
+#include "../Common/error.h"
+#include "renderer.h"
+#include <vulkan/vulkan.h>
 
 namespace DC
 {
@@ -10,6 +15,8 @@ namespace DC
 		Pimpl();
 
 		// Called from Renderer::init()
+		// Calls all this class's private init???? methods.
+		// The order of their calling is important. Obviously, we can see the order within this method.
 		void init(const Settings& settings);
 
 		// Called from Renderer::update()
@@ -20,42 +27,36 @@ namespace DC
 		void shutdown(void);
 
 	private:
-		// Called from init to initialise Vulkan
-		void initVulkan(void);
-
-		// Called from init to initialise the application's window
+		// Called from init to initialise the application's window as well as the SDL library itself.
+		// Call order is important for all init???? methods, see init() for order.
 		void initWindow(const Settings& settings);
+
+		// The SDL, Vulkan enabled window handle.
+		SDL_Window* SDLWindow;
+
+		// Called from init to initialise the main Vulkan instance
+		// Call order is important for all init???? methods, see init() for order.
+		void initVulkanInstance(const Settings& settings);
+
+		// The main Vulkan instance
+		VkInstance instance;
+
+		// Called from init to initialise the Vulkan validation layer callback if settings is set to use them.
+		void initVulkanValidationLayer(const Settings& settings);
+
+		// Vulkan debug messenger handle used to deal with the debug callback
+		VkDebugUtilsMessengerEXT debugMessenger;
+
+		// Set in initVulkanValidationLayer so that shutdown() can determine whether to cleanup the debugMessenger or not.
+		bool debugMessengerNeedsShutdown;
+
+		// Debug callback for validation layers
+		static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
+			VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+			VkDebugUtilsMessageTypeFlagsEXT messageType,
+			const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
+			void* pUserData);
 	};
 
-	Renderer::Pimpl::Pimpl()
-	{
-	}
 
-	void Renderer::Pimpl::init(const Settings& settings)
-	{
-		initWindow(settings);
-		initVulkan();
-
-	}
-
-	void Renderer::Pimpl::initWindow(const Settings& settings)
-	{
-
-	}
-
-	void Renderer::Pimpl::initVulkan(void)
-	{
-
-	}
-
-	bool Renderer::Pimpl::update(void)
-	{
-		// Return false if window has been asked to close.
-		return false;
-	}
-
-	void Renderer::Pimpl::shutdown(void)
-	{
-
-	}
 }

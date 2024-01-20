@@ -514,6 +514,9 @@
     <ClCompile Include="Common\multithreading.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="Renderer\rendererPimp.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\shaders\old_default.frag">

@@ -10,4 +10,39 @@ windowHeightWindowed: 1080
 UIVolume: 1.00
 UITooltipDelaySeconds: 1.00
 applicationName: DC Development Application.
+useVulkanValidationLayers: 1
 --------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Engine::go() called.
+--------------------------------------------------------------------------------
+Renderer::init() called.
+--------------------------------------------------------------------------------
+initVulkanInstance() called.
+Listing supported extensions (13)...
+VK_KHR_device_group_creation Spec Version: 1
+VK_KHR_external_fence_capabilities Spec Version: 1
+VK_KHR_external_memory_capabilities Spec Version: 1
+VK_KHR_external_semaphore_capabilities Spec Version: 1
+VK_KHR_get_physical_device_properties2 Spec Version: 2
+VK_KHR_get_surface_capabilities2 Spec Version: 1
+VK_KHR_surface Spec Version: 25
+VK_KHR_win32_surface Spec Version: 6
+VK_EXT_debug_report Spec Version: 10
+VK_EXT_debug_utils Spec Version: 2
+VK_EXT_swapchain_colorspace Spec Version: 4
+VK_KHR_portability_enumeration Spec Version: 1
+VK_LUNARG_direct_driver_loading Spec Version: 1
+Listing required extensions (3)...
+Extension #0 VK_KHR_surface
+Extension #1 VK_KHR_win32_surface
+Extension #2 VK_EXT_debug_utils
+Vulkan instance created.
+MainApplication::onInit() called.
+--------------------------------------------------------------------------------
+Entering main loop.
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Engine::go() main application loop has ended.
+--------------------------------------------------------------------------------
+MainApplication::onShutdown() called.
+Renderer::shutdown() called.

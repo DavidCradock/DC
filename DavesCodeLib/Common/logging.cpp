@@ -75,7 +75,7 @@ namespace DC
 
 		output.clear();
 		appendConsoleColourForDefault(output);
-		output.append(L"[    ] ");
+		output.append(L"       ");
 		output.append(logEntryText);
 		if (addNewlineToEnd)
 			output.append(L"\n");

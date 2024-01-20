@@ -84,7 +84,13 @@ namespace DC
 		void setApplicationName(const String& applicationNamePARAM);
 
 		// Returns the application name used when creating the application window
-		String getApplicationName(void);
+		String getApplicationName(void) const;
+
+		// Sets whether Vulkan should use the validation layers (Only available if the VulkanSDK is installed)
+		void setVulkanValidationLayersUsage(bool useValidationLayers);
+
+		// Returns whether Vulkan should use the validation layers (Only available if the VulkanSDK is installed)
+		bool getVulkanValidationLayersUsage(void) const;
 	private:
 
 		// Sets all settings to default values
@@ -119,5 +125,8 @@ namespace DC
 
 		// The application name used when creating the application window
 		String applicationName;
+
+		// Should Vulkan use the validation layers (Only available when the VulkanSDK is installed)
+		bool useVulkanValidationLayers;
 	};
 }

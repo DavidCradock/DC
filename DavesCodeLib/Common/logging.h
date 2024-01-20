@@ -11,16 +11,17 @@ namespace DC
 	class Logging
 	{
 	public:
-		// Enum to specify the status type
+		// Enum to specify the status type of an entry
 		enum EntryStatus
 		{
 			FAIL,		// [FAIL] entry
 			INFO,		// [INFO] entry
-			NOSTAT,		// [    ] entry
+			NOSTAT,		//        entry
 			PASS,		// [PASS] entry
 			WARN,		// [WARN] entry
 			SEPERATOR	// Seperator text which 80 "-" characters
 		};
+
 		// Constructor to create the logging object
 		// logFilenameParam is the name of the file where the log entries are saved to.
 		Logging(const String& logFilenameParam = L"log.txt");
@@ -36,7 +37,7 @@ namespace DC
 		void addEntryINFO(const String& logEntryText, bool addNewlineToEnd = true);
 
 		// Adds a new log entry.
-		// If the debug console is available, [    ] is output with the default colour before the log entry text
+		// If the debug console is available, "    " is output with the default colour before the log entry text
 		// If addNewlineToEnd is true, will add "\n" to the end of the string before outputting.
 		void addEntryNOSTAT(const String& logEntryText, bool addNewlineToEnd = true);
 
@@ -67,7 +68,7 @@ namespace DC
 		void appendConsoleColourForDefault(String& string);
 
 		// Sets a function to be called whenever an addEntry??? method is called.
-		// The function should have void as it's return and a const String& containing the entry's text
+		// The function should have void as it's return and a const String& containing the entry's text and a Logging::EntryStatus enumeration which specifies the type of entry added.
 		// Example usage...
 		// // Create a function to be called...
 		// void someTest(const DC::String& string, DC::Logging::EntryStatus status)
@@ -75,6 +76,9 @@ namespace DC
 		//	// Do stuff with the parsed data
 		// }
 		// Then somewhere in our code call setFunctionToCallOnAddEntry(someTest);
+		// I have decided to add this, as I wish to have the user interface's console be able to recieve these debug entrys, but I do not wish to
+		// modify the user interface's code directly within this class, instead, the function pointer will be set elsewhere within the code and dealt with there instead.
+		// This prevents this class which is used everywhere from being coupled to the user interface which will make things easier if I later on, decide to remove/re-write the user interface code.
 		void setFunctionToCallOnAddEntry(std::function<void(const String&, EntryStatus) > functionPointer)
 		{
 			this->functionPointer = functionPointer;

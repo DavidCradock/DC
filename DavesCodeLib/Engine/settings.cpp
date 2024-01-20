@@ -69,6 +69,10 @@ namespace DC
 		applicationName.clear();
 		applicationName.appendString(strLine);
 
+		// useVulkanValidationLayers
+		file >> strWord;	space = file.get();	// Setting name, then space
+		file >> useVulkanValidationLayers;
+
 		// If an error occurred
 		if (file.fail())
 		{
@@ -81,6 +85,7 @@ namespace DC
 
 		log.addEntryPASS(L"Settings loading complete.");
 		_logCurrentSettings();
+		log.addEntrySeperator();
 		file.close();
 		return true;
 	}
@@ -155,6 +160,12 @@ namespace DC
 		str += L"\n";
 		file << str.c_strn();
 
+		// useVulkanValidationLayers
+		str = L"useVulkanValidationLayers: ";
+		str.appendInt(int(useVulkanValidationLayers));
+		str += L"\n";
+		file << str.c_strn();
+
 		// Make sure there were no errors
 		if (file.fail())
 		{
@@ -180,6 +191,7 @@ namespace DC
 		UIVolume = 1.0f;
 		UITooltipDelaySeconds = 1.0f;
 		applicationName = L"DC Development Application.";
+		useVulkanValidationLayers = true;
 
 		_logCurrentSettings();
 	}
@@ -268,9 +280,19 @@ namespace DC
 		applicationName = applicationNamePARAM;
 	}
 
-	String Settings::getApplicationName(void)
+	String Settings::getApplicationName(void) const
 	{
 		return applicationName;
+	}
+
+	void Settings::setVulkanValidationLayersUsage(bool useValidationLayers)
+	{
+		useVulkanValidationLayers = useValidationLayers;
+	}
+
+	bool Settings::getVulkanValidationLayersUsage(void) const
+	{
+		return useVulkanValidationLayers;
 	}
 
 	void Settings::_logCurrentSettings(void)
@@ -279,34 +301,38 @@ namespace DC
 		String logEntry;
 		logEntry = L"backbufferScale: ";
 		logEntry.appendFloat(backbufferScale);
-		log.addEntryINFO(logEntry);
+		log.addEntryNOSTAT(logEntry);
 
 		logEntry = L"windowFullscreen: ";
 		logEntry.appendInt((int)windowFullscreen);
-		log.addEntryINFO(logEntry);
+		log.addEntryNOSTAT(logEntry);
 
 		logEntry = L"windowVSync: ";
 		logEntry.appendInt((int)windowVSync);
-		log.addEntryINFO(logEntry);
+		log.addEntryNOSTAT(logEntry);
 
 		logEntry = L"windowWidthWindowed: ";
 		logEntry.appendInt(windowWidthWindowed);
-		log.addEntryINFO(logEntry);
+		log.addEntryNOSTAT(logEntry);
 
 		logEntry = L"windowHeightWindowed: ";
 		logEntry.appendInt(windowHeightWindowed);
-		log.addEntryINFO(logEntry);
+		log.addEntryNOSTAT(logEntry);
 
 		logEntry = L"UIVolume: ";
 		logEntry.appendFloat(UIVolume);
-		log.addEntryINFO(logEntry);
+		log.addEntryNOSTAT(logEntry);
 
 		logEntry = L"UITooltipDelaySeconds: ";
 		logEntry.appendFloat(UITooltipDelaySeconds);
-		log.addEntryINFO(logEntry);
+		log.addEntryNOSTAT(logEntry);
 
 		logEntry = L"applicationName: ";
 		logEntry.append(applicationName);
-		log.addEntryINFO(logEntry);
+		log.addEntryNOSTAT(logEntry);
+
+		logEntry = L"useVulkanValidationLayers: ";
+		logEntry.appendInt((int)useVulkanValidationLayers);
+		log.addEntryNOSTAT(logEntry);
 	}
 }

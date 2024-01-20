@@ -7,6 +7,9 @@ namespace DC
 	// A graphics renderer used for creating a window, hooking
 	// up the Vulkan graphics API to it and performing rendering operations in that window.
 	// The application engine has an object of this class. See Engine/engine.h
+	// This uses SDL. It initialises all of SDL, creates a Vulkan/SDL window and sets up Vulkan with it's debugging stuff, all ready for use.
+	// In Settings, if useVulkanValidationLayers is true, Vulkan's validation layers and debugging is attempted to be setup, regardless of whether
+	// the Vulkan SDK is installed. If it isn't, an error will occur. Either set the settings to false, or install the Vulkan SDK.
 	class Renderer
 	{
 	public:
