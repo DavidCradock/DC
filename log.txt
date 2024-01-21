@@ -37,6 +37,25 @@ Extension #0 VK_KHR_surface
 Extension #1 VK_KHR_win32_surface
 Extension #2 VK_EXT_debug_utils
 Vulkan instance created.
+initCreateWindowSurface() called...
+Surface successfully created by SDL.
+initSelectPhysicalDevice() called...
+Number of GPU devices found: 1
+Physical device properties...
+Device number: 1 of 1
+apiVersion: 4206856
+deviceName: AMD Radeon RX 6800 XT
+deviceType: DISCRETE GPU
+driverVersion: 8388891
+maxImageDimensions2D: 16384
+Physical device features...
+geometryShader: 1
+tessellationShader: 1
+initSelectQueueFamilyIndicies() called.
+Number of queue families found: 5
+Queue family indicies found for graphics(0) and presentation(0)
+Renderer::initCreateLogicalDevice() called...
+Logical device has been created and the graphics and presentation queues have been obtained.
 MainApplication::onInit() called.
 --------------------------------------------------------------------------------
 Entering main loop.

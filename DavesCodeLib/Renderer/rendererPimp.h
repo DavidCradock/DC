@@ -42,6 +42,7 @@ namespace DC
 		VkInstance instance;
 
 		// Called from init to initialise the Vulkan validation layer callback if settings is set to use them.
+		// Call order is important for all init???? methods, see init() for order.
 		void initVulkanValidationLayer(const Settings& settings);
 
 		// Vulkan debug messenger handle used to deal with the debug callback
@@ -56,6 +57,46 @@ namespace DC
 			VkDebugUtilsMessageTypeFlagsEXT messageType,
 			const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
 			void* pUserData);
+
+		// Called from init to create the window surface using SDL.
+		// This has to be created right after the Vulkan instance as it can affect physical device selection.
+		// Call order is important for all init???? methods, see init() for order.
+		void initCreateWindowSurface(void);
+
+		// The window's surface object, created by SDL.
+		VkSurfaceKHR surface;
+
+		// Called from init to select the correct physical device.
+		// We select the device which is discreet and supports a minimum of 16k image sizes
+		// Call order is important for all init???? methods, see init() for order.
+		void initSelectPhysicalDevice(void);
+
+		// The Vulkan GPU physical device we select to use from initSelectPhysicalDevice()
+		// This doesn't need to be destroyed as it is when the vkInstance is.
+		VkPhysicalDevice physicalDevice;
+
+		// Called from init to select the two queue family indicies which support graphics and presentation
+		// Call order is important for all init???? methods, see init() for order.
+		void initSelectQueueFamilyIndicies(void);
+
+		// The queue family index which supports graphics
+		uint32_t queueFamilyIndexGraphics;
+
+		// The queue familt index which supports presentation to the window surface
+		uint32_t queueFamilyIndexPresent;
+		
+		// Called from init to create the two queues and the logical Vulkan device
+		// Call order is important for all init???? methods, see init() for order.
+		void initCreateLogicalDevice(const Settings& settings);
+
+		// The logical Vulkan device created from the physical GPU device.
+		VkDevice device;
+
+		// The graphics queue
+		VkQueue graphicsQueue;
+
+		// The presentation queue
+		VkQueue presentQueue;
 	};
 
 
