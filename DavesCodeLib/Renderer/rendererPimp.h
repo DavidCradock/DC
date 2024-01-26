@@ -27,6 +27,11 @@ namespace DC
 		void shutdown(void);
 
 	private:
+
+		/****************************************************************************
+		Core Vulkan objects and methods below here
+		****************************************************************************/
+
 		// Called from init to initialise the application's window as well as the SDL library itself.
 		// Call order is important for all init???? methods, see init() for order.
 		void initWindow(const Settings& settings);
@@ -97,6 +102,88 @@ namespace DC
 
 		// The presentation queue
 		VkQueue presentQueue;
+
+		/****************************************************************************
+		Screen related Vulkan objects and methods below here
+		****************************************************************************/
+
+		// Called from init to create the swap chain
+		// Call order is important for all init???? methods, see init() for order.
+		void initCreateSwapchain(void);
+
+		// Holds the surface capabilities 
+		VkSurfaceCapabilitiesKHR surfaceCapabilities;
+
+		// Holds the surface format we'll be using
+		VkSurfaceFormatKHR surfaceFormat;
+
+		// Holds the dimensions of the swapchain
+		VkExtent2D swapchainSize;
+
+		// The swapchain
+		VkSwapchainKHR swapchain;
+
+		// The images within the swapchain
+		std::vector<VkImage> swapchainImages;
+
+		// The number of images within the swapchain
+		uint32_t swapchainImageCount;
+
+		// Called from init to create the image views for the swapchain
+		// Call order is important for all init???? methods, see init() for order.
+		void initCreateImageViews(void);
+
+		// The image views used for the swapchain
+		std::vector<VkImageView> swapchainImageViews;
+		
+		// Called from init to setup the depth stencil
+		// Call order is important for all init???? methods, see init() for order.
+		void initSetupDepthStencil(void);
+
+		// Holds format of the depth stencil image
+		VkFormat depthFormat;
+
+		VkImage depthImage;
+		VkDeviceMemory depthImageMemory;
+		VkImageView depthImageView;
+		
+		// Called from init to setup the render pass
+		// Call order is important for all init???? methods, see init() for order.
+		void initCreateRenderPass(void);
+
+		// The render pass
+		VkRenderPass renderPass;
+
+		// Called from init to setup the framebuffers
+		// Call order is important for all init???? methods, see init() for order.
+		void initCreateFramebuffers(void);
+
+		std::vector<VkFramebuffer> swapchainFramebuffers;
+		
+		/****************************************************************************
+		Command related Vulkan objects and methods below here
+		****************************************************************************/
+
+		// Called from init to initialise the command pool
+		// Call order is important for all init???? methods, see init() for order.
+		void initCreateCommandPool(void);
+		VkCommandPool commandPool;
+
+		// Called from init to create the command buffers
+		// Call order is important for all init???? methods, see init() for order.
+		void initCreateCommandBuffers(void);
+		std::vector<VkCommandBuffer> commandBuffers;
+
+		// Called from init to create semaphores
+		// Call order is important for all init???? methods, see init() for order.
+		void initCreateSemaphores(void);
+		VkSemaphore imageAvailableSemaphore;
+		VkSemaphore renderingFinishedSemaphore;
+
+		// Called from init to create fences
+		// Call order is important for all init???? methods, see init() for order.
+		void initCreateFences(void);
+		std::vector<VkFence> fences;
 	};
 
 

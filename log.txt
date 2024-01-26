@@ -43,10 +43,10 @@ initSelectPhysicalDevice() called...
 Number of GPU devices found: 1
 Physical device properties...
 Device number: 1 of 1
-apiVersion: 4206856
+apiVersion: 4206862
 deviceName: AMD Radeon RX 6800 XT
 deviceType: DISCRETE GPU
-driverVersion: 8388891
+driverVersion: 8388902
 maxImageDimensions2D: 16384
 Physical device features...
 geometryShader: 1
@@ -56,6 +56,38 @@ Number of queue families found: 5
 Queue family indicies found for graphics(0) and presentation(0)
 Renderer::initCreateLogicalDevice() called...
 Logical device has been created and the graphics and presentation queues have been obtained.
+Renderer::Pimpl::initCreateSwapchain() called.
+Listing surface capabilities...
+currentExtent: Width: 1920 Height: 1080
+Swapchain dimensions: 1920x1080
+Minimum number of images the physical device supports for a swapchain created for the surface: 2
+Maximum number of images the physical device supports for a swapchain created for the surface: 16
+Number of chosen images to get: 3
+Attempting to create the swapchain...
+Checking whether both queue family indicies for presentation and graphics are equal or not...
+Both queue family indicies are the same. Setting sharing mode to exclusive. (Optimal performance)
+Calling vkCreateSwapchain()...
+Swapchain successfully created.
+Obtaining number of image handles within the swapchain...
+Number of images retrieved.
+Obtaining image handles within the swapchain...
+Image handles successfully retrieved.
+initCreateImageViews() called.
+All 2 image views have been created.
+Renderer::Pimpl::initSetupDepthStencil() called.
+Depth format for depth stencil found.
+Renderer::Pimpl::initCreateRenderPass() called...
+Successfully created render pass.
+Renderer::Pimpl::initCreateFramebuffers() called.
+Creation of framebuffers successfull.
+Renderer::Pimpl::initCreateCommandPool() called.
+Command pool created.
+Renderer::Pimpl::initCreateCommandBuffers() called.
+Command buffers created.
+Renderer::Pimpl::initCreateSemaphores() called.
+Both semaphores created. (Rendering finished and image available)
+Renderer::Pimpl::initCreateFences() called.
+Fences successfully created.
 MainApplication::onInit() called.
 --------------------------------------------------------------------------------
 Entering main loop.
@@ -65,3 +97,19 @@ Engine::go() main application loop has ended.
 --------------------------------------------------------------------------------
 MainApplication::onShutdown() called.
 Renderer::shutdown() called.
+Renderer::Pimple::shutdown() called.
+Destroying fences.
+Destroying "image available" semaphore.
+Destroying "rendering finished" semaphore.
+Destroying command pool.
+Destroying framebuffers.
+Destroying render pass.
+Destroying objects for depth stencil.
+Destroying swapchain image views.
+Destroying swapchain.
+Destroying device.
+Destroying the debug utilities messenger.
+Destroying surface.
+Destroying instance.
+Destroying window.
+Calling SDL_Quit().
