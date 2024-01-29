@@ -3,10 +3,10 @@ Settings::load("settings.cfg") called.
 Settings loading complete.
 Listing settings...
 backbufferScale: 1.00
-windowFullscreen: 0
+windowFullscreen: 1
 windowVSync: 1
-windowWidthWindowed: 1920
-windowHeightWindowed: 1080
+windowWidthWindowed: 2048
+windowHeightWindowed: 1152
 UIVolume: 1.00
 UITooltipDelaySeconds: 1.00
 applicationName: DC Development Application.
@@ -58,8 +58,8 @@ Renderer::initCreateLogicalDevice() called...
 Logical device has been created and the graphics and presentation queues have been obtained.
 Renderer::Pimpl::initCreateSwapchain() called.
 Listing surface capabilities...
-currentExtent: Width: 1920 Height: 1080
-Swapchain dimensions: 1920x1080
+currentExtent: Width: 2560 Height: 1440
+Swapchain dimensions: 2560x1440
 Minimum number of images the physical device supports for a swapchain created for the surface: 2
 Maximum number of images the physical device supports for a swapchain created for the surface: 16
 Number of chosen images to get: 3

@@ -17,7 +17,7 @@ namespace DC
 		~Renderer();
 
 		// Creates a window and hooks up the Vulkan graphics API to it, ready for rendering
-		void init(const Settings &settings);
+		void init(Settings &settings);
 
 		// Closes the window and cleans everything up
 		void shutdown(void);

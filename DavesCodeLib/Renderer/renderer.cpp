@@ -21,7 +21,7 @@ namespace DC
 		pimp = 0;
 	}
 
-	void Renderer::init(const Settings& settings)
+	void Renderer::init(Settings& settings)
 	{
 		log.addEntryINFO(L"Renderer::init() called.");
 		pimp->init(settings);

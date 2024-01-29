@@ -17,7 +17,7 @@ namespace DC
 		// Called from Renderer::init()
 		// Calls all this class's private init???? methods.
 		// The order of their calling is important. Obviously, we can see the order within this method.
-		void init(const Settings& settings);
+		void init(Settings& settings);
 
 		// Called from Renderer::update()
 		// Returns false if the window/application has been asked to close/shutdown
@@ -25,8 +25,6 @@ namespace DC
 
 		// Called from Renderer::shutdown()
 		void shutdown(void);
-
-	private:
 
 		/****************************************************************************
 		Core Vulkan objects and methods below here
@@ -184,6 +182,36 @@ namespace DC
 		// Call order is important for all init???? methods, see init() for order.
 		void initCreateFences(void);
 		std::vector<VkFence> fences;
+
+
+		/****************************************************************************
+		Drawing runtime related Vulkan objects and methods below here
+		****************************************************************************/
+		void AcquireNextImage(void);
+
+		void ResetCommandBuffer(void);
+		void BeginCommandBuffer(void);
+		void EndCommandBuffer(void);
+		void FreeCommandBuffers(void);
+
+		void BeginRenderPass(VkClearColorValue clear_color, VkClearDepthStencilValue clear_depth_stencil);
+		void EndRenderPass(void);
+
+		void QueueSubmit(void);
+		void QueuePresent(void);
+
+		void SetViewport(int width, int height);
+		void SetScissor(int width, int height);
+
+		uint32_t frameIndex;
+		VkCommandBuffer commandBuffer;
+		VkImage image;
+
+		/****************************************************************************
+		Window resizing related methods below here
+		****************************************************************************/
+
+		void resizeSwapchain(void);
 	};
 
 

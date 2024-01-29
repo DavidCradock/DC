@@ -9,10 +9,22 @@ namespace DC
 	{
 	}
 
-	void Renderer::Pimpl::init(const Settings& settings)
+	void Renderer::Pimpl::init(Settings& settings)
 	{
 		// Initialise SDL
 		SDL_Init(SDL_INIT_EVERYTHING);
+
+		// Get desktop dimensions and make sure settings for windowed mode fit
+		if (!settings.getWindowFullscreen())
+		{
+			SDL_DisplayMode currentDisplayMode;
+			if (0 != SDL_GetCurrentDisplayMode(0, &currentDisplayMode))
+				ErrorIfTrue(1, L"SDL is unable to get current desktop display mode.");
+			if (settings.getWindowWidthWhenWindowed() > currentDisplayMode.w)
+				settings.setWindowWidthWhenWindowed(int(float(currentDisplayMode.w) * 0.8f));
+			if (settings.getWindowHeightWhenWindowed() > currentDisplayMode.h)
+				settings.setWindowHeightWhenWindowed(int(float(currentDisplayMode.h) * 0.8f));
+		}
 
 		initWindow(settings);
 		initVulkanInstance(settings);
@@ -102,16 +114,34 @@ namespace DC
 
 	void Renderer::Pimpl::initWindow(const Settings& settings)
 	{
-		SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_VULKAN);
+		if (settings.getWindowFullscreen())
+		{
+			SDL_DisplayMode mode;
+			SDL_GetCurrentDisplayMode(0, &mode);
 
-		SDLWindow = SDL_CreateWindow(
-			"Dave's Code Library Application.",
-			SDL_WINDOWPOS_CENTERED,
-			SDL_WINDOWPOS_CENTERED,
-			settings.getWindowWidthWhenWindowed(),
-			settings.getWindowHeightWhenWindowed(),
-			window_flags
-		);
+			SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_VULKAN | SDL_WINDOW_FULLSCREEN);
+			SDLWindow = SDL_CreateWindow(
+				"Dave's Code Library Application.",
+				SDL_WINDOWPOS_CENTERED,
+				SDL_WINDOWPOS_CENTERED,
+				mode.w,
+				mode.h,
+				window_flags
+			);
+		}
+		else
+		{
+			SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_VULKAN | SDL_WINDOW_RESIZABLE);
+			SDLWindow = SDL_CreateWindow(
+				"Dave's Code Library Application.",
+				SDL_WINDOWPOS_CENTERED,
+				SDL_WINDOWPOS_CENTERED,
+				settings.getWindowWidthWhenWindowed(),
+				settings.getWindowHeightWhenWindowed(),
+				window_flags
+			);
+		}
+		
 		if (!SDLWindow)
 		{
 			String error = L"SDL error occurred whilst attempting to create application window. The SDL error message is...\n";
@@ -245,6 +275,18 @@ namespace DC
 				return false;
 			}
 		}
+
+		AcquireNextImage();
+		ResetCommandBuffer();
+		BeginCommandBuffer();
+		VkClearColorValue clear_color = { 0.1f, 0.1f, 0.1f, 1.0f };
+		VkClearDepthStencilValue clear_depth_stencil = { 1.0f, 0 };
+		BeginRenderPass(clear_color, clear_depth_stencil);
+
+		EndRenderPass();
+		EndCommandBuffer();
+		QueueSubmit();
+		QueuePresent();
 
 		// Return false if window has been asked to close.
 		return true;
@@ -964,4 +1006,122 @@ namespace DC
 		log.addEntryPASS(L"Fences successfully created.");
 	}
 
+	void Renderer::Pimpl::AcquireNextImage(void)
+	{
+		vkAcquireNextImageKHR(device,
+			swapchain,
+			UINT64_MAX,
+			imageAvailableSemaphore,
+			VK_NULL_HANDLE,
+			&frameIndex);
+
+		vkWaitForFences(device, 1, &fences[frameIndex], VK_FALSE, UINT64_MAX);
+		vkResetFences(device, 1, &fences[frameIndex]);
+
+		commandBuffer = commandBuffers[frameIndex];
+		image = swapchainImages[frameIndex];
+	}
+
+	void Renderer::Pimpl::ResetCommandBuffer(void)
+	{
+		vkResetCommandBuffer(commandBuffer, 0);
+	}
+
+	void Renderer::Pimpl::BeginCommandBuffer(void)
+	{
+		VkCommandBufferBeginInfo beginInfo = {};
+		beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+		beginInfo.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
+		vkBeginCommandBuffer(commandBuffer, &beginInfo);
+	}
+
+	void Renderer::Pimpl::EndCommandBuffer(void)
+	{
+		vkEndCommandBuffer(commandBuffer);
+	}
+
+	void Renderer::Pimpl::FreeCommandBuffers(void)
+	{
+		vkFreeCommandBuffers(device, commandPool, 1, &commandBuffer);
+	}
+
+	void Renderer::Pimpl::BeginRenderPass(VkClearColorValue clear_color, VkClearDepthStencilValue clear_depth_stencil)
+	{
+		VkRenderPassBeginInfo render_pass_info = {};
+		render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+		render_pass_info.renderPass = renderPass; render_pass_info.framebuffer = swapchainFramebuffers[frameIndex];
+		render_pass_info.renderArea.offset = { 0, 0 };
+		render_pass_info.renderArea.extent = swapchainSize;
+		render_pass_info.clearValueCount = 1;
+
+		std::vector<VkClearValue> clearValues(2);
+		clearValues[0].color = clear_color;
+		clearValues[1].depthStencil = clear_depth_stencil;
+
+		render_pass_info.clearValueCount = static_cast<uint32_t>(clearValues.size());
+		render_pass_info.pClearValues = clearValues.data();
+
+		vkCmdBeginRenderPass(commandBuffer, &render_pass_info, VK_SUBPASS_CONTENTS_INLINE);
+	}
+
+	void Renderer::Pimpl::EndRenderPass(void)
+	{
+		vkCmdEndRenderPass(commandBuffer);
+	}
+
+	void Renderer::Pimpl::QueueSubmit(void)
+	{
+		VkPipelineStageFlags waitDestStageMask = VK_PIPELINE_STAGE_TRANSFER_BIT;
+		VkSubmitInfo submitInfo = {};
+		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+		submitInfo.waitSemaphoreCount = 1;
+		submitInfo.pWaitSemaphores = &imageAvailableSemaphore;
+		submitInfo.pWaitDstStageMask = &waitDestStageMask;
+		submitInfo.commandBufferCount = 1;
+		submitInfo.pCommandBuffers = &commandBuffer;
+		submitInfo.signalSemaphoreCount = 1;
+		submitInfo.pSignalSemaphores = &renderingFinishedSemaphore;
+		vkQueueSubmit(graphicsQueue, 1, &submitInfo, fences[frameIndex]);
+	}
+
+	void Renderer::Pimpl::QueuePresent(void)
+	{
+		VkPresentInfoKHR presentInfo = {};
+		presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+		presentInfo.waitSemaphoreCount = 1;
+		presentInfo.pWaitSemaphores = &renderingFinishedSemaphore;
+		presentInfo.swapchainCount = 1;
+		presentInfo.pSwapchains = &swapchain;
+		presentInfo.pImageIndices = &frameIndex;
+		vkQueuePresentKHR(presentQueue, &presentInfo);
+
+		vkQueueWaitIdle(presentQueue);
+	}
+
+	void Renderer::Pimpl::SetViewport(int width, int height)
+	{
+		VkViewport viewport;
+		viewport.width = (float)width / 2;
+		viewport.height = (float)height;
+		viewport.minDepth = (float)0.0f;
+		viewport.maxDepth = (float)1.0f;
+		viewport.x = 0;
+		viewport.y = 0;
+		vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
+	}
+
+	void Renderer::Pimpl::SetScissor(int width, int height)
+	{
+		VkRect2D scissor;
+		scissor.extent.width = width / 2;
+		scissor.extent.height = height;
+		scissor.offset.x = 0;
+		scissor.offset.y = 0;
+		vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
+	}
+
+	void Renderer::Pimpl::resizeSwapchain(void)
+	{
+
+	}
 }
